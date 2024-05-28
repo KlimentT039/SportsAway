@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "80953930076",
+    "project_id": "sportsaway-9714c",
+    "storage_bucket": "sportsaway-9714c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:80953930076:android:14ea55cd28dbbc515dd199",
+        "android_client_info": {
+          "package_name": "com.diplomska.sportsaway"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0k-HpZ5dXR401xryGW1HMT_nd2Aurslc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

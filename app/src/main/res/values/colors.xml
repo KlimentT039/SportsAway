@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="mainColor">#014421</color>
+  <color name="backgroundDefault">#FFF5F5F5</color>
+  <color name="backgroundSurface">#FFFFFFFF</color>
+  <color name="topBarTextColor">#FFFFFFFF</color>
+  <color name="typographyTextPrimary">#FF000000</color>
+  <color name="typographyTextSecondary">#FF636366</color>
+</resources>
