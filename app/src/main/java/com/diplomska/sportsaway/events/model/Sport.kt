@@ -7,7 +7,8 @@ enum class Sport {
   BASKETBALL,
   HOCKEY,
   FORMULA,
-  TENNIS
+  TENNIS,
+  BASEBALL
 }
 
 fun Sport.mapToIconRes(): Int {

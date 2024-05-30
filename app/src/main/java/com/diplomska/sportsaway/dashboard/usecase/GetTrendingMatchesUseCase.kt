@@ -19,4 +19,8 @@ class GetTrendingMatchesUseCase(
       mapEventsResponseToMatch(it)
     }.take(limit)
   }
+
+  fun getTeams() = repository.addTeamsToFireBase()
+
+  fun getEvents() = repository.addEventsToFirebase()
 }

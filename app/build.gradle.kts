@@ -69,6 +69,7 @@ dependencies {
   implementation("com.google.firebase:firebase-analytics")
   implementation("com.google.firebase:firebase-firestore")
   implementation("com.google.firebase:firebase-auth")
+  implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.0")
 
 
   testImplementation("junit:junit:4.13.2")

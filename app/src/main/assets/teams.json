@@ -1,0 +1,193 @@
+{
+  "teams": [
+    {
+      "name": "Real Madrid",
+      "city": "Madrid",
+      "stadium": "Santiago Bernabéu Stadium",
+      "domesticLeague": "La Liga",
+      "sport": "FOOTBALL"
+    },
+    {
+      "name": "Barcelona",
+      "city": "Barcelona",
+      "stadium": "Camp Nou",
+      "domesticLeague": "La Liga",
+      "sport": "FOOTBALL"
+    },
+    {
+      "name": "Manchester United",
+      "city": "Manchester",
+      "stadium": "Old Trafford",
+      "domesticLeague": "Premier League",
+      "sport": "FOOTBALL"
+    },
+    {
+      "name": "Liverpool",
+      "city": "Liverpool",
+      "stadium": "Anfield",
+      "domesticLeague": "Premier League",
+      "sport": "FOOTBALL"
+    },
+    {
+      "name": "Golden State Warriors",
+      "city": "San Francisco",
+      "stadium": "Chase Center",
+      "domesticLeague": "NBA",
+      "sport": "BASKETBALL"
+    },
+    {
+      "name": "Los Angeles Lakers",
+      "city": "Los Angeles",
+      "stadium": "Staples Center",
+      "domesticLeague": "NBA",
+      "sport": "BASKETBALL"
+    },
+    {
+      "name": "New York Yankees",
+      "city": "New York",
+      "stadium": "Yankee Stadium",
+      "domesticLeague": "MLB",
+      "sport": "BASEBALL"
+    },
+    {
+      "name": "Boston Red Sox",
+      "city": "Boston",
+      "stadium": "Fenway Park",
+      "domesticLeague": "MLB",
+      "sport": "BASEBALL"
+    },
+    {
+      "name": "FC Bayern Munich",
+      "city": "Munich",
+      "stadium": "Allianz Arena",
+      "domesticLeague": "Bundesliga",
+      "sport": "FOOTBALL"
+    },
+    {
+      "name": "Borussia Dortmund",
+      "city": "Dortmund",
+      "stadium": "Signal Iduna Park",
+      "domesticLeague": "Bundesliga",
+      "sport": "FOOTBALL"
+    },
+    {
+      "name": "New England Patriots",
+      "city": "Foxborough",
+      "stadium": "Gillette Stadium",
+      "domesticLeague": "NFL",
+      "sport": "FOOTBALL"
+    },
+    {
+      "name": "Kansas City Chiefs",
+      "city": "Kansas City",
+      "stadium": "Arrowhead Stadium",
+      "domesticLeague": "NFL",
+      "sport": "FOOTBALL"
+    },
+    {
+      "name": "Los Angeles Dodgers",
+      "city": "Los Angeles",
+      "stadium": "Dodger Stadium",
+      "domesticLeague": "MLB",
+      "sport": "BASEBALL"
+    },
+    {
+      "name": "San Francisco Giants",
+      "city": "San Francisco",
+      "stadium": "Oracle Park",
+      "domesticLeague": "MLB",
+      "sport": "BASEBALL"
+    },
+    {
+      "name": "Paris Saint-Germain",
+      "city": "Paris",
+      "stadium": "Parc des Princes",
+      "domesticLeague": "Ligue 1",
+      "sport": "FOOTBALL"
+    },
+    {
+      "name": "Olympique de Marseille",
+      "city": "Marseille",
+      "stadium": "Stade Vélodrome",
+      "domesticLeague": "Ligue 1",
+      "sport": "FOOTBALL"
+    },
+    {
+      "name": "Chicago Bulls",
+      "city": "Chicago",
+      "stadium": "United Center",
+      "domesticLeague": "NBA",
+      "sport": "BASKETBALL"
+    },
+    {
+      "name": "Miami Heat",
+      "city": "Miami",
+      "stadium": "American Airlines Arena",
+      "domesticLeague": "NBA",
+      "sport": "BASKETBALL"
+    },
+    {
+      "name": "Atletico Madrid",
+      "city": "Madrid",
+      "stadium": "Wanda Metropolitano",
+      "domesticLeague": "La Liga",
+      "sport": "FOOTBALL"
+    },
+    {
+      "name": "New York Knicks",
+      "city": "New York",
+      "stadium": "Madison Square Garden",
+      "domesticLeague": "NBA",
+      "sport": "BASKETBALL"
+    },
+    {
+      "name": "Brooklyn Nets",
+      "city": "Brooklyn",
+      "stadium": "Barclays Center",
+      "domesticLeague": "NBA",
+      "sport": "BASKETBALL"
+    },
+    {
+      "name": "Houston Astros",
+      "city": "Houston",
+      "stadium": "Minute Maid Park",
+      "domesticLeague": "MLB",
+      "sport": "BASEBALL"
+    },
+    {
+      "name": "Manchester City",
+      "city": "Manchester",
+      "stadium": "Etihad Stadium",
+      "domesticLeague": "Premier League",
+      "sport": "FOOTBALL"
+    },
+    {
+      "name": "Chelsea",
+      "city": "London",
+      "stadium": "Stamford Bridge",
+      "domesticLeague": "Premier League",
+      "sport": "FOOTBALL"
+    },
+    {
+      "name": "Chicago Cubs",
+      "city": "Chicago",
+      "stadium": "Wrigley Field",
+      "domesticLeague": "MLB",
+      "sport": "BASEBALL"
+    },
+    {
+      "name": "St. Louis Cardinals",
+      "city": "St. Louis",
+      "stadium": "Busch Stadium",
+      "domesticLeague": "MLB",
+      "sport": "BASEBALL"
+    },
+    {
+      "name": "Los Angeles Clippers",
+      "city": "Los Angeles",
+      "stadium": "Staples Center",
+      "domesticLeague": "NBA",
+      "sport": "BASKETBALL"
+    }
+  ]
+}

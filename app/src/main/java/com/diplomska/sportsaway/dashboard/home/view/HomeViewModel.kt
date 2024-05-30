@@ -18,6 +18,7 @@ ViewModel() {
 
   init {
     fetchTrendingEvents()
+    //getTrendingMatchesUseCase.getTeams()
   }
 
   fun onMatchClick(match: Match) {
