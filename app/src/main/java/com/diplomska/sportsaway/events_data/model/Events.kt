@@ -1,4 +1,4 @@
-package com.diplomska.sportsaway.sports_data.model
+package com.diplomska.sportsaway.events_data.model
 
 import com.diplomska.sportsaway.events.model.Sport
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -14,7 +14,12 @@ data class Event(
   val sport: Sport = Sport.FOOTBALL,
   val date: Date = Date(),
   val id: String = "",
-  val generalTickets: TicketResponse? = null,
-  val vipTickets: TicketResponse? = null,
-  val isItTrending: Boolean? = null
+  val generalTickets: Tickets? = null,
+  val vipTickets: Tickets? = null,
+  val trending: Boolean? = null
+)
+
+data class Tickets(
+  val availability: Int = 0,
+  val price: Int = 0
 )

@@ -20,3 +20,9 @@ fun Sport.mapToIconRes(): Int {
     else -> R.drawable.ic_soccer_ball
   }
 }
+
+fun Sport.mapToBackgroundRes(): Int{
+  return when{
+    else -> R.drawable.soccer_stadium
+  }
+}

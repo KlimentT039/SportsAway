@@ -1,6 +1,6 @@
-package com.diplomska.sportsaway.sports_data.repository
+package com.diplomska.sportsaway.events_data.repository
 
-import com.diplomska.sportsaway.sports_data.model.EventsResponse
+import com.diplomska.sportsaway.events_data.model.EventsResponse
 
 interface SportsEventsRepository {
 

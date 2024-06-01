@@ -47,7 +47,7 @@ fun ListOfGames(list: List<Match>) {
         drawableStart = R.drawable.ic_soccer_ball,
         //drawableEnd = Icons.Default.ArrowForward
       )
-      if (index == list.lastIndex) {
+      if (index != list.lastIndex) {
         ListDivider()
       }
     }

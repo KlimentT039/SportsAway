@@ -1,8 +1,8 @@
-package com.diplomska.sportsaway.sports_data.provider
+package com.diplomska.sportsaway.events_data.provider
 
 import com.diplomska.sportsaway.shared.assetConfig.AssetConfigRead
-import com.diplomska.sportsaway.sports_data.model.Event
-import com.diplomska.sportsaway.sports_data.model.Events
+import com.diplomska.sportsaway.events_data.model.Event
+import com.diplomska.sportsaway.events_data.model.Events
 
 class EventsJsonProvider(private val assetConfigRead: AssetConfigRead) {
   private val jsonObject: Events by lazy {

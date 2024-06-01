@@ -1,8 +1,8 @@
-package com.diplomska.sportsaway.sports_data.provider
+package com.diplomska.sportsaway.events_data.provider
 
 import com.diplomska.sportsaway.shared.assetConfig.AssetConfigRead
-import com.diplomska.sportsaway.sports_data.model.Team
-import com.diplomska.sportsaway.sports_data.model.Teams
+import com.diplomska.sportsaway.events_data.model.Team
+import com.diplomska.sportsaway.events_data.model.Teams
 
 class TeamJsonProvider(assetConfigRead: AssetConfigRead) {
 

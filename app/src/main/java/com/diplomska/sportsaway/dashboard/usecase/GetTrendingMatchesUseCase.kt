@@ -5,7 +5,7 @@ import com.diplomska.sportsaway.shared.errorhandling.BaseError
 import com.diplomska.sportsaway.shared.errorhandling.Either
 import com.diplomska.sportsaway.events.model.Match
 import com.diplomska.sportsaway.events.domain.MapEventsResponseToMatch
-import com.diplomska.sportsaway.sports_data.repository.SportsEventsRepository
+import com.diplomska.sportsaway.events_data.repository.SportsEventsRepository
 
 class GetTrendingMatchesUseCase(
   private val repository: SportsEventsRepository,
@@ -14,10 +14,10 @@ class GetTrendingMatchesUseCase(
 
   suspend operator fun invoke(limit: Int): Either<BaseError, List<Match>> = lift {
     repository.fetchAllEvents().filter {
-      it.isItTrending == true
+      it.trending
     }.map {
       mapEventsResponseToMatch(it)
-    }.take(limit)
+    }.take(limit).sortedBy { it.sport }
   }
 
   fun getTeams() = repository.addTeamsToFireBase()

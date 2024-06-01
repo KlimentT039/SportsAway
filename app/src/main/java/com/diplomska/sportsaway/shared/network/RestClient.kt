@@ -9,7 +9,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 
 object RestClient {
 
-  private const val BASE_URL = "https://www.thesportsdb.com/api/v1/json/60130162/"
+  private const val BASE_URL = "https://api.football-data.org/v4/"
 
   private val httpClient: OkHttpClient by KoinJavaComponent.inject(OkHttpClient::class.java)
 

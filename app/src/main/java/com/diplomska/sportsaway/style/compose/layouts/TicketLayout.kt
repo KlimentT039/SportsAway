@@ -24,7 +24,7 @@ import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.events.model.Ticket
 import com.diplomska.sportsaway.style.compose.theme.backgroundSurface
 import com.diplomska.sportsaway.style.compose.theme.mainColor
-import com.diplomska.style.compose.typography
+import com.diplomska.sportsaway.style.compose.typography
 
 @Composable
 fun TicketForm(ticketResponse: Ticket, isSelected: Boolean, onClick: () -> Unit) {

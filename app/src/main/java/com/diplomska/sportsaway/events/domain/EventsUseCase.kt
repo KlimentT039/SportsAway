@@ -4,7 +4,7 @@ import com.diplomska.core.errorhandling.ErrorHandlingUseCase
 import com.diplomska.sportsaway.events.model.Match
 import com.diplomska.sportsaway.shared.errorhandling.BaseError
 import com.diplomska.sportsaway.shared.errorhandling.Either
-import com.diplomska.sportsaway.sports_data.repository.SportsEventsRepository
+import com.diplomska.sportsaway.events_data.repository.SportsEventsRepository
 
 class EventsUseCase(
   private val repository: SportsEventsRepository,

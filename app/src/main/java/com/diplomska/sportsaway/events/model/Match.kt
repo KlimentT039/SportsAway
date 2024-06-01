@@ -1,5 +1,6 @@
 package com.diplomska.sportsaway.events.model
 
+import android.content.Context
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import kotlinx.parcelize.Parcelize
@@ -16,3 +17,5 @@ data class Match(
   val generalTickets: Ticket = Ticket(),
   val vipTickets: Ticket = Ticket()
 ) : Parcelable
+
+fun Match.getTitle() = "$homeTeam - $awayTeam"

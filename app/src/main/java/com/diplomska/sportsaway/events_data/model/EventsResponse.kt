@@ -1,4 +1,4 @@
-package com.diplomska.sportsaway.sports_data.model
+package com.diplomska.sportsaway.events_data.model
 
 import com.diplomska.sportsaway.events.model.Sport
 import com.google.firebase.firestore.PropertyName
@@ -29,8 +29,8 @@ data class EventsResponse(
   @get:PropertyName("vipTickets")
   val vipTickets: TicketResponse? = null,
 
-  @get:PropertyName("isItTrending")
-  val isItTrending: Boolean? = null
+  @get:PropertyName("trending")
+  val trending: Boolean = false
 ) {
   constructor() : this(
     id = "",
@@ -39,7 +39,7 @@ data class EventsResponse(
     competition = "",
     sport = Sport.FOOTBALL,
     date = Date(),
-    isItTrending = false,
+    trending = false,
     vipTickets = TicketResponse(),
     generalTickets = TicketResponse()
   )

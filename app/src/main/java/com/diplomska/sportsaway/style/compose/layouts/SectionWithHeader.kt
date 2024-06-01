@@ -20,7 +20,7 @@ import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.style.compose.components.ImageTitleSubtitle
 import com.diplomska.sportsaway.style.compose.components.Section
 import com.diplomska.sportsaway.style.compose.theme.backgroundDefault
-import com.diplomska.style.compose.typography
+import com.diplomska.sportsaway.style.compose.typography
 
 @Composable
 fun SectionWithHeader(

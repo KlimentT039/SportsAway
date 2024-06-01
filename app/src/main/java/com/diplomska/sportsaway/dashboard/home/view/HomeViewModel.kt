@@ -11,14 +11,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 internal class HomeViewModel(private val getTrendingMatchesUseCase: GetTrendingMatchesUseCase) :
-ViewModel() {
+  ViewModel() {
 
   private val _nextMatchesState = MutableStateFlow<ViewState>(ViewState.Loading)
   val nextMatchesState = _nextMatchesState.asStateFlow()
 
   init {
-    fetchTrendingEvents()
     //getTrendingMatchesUseCase.getTeams()
+    //getTrendingMatchesUseCase.getEvents()
+    fetchTrendingEvents()
   }
 
   fun onMatchClick(match: Match) {
@@ -27,12 +28,8 @@ ViewModel() {
     }
   }
 
-  private fun fillFirebase(){
-
-  }
-
   private fun fetchTrendingEvents() = viewModelScope.launch {
-    getTrendingMatchesUseCase.invoke(15).fold(
+    getTrendingMatchesUseCase.invoke(10).fold(
       onFailure = {
         _nextMatchesState.update {
           getHomeData().copy(isError = true)

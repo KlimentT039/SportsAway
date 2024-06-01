@@ -1,11 +1,10 @@
-package com.diplomska.sportsaway.sports_data.repository
+package com.diplomska.sportsaway.events_data.repository
 
 import android.util.Log
 import com.diplomska.core.errorhandling.ErrorHandlingUseCase
-import com.diplomska.sportsaway.profile_data.repository.AuthRepository
-import com.diplomska.sportsaway.sports_data.model.EventsResponse
-import com.diplomska.sportsaway.sports_data.provider.EventsJsonProvider
-import com.diplomska.sportsaway.sports_data.provider.TeamJsonProvider
+import com.diplomska.sportsaway.events_data.model.EventsResponse
+import com.diplomska.sportsaway.events_data.provider.EventsJsonProvider
+import com.diplomska.sportsaway.events_data.provider.TeamJsonProvider
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -52,8 +51,7 @@ class SportsEventsRepositoryImpl(
           "$TAG - - - database",
           "${event.homeTeam} vs ${event.awayTeam} is added in database"
         )
-      }
-        .addOnFailureListener {
+      }.addOnFailureListener {
           Log.d(
             "$TAG - - - database",
             "$${event.homeTeam} vs ${event.awayTeam}  can not be added in database"

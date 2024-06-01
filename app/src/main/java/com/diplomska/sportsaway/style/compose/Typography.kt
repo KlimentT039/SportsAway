@@ -1,4 +1,4 @@
-package com.diplomska.style.compose
+package com.diplomska.sportsaway.style.compose
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
