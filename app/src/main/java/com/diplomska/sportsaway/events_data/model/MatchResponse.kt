@@ -5,15 +5,20 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.sql.Date
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+data class MatchListResponse(@JsonProperty("matches") val matches: List<MatchResponse>)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class MatchResponse(
   @JsonProperty("id")
   val id: Int,
-  @JsonProperty("date")
-  val utcDate: Date,
+  @JsonProperty("utcDate")
+  val utcDate: String,
   @JsonProperty("competition")
-  val competition: Competition,
+  val competition: CompetitionResponse,
   @JsonProperty("homeTeam")
   val homeTeam: TeamResponse,
   @JsonProperty("awayTeam")
-  val awayTeam: TeamResponse
+  val awayTeam: TeamResponse,
+  @JsonProperty("matchday")
+  val matchday: Int
 )

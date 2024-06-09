@@ -80,6 +80,7 @@ dependencies {
   implementation("androidx.appcompat:appcompat:1.6.1")
   implementation("com.google.android.material:material:1.10.0")
   implementation("io.coil-kt:coil:2.6.0")
+  implementation("io.coil-kt:coil-svg:2.0.0")
   implementation("io.coil-kt:coil-compose:2.6.0")
 
   testImplementation("junit:junit:4.13.2")
@@ -100,4 +101,5 @@ dependencies {
 
   androidTestImplementation("androidx.compose.ui:ui-test-junit4")
   debugImplementation("androidx.compose.ui:ui-test-manifest")
+
 }

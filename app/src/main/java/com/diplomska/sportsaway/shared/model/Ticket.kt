@@ -1,4 +1,4 @@
-package com.diplomska.sportsaway.events.model
+package com.diplomska.sportsaway.shared.model
 
 import android.os.Parcelable
 import androidx.annotation.StringRes

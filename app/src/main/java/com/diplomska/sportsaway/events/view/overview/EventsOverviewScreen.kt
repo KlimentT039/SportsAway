@@ -10,9 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.diplomska.sportsaway.R
-import com.diplomska.sportsaway.events.model.Match
+import com.diplomska.sportsaway.shared.model.Match
 import com.diplomska.sportsaway.style.compose.components.AppBar
-import com.diplomska.sportsaway.style.compose.components.ImageTitleSubtitle
 import com.diplomska.sportsaway.style.compose.components.ListDivider
 import com.diplomska.sportsaway.style.compose.layouts.OverlayLoader
 
@@ -39,22 +38,22 @@ private fun EventsContent(viewState: EventsViewState, onSearchQuery: (String) ->
 
 @Composable
 fun ListOfGames(list: List<Match>) {
-  LazyColumn {
-    itemsIndexed(list) { index, events ->
-      ImageTitleSubtitle(
-        title = "${events.homeTeam} - ${events.awayTeam}",
-        subtitle = events.date,
-        drawableStart = R.drawable.ic_soccer_ball,
-        //drawableEnd = Icons.Default.ArrowForward
-      )
-      if (index != list.lastIndex) {
-        ListDivider()
-      }
-    }
-    item {
-      Spacer(modifier = Modifier.width(30.dp))
-    }
-  }
+//  LazyColumn {
+//    itemsIndexed(list) { index, events ->
+//      ImageTitleSubtitle(
+//        title = "${events.homeTeam} - ${events.awayTeam}",
+//        subtitle = events.date,
+//        drawableStart = R.drawable.ic_soccer_ball,
+//        //drawableEnd = Icons.Default.ArrowForward
+//      )
+//      if (index != list.lastIndex) {
+//        ListDivider()
+//      }
+//    }
+//    item {
+//      Spacer(modifier = Modifier.width(30.dp))
+//    }
+//  }
 }
 
 @Preview(showBackground = true)

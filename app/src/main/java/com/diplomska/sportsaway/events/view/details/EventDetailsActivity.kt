@@ -3,10 +3,9 @@ package com.diplomska.sportsaway.events.view.details
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import com.diplomska.sportsaway.events.model.Match
+import com.diplomska.sportsaway.shared.model.Match
 import com.diplomska.sportsaway.shared.utils.EXTRA_SELECTED_MATCH
 import com.diplomska.sportsaway.shared.utils.getParcelableCompat
 import org.koin.androidx.viewmodel.ext.android.viewModel

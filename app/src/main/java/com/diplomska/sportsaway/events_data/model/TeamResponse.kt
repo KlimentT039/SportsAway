@@ -9,6 +9,6 @@ data class TeamResponse(
   @JsonProperty("name") val name: String,
   @JsonProperty("shortName") val shortName: String,
   @JsonProperty("tla") val tla: String,
-  @JsonProperty("crest") val crest: String,
-  @JsonProperty("venue") val venue: String
+  @JsonProperty("crest") val crest: String?,
+  @JsonProperty("venue") val venue: String?
 )

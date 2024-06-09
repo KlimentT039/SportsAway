@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.diplomska.sportsaway.R
-import com.diplomska.sportsaway.events.model.Ticket
+import com.diplomska.sportsaway.shared.model.Ticket
 import com.diplomska.sportsaway.style.compose.theme.backgroundSurface
 import com.diplomska.sportsaway.style.compose.theme.mainColor
 import com.diplomska.sportsaway.style.compose.typography

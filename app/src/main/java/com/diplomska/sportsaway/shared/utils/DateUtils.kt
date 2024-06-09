@@ -5,7 +5,7 @@ import java.util.Locale
 
 fun parseDate(initialString: String): String? {
   val inputFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
-  val outputFormat = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.ENGLISH)
+  val outputFormat = SimpleDateFormat("MMM DD", Locale.ENGLISH)
 
   return try {
     val parsedDate = inputFormat.parse(initialString)

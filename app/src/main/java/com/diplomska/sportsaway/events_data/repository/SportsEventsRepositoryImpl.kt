@@ -2,7 +2,12 @@ package com.diplomska.sportsaway.events_data.repository
 
 import android.util.Log
 import com.diplomska.core.errorhandling.ErrorHandlingUseCase
+import com.diplomska.sportsaway.events_data.model.CompetitionResponse
 import com.diplomska.sportsaway.events_data.model.EventsResponse
+import com.diplomska.sportsaway.events_data.model.MatchListResponse
+import com.diplomska.sportsaway.events_data.model.MatchResponse
+import com.diplomska.sportsaway.events_data.model.listOfCompetitionIds
+import com.diplomska.sportsaway.events_data.network.SportsApi
 import com.diplomska.sportsaway.events_data.provider.EventsJsonProvider
 import com.diplomska.sportsaway.events_data.provider.TeamJsonProvider
 import com.google.firebase.firestore.CollectionReference
@@ -12,13 +17,26 @@ import kotlinx.coroutines.tasks.await
 
 class SportsEventsRepositoryImpl(
   private val teamJsonProvider: TeamJsonProvider,
-  private val eventsJsonProvider: EventsJsonProvider
+  private val eventsJsonProvider: EventsJsonProvider,
+  private val sportsApi: SportsApi
 ) : SportsEventsRepository, ErrorHandlingUseCase() {
 
   private val TAG = "SportsRepository"
 
   private val db = FirebaseFirestore.getInstance()
   private val eventsRef: CollectionReference = db.collection("events")
+
+  override suspend fun getMatches(): List<MatchResponse> {
+    val dateFrom = "2023-11-10"
+    val dateTo = "2023-11-15"
+    return sportsApi.getMatches(
+      dateTo = dateTo,
+      dateFrom = dateFrom,
+      competitions = listOfCompetitionIds.joinToString(",")
+    ).matches
+  }
+
+  override suspend fun getCompetitions() = sportsApi.getCompetitions().competitions
 
   override suspend fun fetchAllEvents(): List<EventsResponse> {
     val querySnapshot: QuerySnapshot = eventsRef.get().await()
@@ -52,11 +70,11 @@ class SportsEventsRepositoryImpl(
           "${event.homeTeam} vs ${event.awayTeam} is added in database"
         )
       }.addOnFailureListener {
-          Log.d(
-            "$TAG - - - database",
-            "$${event.homeTeam} vs ${event.awayTeam}  can not be added in database"
-          )
-        }
+        Log.d(
+          "$TAG - - - database",
+          "$${event.homeTeam} vs ${event.awayTeam}  can not be added in database"
+        )
+      }
     }
   }
 }

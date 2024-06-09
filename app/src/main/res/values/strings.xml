@@ -2,6 +2,7 @@
 <resources>
   <string name="app_name">SportsAway</string>
   <string name="trending_events">Trending events</string>
+  <string name="leagues">Leagues</string>
   <string name="see_more">View all</string>
   <string name="football">Football</string>
   <string name="basketball">Basketball</string>

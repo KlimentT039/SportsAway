@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.diplomska.sportsaway.R
-import com.diplomska.sportsaway.events.model.Match
+import com.diplomska.sportsaway.shared.model.Match
 import com.diplomska.sportsaway.style.compose.components.CustomToolbar
 import com.diplomska.sportsaway.style.compose.components.Scaffold
 import com.diplomska.sportsaway.style.compose.layouts.OverlayLoader
@@ -80,7 +80,7 @@ fun EventDetailsContent(match: Match) {
           .fillMaxHeight()
           .fillMaxWidth()
       ) {
-        Tickets(match)
+//        Tickets(match)
         Spacer(modifier = Modifier.height(16.dp))
         Button(
           onClick = { /* Perform action for purchasing tickets */ },
@@ -94,21 +94,21 @@ fun EventDetailsContent(match: Match) {
     }
   }
 }
-
-@Composable
-fun Tickets(match: Match) {
-  Column(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(vertical = 8.dp)
-  ) {
-    TicketForm(match.generalTickets, false) {}
-    TicketForm(match.vipTickets, false) {}
-  }
-}
-
-@Composable
-@Preview
-fun EventDetailsScreenPreview() {
-  EventDetailsContent(match = Match())
-}
+//
+//@Composable
+//fun Tickets(match: Match) {
+//  Column(
+//    modifier = Modifier
+//      .fillMaxWidth()
+//      .padding(vertical = 8.dp)
+//  ) {
+//    TicketForm(match.generalTickets, false) {}
+//    TicketForm(match.vipTickets, false) {}
+//  }
+//}
+//
+//@Composable
+//@Preview
+//fun EventDetailsScreenPreview() {
+//  EventDetailsContent(match = Match())
+//}

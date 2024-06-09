@@ -1,6 +1,5 @@
 package com.diplomska.sportsaway.events_data.model
 
-import com.diplomska.sportsaway.events.model.Sport
 import com.fasterxml.jackson.annotation.JsonProperty
 
 
@@ -14,5 +13,4 @@ data class Team(
   val city: String = "",
   val stadium: String = "",
   val domesticLeague: String = "",
-  val sport: Sport = Sport.FOOTBALL
 )

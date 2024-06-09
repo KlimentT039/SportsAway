@@ -11,7 +11,8 @@ data class Typography(
   val mRegular: TextStyle,
   val xsRegular: TextStyle,
   val sRegularPrimary: TextStyle,
-  val sRegularSecundary: TextStyle
+  val sRegularSecundary: TextStyle,
+  val mLarge: TextStyle
 )
 
 val typography = Typography(
@@ -19,6 +20,12 @@ val typography = Typography(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight(500),
     fontSize = 18.sp,
+    color = typographyTextPrimary
+  ),
+  mLarge = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight(500),
+    fontSize = 22.sp,
     color = typographyTextPrimary
   ),
   xsRegular = TextStyle(

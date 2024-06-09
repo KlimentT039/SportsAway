@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.diplomska.sportsaway.events.domain.EventsUseCase
 import com.diplomska.sportsaway.shared.errorhandling.fold
-import com.diplomska.sportsaway.events.model.Match
+import com.diplomska.sportsaway.shared.model.Match
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -22,7 +22,7 @@ internal class EventsOverviewViewModel(val getEventsUseCase: EventsUseCase) :
 
   fun onSearchQuery(query: String) {
     val list = getEventsData().listOfNextMatches.sortedBy {
-      it.homeTeam.contains(query) || it.awayTeam.contains(query)
+      it.homeTeam.name.contains(query) || it.awayTeam.name.contains(query)
     }
   }
 
