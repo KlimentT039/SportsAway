@@ -14,15 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.diplomska.sportsaway.common.style.compose.layouts.SectionWithHeader
 import com.diplomska.sportsaway.R
-import com.diplomska.sportsaway.feature.events.view.details.EventDetailsActivity
 import com.diplomska.sportsaway.common.shared.model.Competition
 import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.common.shared.utils.chunkedList
 import com.diplomska.sportsaway.common.style.compose.components.MatchCard
 import com.diplomska.sportsaway.common.style.compose.components.TileWithIconAndText
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
+import com.diplomska.sportsaway.common.style.compose.layouts.SectionWithHeader
+import com.diplomska.sportsaway.feature.events.view.details.EventDetailsActivity
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -61,7 +61,7 @@ fun ListOfGames(list: List<Match>) {
     LazyRow(modifier = Modifier.padding(horizontal = 8.dp)) {
       itemsIndexed(chunkedList(list, 2)) { index, columnEvents ->
         Column(modifier = Modifier.fillParentMaxWidth(0.8f)) {
-          columnEvents.forEachIndexed { index, listItem ->
+          columnEvents.forEachIndexed { _, listItem ->
             MatchCard(
               match = listItem,
               onClick = {

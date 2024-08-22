@@ -2,7 +2,6 @@ package com.diplomska.sportsaway.data.events_data.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.sql.Date
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class MatchListResponse(@JsonProperty("matches") val matches: List<MatchResponse>)

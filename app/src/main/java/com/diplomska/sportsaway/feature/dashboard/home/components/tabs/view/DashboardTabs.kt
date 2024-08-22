@@ -1,6 +1,5 @@
 package com.diplomska.sportsaway.feature.dashboard.home.components.tabs.view
 
-import com.diplomska.sportsaway.feature.dashboard.home.view.HomeScreen
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -13,12 +12,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.diplomska.sportsaway.feature.dashboard.home.components.tabs.model.DashboardTab
-import com.diplomska.sportsaway.feature.dashboard.home.components.tabs.model.getDashboardTabs
-import com.diplomska.sportsaway.feature.events.view.overview.EventsOverviewScreen
-import com.diplomska.sportsaway.feature.favourite.view.model.FavouriteScreen
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
+import com.diplomska.sportsaway.feature.dashboard.home.components.tabs.model.DashboardTab
+import com.diplomska.sportsaway.feature.dashboard.home.components.tabs.model.getDashboardTabs
+import com.diplomska.sportsaway.feature.dashboard.home.view.HomeScreen
+import com.diplomska.sportsaway.feature.events.view.overview.EventsOverviewScreen
+import com.diplomska.sportsaway.feature.favourite.view.FavouriteScreen
 
 @Composable
 fun DashboardTabNavigator(

@@ -22,5 +22,6 @@
   <string name="add_first_team_title">Add your first team</string>
   <string name="add_first_team_description">Have all matches and important news about your favourite teams in one place.</string>
   <string name="search_team_button">SEARCH TEAM</string>
-  <string name="access_denied">You need to be logged in to see your favourites</string>
+  <string name="access_denied_favourites">You need to be logged in to see your favourites</string>
+  <string name="access_denied_profile">You need to be logged in to see your profile</string>
 </resources>

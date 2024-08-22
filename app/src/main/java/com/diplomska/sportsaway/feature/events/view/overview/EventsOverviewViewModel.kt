@@ -2,9 +2,9 @@ package com.diplomska.sportsaway.feature.events.view.overview
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.diplomska.sportsaway.feature.events.domain.EventsUseCase
 import com.diplomska.sportsaway.common.shared.errorhandling.fold
 import com.diplomska.sportsaway.common.shared.model.Match
+import com.diplomska.sportsaway.feature.events.domain.EventsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

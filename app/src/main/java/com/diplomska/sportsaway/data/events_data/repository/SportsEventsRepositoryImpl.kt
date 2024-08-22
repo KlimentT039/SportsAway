@@ -2,9 +2,7 @@ package com.diplomska.sportsaway.data.events_data.repository
 
 import android.util.Log
 import com.diplomska.core.errorhandling.ErrorHandlingUseCase
-import com.diplomska.sportsaway.data.events_data.model.CompetitionResponse
 import com.diplomska.sportsaway.data.events_data.model.EventsResponse
-import com.diplomska.sportsaway.data.events_data.model.MatchListResponse
 import com.diplomska.sportsaway.data.events_data.model.MatchResponse
 import com.diplomska.sportsaway.data.events_data.model.listOfCompetitionIds
 import com.diplomska.sportsaway.data.events_data.network.SportsApi

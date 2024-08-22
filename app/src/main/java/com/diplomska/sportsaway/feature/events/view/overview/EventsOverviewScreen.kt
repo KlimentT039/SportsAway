@@ -1,20 +1,11 @@
 package com.diplomska.sportsaway.feature.events.view.overview
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.common.style.compose.components.AppBar
-import com.diplomska.sportsaway.common.style.compose.components.ListDivider
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
-
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

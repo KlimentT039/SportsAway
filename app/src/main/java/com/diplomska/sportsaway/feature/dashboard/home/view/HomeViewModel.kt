@@ -2,17 +2,17 @@ package com.diplomska.sportsaway.feature.dashboard.home.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.diplomska.sportsaway.common.shared.errorhandling.fold
+import com.diplomska.sportsaway.common.shared.model.Competition
+import com.diplomska.sportsaway.common.shared.model.Match
+import com.diplomska.sportsaway.feature.dashboard.home.view.ViewState.CompetitionsData
+import com.diplomska.sportsaway.feature.dashboard.home.view.ViewState.MatchData
 import com.diplomska.sportsaway.feature.dashboard.usecase.GetCompetitionsUseCase
 import com.diplomska.sportsaway.feature.dashboard.usecase.GetTrendingMatchesUseCase
-import com.diplomska.sportsaway.common.shared.errorhandling.fold
-import com.diplomska.sportsaway.common.shared.model.Match
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import com.diplomska.sportsaway.common.shared.model.Competition
-import com.diplomska.sportsaway.feature.dashboard.home.view.ViewState.MatchData
-import com.diplomska.sportsaway.feature.dashboard.home.view.ViewState.CompetitionsData
 
 internal class HomeViewModel(
   private val getTrendingMatchesUseCase: GetTrendingMatchesUseCase,

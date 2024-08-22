@@ -1,11 +1,9 @@
 package com.diplomska.sportsaway.common.shared.model
 
 import android.os.Parcelable
-import com.diplomska.sportsaway.data.events_data.model.MatchResponse
 import com.diplomska.sportsaway.common.shared.utils.parseDate
+import com.diplomska.sportsaway.data.events_data.model.MatchResponse
 import kotlinx.parcelize.Parcelize
-import java.util.Date
-import kotlin.random.Random
 
 @Parcelize
 data class Match(

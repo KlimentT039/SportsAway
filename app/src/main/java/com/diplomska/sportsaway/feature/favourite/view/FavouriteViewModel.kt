@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.diplomska.sportsaway.feature.favourite.domain.HasUserLoggedInUseCase
 import com.diplomska.sportsaway.feature.favourite.view.model.UserFavouriteState
-import kotlinx.coroutines.flow.MutableStateFlow
 import com.diplomska.sportsaway.feature.favourite.view.model.UserFavouriteState.UserHasNotLoggedIn
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch

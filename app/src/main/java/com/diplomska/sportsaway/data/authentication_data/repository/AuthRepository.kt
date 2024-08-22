@@ -1,11 +1,10 @@
-package com.diplomska.sportsaway.data.profile_data.repository
+package com.diplomska.sportsaway.data.authentication_data.repository
 
 import android.util.Log
-import com.diplomska.sportsaway.feature.profile.model.User
 import com.diplomska.sportsaway.common.shared.errorhandling.BaseError
 import com.diplomska.sportsaway.common.shared.errorhandling.Either
+import com.diplomska.sportsaway.data.authentication_data.model.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await

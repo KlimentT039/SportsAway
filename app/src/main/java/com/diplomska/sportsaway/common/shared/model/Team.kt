@@ -3,7 +3,6 @@ package com.diplomska.sportsaway.common.shared.model
 import android.os.Parcelable
 import com.diplomska.sportsaway.data.events_data.model.TeamResponse
 import kotlinx.parcelize.Parcelize
-import kotlin.random.Random
 
 @Parcelize
 data class Team(

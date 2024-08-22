@@ -1,11 +1,11 @@
-package com.diplomska.sportsaway.feature.favourite.view.model
+package com.diplomska.sportsaway.feature.favourite.view
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import com.diplomska.sportsaway.feature.favourite.view.AccessDeniedScreen
-import com.diplomska.sportsaway.feature.favourite.view.AddFirstTeamScreen
-import com.diplomska.sportsaway.feature.favourite.view.FavouriteViewModel
+import androidx.compose.ui.res.stringResource
+import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
+import com.diplomska.sportsaway.feature.favourite.view.model.UserFavouriteState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -20,7 +20,7 @@ fun FavouriteScreen() {
 fun FavouriteContent(viewState: UserFavouriteState) {
   when (viewState) {
     UserFavouriteState.Loading -> OverlayLoader()
-    UserFavouriteState.UserHasNotLoggedIn -> AccessDeniedScreen()
+    UserFavouriteState.UserHasNotLoggedIn -> AccessDeniedScreen(stringResource(id = R.string.access_denied_favourites))
     UserFavouriteState.UserHasNotSelectedTeams -> AddFirstTeamScreen()
     else -> {}
   }

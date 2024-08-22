@@ -2,10 +2,10 @@ package com.diplomska.sportsaway.common.shared.di
 
 import com.diplomska.sportsaway.common.shared.assetConfig.AssetConfigRead
 import com.diplomska.sportsaway.common.shared.assetConfig.JsonMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 
 val sharedModule = module {
     single(named(DEFAULT_OBJECT_MAPPER)) { jacksonObjectMapper() }

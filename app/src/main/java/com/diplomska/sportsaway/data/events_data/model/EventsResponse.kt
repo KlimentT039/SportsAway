@@ -1,7 +1,7 @@
 package com.diplomska.sportsaway.data.events_data.model
 
 import com.google.firebase.firestore.PropertyName
-import java.util.*
+import java.util.Date
 
 data class EventsResponse(
   @get:PropertyName("homeTeam")

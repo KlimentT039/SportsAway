@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,10 +26,12 @@ import androidx.compose.ui.unit.sp
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
+import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
 
 
 @Composable
-fun AccessDeniedScreen() {
+fun AccessDeniedScreen(message: String) {
+  val context = LocalContext.current
   Surface(
     modifier = Modifier.fillMaxSize(),
     color = backgroundSurface
@@ -42,7 +45,7 @@ fun AccessDeniedScreen() {
     ) {
       Spacer(modifier = Modifier.height(16.dp))
       Text(
-        text = stringResource(id = R.string.access_denied),
+        text = message,
         fontSize = 16.sp,
         textAlign = TextAlign.Center,
         color = MaterialTheme.colorScheme.onBackground
@@ -50,7 +53,7 @@ fun AccessDeniedScreen() {
       Spacer(modifier = Modifier.height(32.dp))
       Button(
         shape = RoundedCornerShape(8.dp),
-        onClick = {},
+        onClick = { context.startActivity(LoginActivity.createIntent(context)) },
         modifier = Modifier
           .fillMaxWidth()
           .padding(horizontal = 16.dp),
@@ -68,5 +71,5 @@ fun AccessDeniedScreen() {
 @Preview
 @Composable
 private fun PreviewAccessDeniedScreen() {
-  AccessDeniedScreen()
+  AccessDeniedScreen(stringResource(id = R.string.access_denied_favourites))
 }
