@@ -2,6 +2,7 @@ package com.diplomska.sportsaway.feature.authentication.login.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,22 +26,41 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.diplomska.sportsaway.R
+import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundDefault
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
+import com.diplomska.sportsaway.feature.authentication.register.view.RegisterActivity
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen() {
-  LoginContent()
+  val viewModel = koinViewModel<LoginViewModel>()
+  val uiState = viewModel.viewState.collectAsState()
+  when (uiState.value) {
+    is LoginViewState.Loading -> OverlayLoader()
+    is LoginViewState.UserData -> LoginContent(
+      onEmailInputChanged = viewModel::onEmailInputChanged,
+      onPasswordInputChanged = viewModel::onPasswordInputChanged,
+      onLoginButtonClicked = viewModel::onLoginClick
+    )
+  }
 }
 
 @Composable
-fun LoginContent() {
+private fun LoginContent(
+  onEmailInputChanged: (String) -> Unit,
+  onPasswordInputChanged: (String) -> Unit,
+  onLoginButtonClicked: () -> Unit
+) {
+  val context = LocalContext.current
   var email by remember { mutableStateOf("") }
   var password by remember { mutableStateOf("") }
 
@@ -52,19 +73,23 @@ fun LoginContent() {
   ) {
     Image(
       modifier = Modifier.padding(top = 100.dp),
-      painter = painterResource(id = R.drawable.ic_logo), // Replace R.drawable.logo with your logo resource
+      painter = painterResource(id = R.drawable.ic_logo),
       contentDescription = "Logo",
       contentScale = ContentScale.Fit
     )
     Spacer(modifier = Modifier.height(30.dp))
     TextField(
       value = email,
-      onValueChange = { email = it },
+      onValueChange = {
+        email = it
+        onEmailInputChanged(it)
+      },
       modifier = Modifier
         .fillMaxWidth(),
       label = { Text(stringResource(id = R.string.email)) },
       keyboardOptions = KeyboardOptions(
         keyboardType = KeyboardType.Email,
+        imeAction = ImeAction.Next
       ),
       keyboardActions = KeyboardActions(
         onNext = { }
@@ -75,26 +100,33 @@ fun LoginContent() {
     Spacer(modifier = Modifier.height(16.dp))
     TextField(
       value = password,
-      onValueChange = { password = it },
+      onValueChange = {
+        password = it
+        onPasswordInputChanged(it)
+      },
       modifier = Modifier
         .fillMaxWidth(),
       label = { Text(stringResource(id = R.string.password)) },
       keyboardOptions = KeyboardOptions(
         keyboardType = KeyboardType.Password,
+        imeAction = ImeAction.Done
       ),
-      keyboardActions = KeyboardActions(
-        onNext = { }
-      ),
+
       colors = TextFieldDefaults.textFieldColors(backgroundColor = backgroundDefault)
     )
 
     Spacer(modifier = Modifier.height(20.dp))
 
-    Text(stringResource(id = R.string.no_account), color = mainColor)
+    Text(
+      text = stringResource(id = R.string.no_account),
+      color = mainColor,
+      modifier = Modifier.clickable {
+        context.startActivity(RegisterActivity.createIntent(context))
+      })
 
     Spacer(modifier = Modifier.weight(1f))
     Button(
-      onClick = { /* Perform action for purchasing tickets */ },
+      onClick = { onLoginButtonClicked() },
       modifier = Modifier
         .fillMaxWidth()
         .height(50.dp),
@@ -114,5 +146,9 @@ fun LoginContent() {
 @Preview
 @Composable
 fun PreviewLoginScreen() {
-  LoginScreen()
+  LoginContent(
+    onEmailInputChanged = { },
+    onPasswordInputChanged = { },
+    onLoginButtonClicked = { }
+  )
 }

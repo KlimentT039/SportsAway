@@ -38,6 +38,17 @@
       android:exported="true">
     </activity>
 
+    <activity
+      android:name=".feature.authentication.login.view.LoginActivity"
+      android:exported="true">
+    </activity>
+
+    <activity
+      android:name=".feature.authentication.login.view"
+      android:exported="true">
+    </activity>
+
+
   </application>
 
 </manifest>

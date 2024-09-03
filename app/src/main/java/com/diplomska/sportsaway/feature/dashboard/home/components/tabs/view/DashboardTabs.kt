@@ -19,6 +19,7 @@ import com.diplomska.sportsaway.feature.dashboard.home.components.tabs.model.get
 import com.diplomska.sportsaway.feature.dashboard.home.view.HomeScreen
 import com.diplomska.sportsaway.feature.events.view.overview.EventsOverviewScreen
 import com.diplomska.sportsaway.feature.favourite.view.FavouriteScreen
+import com.diplomska.sportsaway.feature.profile.ui.ProfileScreen
 
 @Composable
 fun DashboardTabNavigator(
@@ -67,7 +68,7 @@ fun DashboardNavHost(navHostController: NavHostController) {
       FavouriteScreen()
     }
     composable(DashboardTab.Profile.route) {
-      EventsOverviewScreen()
+      ProfileScreen()
     }
   }
 }

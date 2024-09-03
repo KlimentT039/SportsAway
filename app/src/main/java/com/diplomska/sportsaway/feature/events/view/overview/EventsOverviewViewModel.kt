@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.diplomska.sportsaway.common.shared.errorhandling.fold
 import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.feature.events.domain.EventsUseCase
+import com.diplomska.sportsaway.feature.events.view.model.GroupedMatch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -21,9 +22,7 @@ internal class EventsOverviewViewModel(val getEventsUseCase: EventsUseCase) :
   }
 
   fun onSearchQuery(query: String) {
-    val list = getEventsData().listOfNextMatches.sortedBy {
-      it.homeTeam.name.contains(query) || it.awayTeam.name.contains(query)
-    }
+
   }
 
   private fun fetchNextMatches() = viewModelScope.launch {
@@ -32,7 +31,7 @@ internal class EventsOverviewViewModel(val getEventsUseCase: EventsUseCase) :
         _nextMatchesState.update { getEventsData().copy(isError = true) }
       },
       onSuccess = { events ->
-        _nextMatchesState.update { getEventsData().copy(listOfNextMatches = events) }
+        _nextMatchesState.update { getEventsData().copy(groupedMatches = events) }
       }
     )
   }
@@ -46,7 +45,7 @@ sealed interface EventsViewState {
   data object Loading : EventsViewState
 
   data class EventData(
-    val listOfNextMatches: List<Match> = emptyList(),
+    val groupedMatches: List<GroupedMatch> = emptyList(),
     val isError: Boolean = false
   ) : EventsViewState
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,20 +19,31 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
+import androidx.compose.material.TopAppBar
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.diplomska.sportsaway.R
+import com.diplomska.sportsaway.common.shared.model.Competition
 import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
 import com.diplomska.sportsaway.common.style.compose.typography
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import com.diplomska.sportsaway.common.style.compose.theme.sectionColor
 
 
 @Composable
@@ -61,15 +73,7 @@ fun TileWithIconAndText(
           .fillMaxWidth(),
         contentAlignment = Alignment.Center
       ) {
-        if (!imageRes.isNullOrEmpty()) {
-          ImageWithUrl(imageRes, 40)
-        } else {
-          Image(
-            painter = painterResource(id = R.drawable.ic_generic_club),
-            contentDescription = "Generic club picture",
-            modifier = Modifier.size(40.dp)  // Set a fixed size for the image
-          )
-        }
+        GetImage(imageRes = imageRes)
       }
 
       Spacer(modifier = Modifier.height(10.dp))
@@ -85,7 +89,6 @@ fun TileWithIconAndText(
   }
 }
 
-
 @Composable
 fun MatchCard(
   match: Match,
@@ -94,91 +97,117 @@ fun MatchCard(
   Card(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(8.dp)
-      .clickable(onClick = onClick ?: {})
+      .padding(horizontal = 12.dp, vertical = 8.dp)
+      .clickable(onClick = onClick ?: {}),
+    shape = RoundedCornerShape(12.dp),
+    elevation = 4.dp,
+    backgroundColor = backgroundSurface
   ) {
     Column(
       modifier = Modifier
-        .background(color = backgroundSurface, shape = RoundedCornerShape(8.dp))
         .padding(16.dp),
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
       Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxWidth()
+        horizontalArrangement = Arrangement.SpaceBetween
       ) {
         Text(
           text = match.competition.name,
-          style = typography.mLarge
+          style = typography.mLarge.copy(fontWeight = FontWeight.Bold),
+          color = Color.Black
         )
         Text(
           text = match.matchday.toString(),
-          style = typography.mRegular
+          style = typography.mRegular.copy(fontWeight = FontWeight.SemiBold),
+          color = Color.Gray
         )
       }
 
-      Spacer(modifier = Modifier.height(16.dp))
+      Spacer(modifier = Modifier.height(12.dp))
 
       Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceEvenly, // Changed from weight to SpaceEvenly
         modifier = Modifier.fillMaxWidth()
       ) {
-        Column(
-          modifier = Modifier.weight(1f),
-          horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-          if (match.homeTeam.crest != null) {
-            ImageWithUrl(match.homeTeam.crest, 50)
-          } else {
-            Image(
-              painter = painterResource(id = R.drawable.ic_generic_club),
-              contentDescription = "Generic club"
-            )
-          }
-
-          Text(
-            text = match.homeTeam.shortName,
-            style = typography.mRegular,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-          )
-        }
-
+        TeamInfo(
+          crest = match.homeTeam.crest,
+          name = match.homeTeam.shortName
+        )
         Text(
           text = "vs",
-          style = typography.mLarge,
-          modifier = Modifier.padding(horizontal = 16.dp)
+          style = typography.mLarge.copy(fontWeight = FontWeight.Bold),
+          modifier = Modifier.padding(horizontal = 16.dp),
+          color = Color.Gray
         )
-
-        Column(
-          modifier = Modifier.weight(1f),
-          horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-          if (match.awayTeam.crest != null) {
-            ImageWithUrl(match.awayTeam.crest, 50)
-          } else {
-            Image(
-              painter = painterResource(id = R.drawable.ic_generic_club),
-              contentDescription = "Generic club"
-            )
-          }
-          Text(
-            text = match.awayTeam.shortName,
-            style = typography.mRegular,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-          )
-        }
+        TeamInfo(
+          crest = match.awayTeam.crest,
+          name = match.awayTeam.shortName
+        )
       }
 
-      Spacer(modifier = Modifier.height(16.dp))
+      Spacer(modifier = Modifier.height(12.dp))
 
       Text(
         text = match.homeTeam.venue,
-        style = typography.sRegularPrimary
+        style = typography.sRegularPrimary.copy(color = Color.Gray),
+        textAlign = TextAlign.Center
       )
+    }
+  }
+}
+
+@Composable
+fun TeamInfo(crest: String?, name: String) {
+  Column(
+    horizontalAlignment = Alignment.CenterHorizontally
+  ) {
+    GetImage(imageRes = crest, pictureSize = 40)
+    Spacer(modifier = Modifier.height(4.dp))
+    Text(
+      text = name,
+      style = typography.mRegular.copy(fontWeight = FontWeight.Medium),
+      maxLines = 1,
+      overflow = TextOverflow.Ellipsis,
+      textAlign = TextAlign.Center
+    )
+  }
+}
+
+
+@Composable
+fun MatchItem(match: Match) {
+  Card(
+    modifier = Modifier
+      .fillMaxWidth()
+      .background(backgroundSurface)
+  ) {
+    Row(
+      Modifier
+        .fillMaxWidth()
+        .padding(5.dp)
+    ) {
+      Column(modifier = Modifier.weight(1f)) {
+        Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)) {
+          GetImage(imageRes = match.homeTeam.crest, pictureSize = 20)
+          Text(
+            modifier = Modifier.padding(horizontal = 8.dp),
+            text = match.homeTeam.name,
+            style = typography.xsRegular,
+          )
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)) {
+          GetImage(imageRes = match.awayTeam.crest, pictureSize = 20)
+          Text(
+            text = match.awayTeam.name,
+            style = typography.xsRegular,
+            modifier = Modifier.padding(horizontal = 8.dp),
+          )
+        }
+      }
     }
   }
 }
@@ -193,6 +222,65 @@ fun ListDivider(
     startIndent = 16.dp,
     modifier = modifier.background(backgroundSurface)
   )
+}
+
+@Composable
+fun MatchSection(
+  competition: Competition,
+  content: @Composable () -> Unit
+) {
+  var isContentVisible by remember {
+    mutableStateOf(true)
+  } // State to track visibility
+
+  Column {
+    TopAppBar(
+      backgroundColor = sectionColor,
+      contentPadding = PaddingValues(horizontal = 8.dp)
+    ) {
+      Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+      ) {
+        Row(
+          verticalAlignment = Alignment.CenterVertically
+        ) {
+          GetImage(imageRes = competition.emblem, pictureSize = 30)
+          Spacer(modifier = Modifier.width(8.dp))
+          Text(
+            text = competition.name,
+            style = typography.mRegular,
+            fontWeight = FontWeight.Bold
+          )
+        }
+        TextButton(onClick = { isContentVisible = !isContentVisible }) {
+          Text(
+            text = if (isContentVisible) stringResource(id = R.string.hide_section)
+            else stringResource(id = R.string.show_section),
+            style = typography.sRegularSecundary,
+          )
+        }
+      }
+    }
+
+    if (isContentVisible) {
+      content()
+    }
+  }
+}
+
+@Composable
+private fun GetImage(imageRes: String?, pictureSize: Int = 40) = run {
+  if (!imageRes.isNullOrEmpty()) {
+    ImageWithUrl(imageRes, pictureSize)
+  } else {
+    Image(
+      painter = painterResource(id = R.drawable.ic_generic_club),
+      contentDescription = "Generic club picture",
+      modifier = Modifier.size(pictureSize.dp)  // Set a fixed size for the image
+    )
+  }
 }
 
 @Composable
@@ -217,3 +305,8 @@ private fun MatchCardPreview() {
   MatchCard(match = Match())
 }
 
+@Preview
+@Composable
+fun MatchItemPreview() {
+  MatchItem(match = Match())
+}

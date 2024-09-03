@@ -43,6 +43,29 @@ class AuthRepository {
     }
   }
 
+  fun isLogged(): Boolean {
+    return auth.currentUser != null
+  }
+
+  suspend fun getCurrentUser(): Either<BaseError, User> {
+    val currentUserEmail = FirebaseAuth.getInstance().currentUser?.email
+      ?: return Either.Failure(BaseError.AuthenticationError("No user is logged in"))
+
+    return try {
+      val documentSnapshot = db.collection("Users")
+        .document(currentUserEmail)
+        .get()
+        .await()
+
+      val user = documentSnapshot.toObject(User::class.java)
+        ?: return Either.Failure(BaseError.UnknownError)
+
+      Either.Success(user)
+    } catch (e: Exception) {
+      Either.Failure(BaseError.UnknownError)
+    }
+  }
+
   private fun storeInDatabase(user: User) {
     val updateUser = hashMapOf(
       "name" to user.username,
@@ -63,10 +86,6 @@ class AuthRepository {
           "${user.username} can not be added in database"
         )
       }
-  }
-
-  fun isLogged(): Boolean {
-    return auth.currentUser != null
   }
 
   companion object {

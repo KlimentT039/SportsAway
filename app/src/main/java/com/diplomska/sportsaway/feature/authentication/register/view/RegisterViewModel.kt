@@ -1,30 +1,30 @@
-package com.diplomska.sportsaway.feature.authentication.login.view
+package com.diplomska.sportsaway.feature.authentication.register.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.diplomska.sportsaway.common.shared.errorhandling.fold
-import com.diplomska.sportsaway.feature.authentication.login.domain.LoginUseCase
+import com.diplomska.sportsaway.feature.authentication.login.domain.RegisterUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import com.diplomska.sportsaway.feature.authentication.login.view.LoginViewState.UserData
-import com.diplomska.sportsaway.feature.authentication.login.view.LoginViewState.Loading
 import kotlinx.coroutines.launch
+import com.diplomska.sportsaway.feature.authentication.register.view.RegisterViewState.UserData
+import com.diplomska.sportsaway.feature.authentication.register.view.RegisterViewState
 
-sealed class LoginViewState {
+sealed class RegisterViewState {
 
-  data object Loading : LoginViewState()
+  data object Loading : RegisterViewState()
 
   data class UserData(
     val email: String = "",
     val password: String = "",
-  ) : LoginViewState()
-
+    val username: String = ""
+  ) : RegisterViewState()
 }
 
-class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
+class RegisterViewModel(private val registerUseCase: RegisterUseCase) : ViewModel() {
 
-  private val _viewState = MutableStateFlow<LoginViewState>(UserData())
+  private val _viewState = MutableStateFlow<RegisterViewState>(UserData())
   val viewState = _viewState.asStateFlow()
 
   fun onEmailInputChanged(email: String) = updateViewStateWithData {
@@ -35,10 +35,18 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
     it.copy(password = password)
   }
 
-  fun onLoginClick() = viewModelScope.launch {
+  fun onUsernameInputChanged(username: String) = updateViewStateWithData {
+    it.copy(username = username)
+  }
+
+  fun onSignUpClick() = viewModelScope.launch {
     val userInput = (_viewState.value as? UserData) ?: return@launch
-    _viewState.update { Loading }
-    loginUseCase(email = userInput.email, password = userInput.password).fold(
+    _viewState.update { RegisterViewState.Loading }
+    registerUseCase(
+      email = userInput.email,
+      password = userInput.password,
+      name = userInput.username
+    ).fold(
       onFailure = {},
       onSuccess = {}
     )
