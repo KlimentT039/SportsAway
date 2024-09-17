@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import com.diplomska.sportsaway.feature.authentication.login.view.LoginViewState.UserData
 import com.diplomska.sportsaway.feature.authentication.login.view.LoginViewState.Loading
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 sealed class LoginViewState {
@@ -22,10 +24,18 @@ sealed class LoginViewState {
 
 }
 
+sealed class LoginEvents {
+  data object LoginFailed : LoginEvents()
+  data object SuccessfulLogin : LoginEvents()
+}
+
 class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
 
   private val _viewState = MutableStateFlow<LoginViewState>(UserData())
   val viewState = _viewState.asStateFlow()
+
+  private val _event = MutableSharedFlow<LoginEvents>()
+  val event = _event.asSharedFlow()
 
   fun onEmailInputChanged(email: String) = updateViewStateWithData {
     it.copy(email = email)
@@ -35,12 +45,20 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
     it.copy(password = password)
   }
 
-  fun onLoginClick() = viewModelScope.launch {
+  fun onLoginClick() = beginLoginProcess()
+
+  fun onTryAgainLogin() = beginLoginProcess()
+
+  private fun beginLoginProcess() = viewModelScope.launch {
     val userInput = (_viewState.value as? UserData) ?: return@launch
     _viewState.update { Loading }
     loginUseCase(email = userInput.email, password = userInput.password).fold(
-      onFailure = {},
-      onSuccess = {}
+      onFailure = {
+        _event.emit(LoginEvents.LoginFailed)
+      },
+      onSuccess = {
+        _event.emit(LoginEvents.SuccessfulLogin)
+      }
     )
   }
 

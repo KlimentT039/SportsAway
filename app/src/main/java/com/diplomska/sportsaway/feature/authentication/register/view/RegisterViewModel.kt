@@ -2,14 +2,17 @@ package com.diplomska.sportsaway.feature.authentication.register.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.diplomska.sportsaway.common.shared.errorhandling.fold
-import com.diplomska.sportsaway.feature.authentication.login.domain.RegisterUseCase
+import com.diplomska.sportsaway.feature.authentication.register.domain.RegisterUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import com.diplomska.sportsaway.feature.authentication.register.view.RegisterViewState.UserData
 import com.diplomska.sportsaway.feature.authentication.register.view.RegisterViewState
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
 sealed class RegisterViewState {
 
@@ -20,12 +23,21 @@ sealed class RegisterViewState {
     val password: String = "",
     val username: String = ""
   ) : RegisterViewState()
+
+  data object Error : RegisterViewState()
+}
+
+sealed class RegisterEvent {
+  data object NavigateToDashboard : RegisterEvent()
 }
 
 class RegisterViewModel(private val registerUseCase: RegisterUseCase) : ViewModel() {
 
   private val _viewState = MutableStateFlow<RegisterViewState>(UserData())
   val viewState = _viewState.asStateFlow()
+
+  private val _event = MutableSharedFlow<RegisterEvent>()
+  val event = _event.asSharedFlow()
 
   fun onEmailInputChanged(email: String) = updateViewStateWithData {
     it.copy(email = email)
@@ -39,6 +51,10 @@ class RegisterViewModel(private val registerUseCase: RegisterUseCase) : ViewMode
     it.copy(username = username)
   }
 
+  fun onTryAgainClick() = viewModelScope.launch {
+    _viewState.update { UserData() }
+  }
+
   fun onSignUpClick() = viewModelScope.launch {
     val userInput = (_viewState.value as? UserData) ?: return@launch
     _viewState.update { RegisterViewState.Loading }
@@ -47,8 +63,12 @@ class RegisterViewModel(private val registerUseCase: RegisterUseCase) : ViewMode
       password = userInput.password,
       name = userInput.username
     ).fold(
-      onFailure = {},
-      onSuccess = {}
+      onFailure = {
+        _viewState.update { RegisterViewState.Error }
+      },
+      onSuccess = {
+        _event.emit(RegisterEvent.NavigateToDashboard)
+      }
     )
   }
 

@@ -3,11 +3,15 @@ package com.diplomska.sportsaway.feature.authentication.register.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.diplomska.sportsaway.feature.dashboard.view.DashboardActivity
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class RegisterActivity: AppCompatActivity() {
+
+class RegisterActivity : AppCompatActivity() {
 
   companion object {
     fun createIntent(context: Context): Intent {
@@ -15,10 +19,25 @@ class RegisterActivity: AppCompatActivity() {
     }
   }
 
+  private val viewModel: RegisterViewModel by viewModel()
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
       CreateUserScreen()
+    }
+    observeEvents()
+  }
+
+  private fun observeEvents() {
+    lifecycleScope.launch {
+      viewModel.event.collect { event ->
+        when (event) {
+          is RegisterEvent.NavigateToDashboard -> {
+            startActivity(Intent(this@RegisterActivity, DashboardActivity::class.java))
+          }
+        }
+      }
     }
   }
 }

@@ -1,5 +1,6 @@
 package com.diplomska.sportsaway.feature.authentication.register.view
 
+import ErrorScreen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -45,6 +46,12 @@ fun CreateUserScreen() {
   val uiState = viewModel.viewState.collectAsState().value
   when (uiState) {
     is RegisterViewState.Loading -> OverlayLoader()
+    is RegisterViewState.Error -> ErrorScreen(
+      title = "Something gone wrong",
+      description = "User cannot be created at the moment",
+      onClick = viewModel::onTryAgainClick
+    )
+
     is RegisterViewState.UserData ->
       CreateUserContent(
         onEmailInputChanged = viewModel::onEmailInputChanged,

@@ -44,7 +44,7 @@
     </activity>
 
     <activity
-      android:name=".feature.authentication.login.view"
+      android:name=".feature.authentication.register.view.RegisterActivity"
       android:exported="true">
     </activity>
 

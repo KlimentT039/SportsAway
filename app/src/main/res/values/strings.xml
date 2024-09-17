@@ -26,4 +26,5 @@
   <string name="access_denied_profile">You need to be logged in to see your profile</string>
   <string name="show_section">Show</string>
   <string name="hide_section">Hide</string>
+  <string name="try_again">Try again</string>
 </resources>
