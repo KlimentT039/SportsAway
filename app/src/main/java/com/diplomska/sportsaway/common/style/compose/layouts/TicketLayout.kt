@@ -27,40 +27,54 @@ import com.diplomska.sportsaway.common.style.compose.theme.mainColor
 import com.diplomska.sportsaway.common.style.compose.typography
 
 @Composable
-fun TicketForm(ticketResponse: Ticket, isSelected: Boolean, onClick: () -> Unit) {
+fun TicketForm(ticket: Ticket, isSelected: Boolean, onClick: () -> Unit) {
+  // Use animated color for background and border when selected
   val borderColor by animateColorAsState(if (isSelected) mainColor else Color.Gray, label = "")
+  val backgroundColor by animateColorAsState(
+    if (isSelected) backgroundSurface else Color.White,
+    label = ""
+  )
 
   Card(
     modifier = Modifier
-      .padding(16.dp)
+      .padding(12.dp)
       .fillMaxWidth()
-      .background(backgroundSurface)
       .clickable(onClick = onClick),
-    elevation = 4.dp,
-    shape = RoundedCornerShape(8.dp),
-    border = BorderStroke(2.dp, borderColor)
+    elevation = 6.dp,
+    shape = RoundedCornerShape(10.dp),
+    border = BorderStroke(1.dp, borderColor),
+    backgroundColor = backgroundColor
   ) {
     Row(
-      modifier = Modifier.padding(16.dp),
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(12.dp),
       verticalAlignment = Alignment.CenterVertically
     ) {
+      // Ticket info column
       Column(
-        modifier = Modifier.weight(1f)
+        modifier = Modifier
+          .weight(1f)
       ) {
         Text(
-          text = stringResource(id = ticketResponse.title),
-          style = MaterialTheme.typography.h5,
-          modifier = Modifier.padding(bottom = 8.dp)
+          text = stringResource(id = ticket.title),
+          style = MaterialTheme.typography.h6,
+          color = if (isSelected) mainColor else MaterialTheme.colors.onSurface,
+          modifier = Modifier.padding(bottom = 4.dp)
         )
         Text(
-          text = "Remaining Tickets: ${ticketResponse.remainingTickets}",
-          style = MaterialTheme.typography.caption
+          text = "Remaining Tickets: ${ticket.remainingTickets}",
+          style = MaterialTheme.typography.body2,
+          color = MaterialTheme.colors.onSurface.copy(alpha = 0.7f)
         )
       }
+
+      // Price display column
       Text(
-        text = "$${ticketResponse.price}",
-        style = typography.mRegular,
-        modifier = Modifier.align(Alignment.CenterVertically)
+        text = "$${ticket.price}",
+        style = MaterialTheme.typography.h5,
+        color = mainColor,
+        modifier = Modifier.padding(start = 16.dp)
       )
     }
   }
@@ -69,7 +83,7 @@ fun TicketForm(ticketResponse: Ticket, isSelected: Boolean, onClick: () -> Unit)
 @Preview(showBackground = true)
 @Composable
 fun PreviewTicketLayout() {
-  TicketForm(ticketResponse = Ticket(R.string.general_ticket, 10, 30),
+  TicketForm(ticket = Ticket(R.string.general_ticket, 10, 30, matchId = 123),
     isSelected = true,
     onClick = {}
   )

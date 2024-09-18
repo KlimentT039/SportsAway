@@ -19,5 +19,7 @@ data class MatchResponse(
   @JsonProperty("awayTeam")
   val awayTeam: TeamResponse,
   @JsonProperty("matchday")
-  val matchday: Int
+  val matchday: Int,
+  @JsonProperty("venue")
+  val venue: String?
 )

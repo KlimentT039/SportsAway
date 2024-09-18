@@ -1,0 +1,38 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+  android:width="120dp"
+  android:height="120dp"
+  android:viewportWidth="120"
+  android:viewportHeight="120">
+  <group>
+    <clip-path
+      android:pathData="M60,60m-60,0a60,60 0,1 1,120 0a60,60 0,1 1,-120 0"/>
+    <path
+      android:pathData="M60,60m-60,0a60,60 0,1 1,120 0a60,60 0,1 1,-120 0"
+      android:fillColor="#D6EAE1"/> <!-- Light green background -->
+    <path
+      android:pathData="M29.68,25.09C31.04,25.57 31.37,27.34 30.27,28.28L13.84,42.36C12.74,43.3 11.04,42.7 10.77,41.28L6.8,20.02C6.53,18.6 7.9,17.42 9.26,17.9L29.68,25.09Z"
+      android:fillColor="#237F4B"/> <!-- Greenish decoration -->
+    <path
+      android:pathData="M108.99,39.85C110.15,40.71 109.96,42.5 108.64,43.08L88.82,51.8C87.5,52.38 86.05,51.31 86.21,49.88L88.56,28.38C88.71,26.94 90.36,26.21 91.53,27.07L108.99,39.85Z"
+      android:fillColor="#237F4B"/> <!-- Greenish decoration -->
+    <path
+      android:pathData="M74.05,97.58C75.32,96.91 76.85,97.87 76.8,99.31L76,120.94C75.95,122.38 74.35,123.22 73.13,122.46L54.81,110.96C53.58,110.2 53.65,108.39 54.92,107.72L74.05,97.58Z"
+      android:fillColor="#237F4B"/> <!-- Greenish decoration -->
+  </group>
+  <path
+    android:pathData="M51.92,27.91C53.44,25.28 57.22,25.28 58.73,27.91L91.25,84.27C92.77,86.89 90.87,90.17 87.85,90.17H22.81C19.78,90.17 17.89,86.89 19.4,84.27L51.92,27.91Z"
+    android:fillColor="#FFFFFF"/> <!-- White triangle -->
+  <path
+    android:pathData="M56.92,24.91C58.44,22.28 62.22,22.28 63.74,24.91L96.25,81.27C97.77,83.89 95.87,87.17 92.85,87.17H27.81C24.78,87.17 22.89,83.89 24.4,81.27L56.92,24.91Z"
+    android:fillColor="#014421"/> <!-- Main color triangle -->
+  <path
+    android:pathData="M60.14,70L60.14,70A2.14,2.14 0,0 1,62.28 72.14L62.28,72.14A2.14,2.14 0,0 1,60.14 74.28L60.14,74.28A2.14,2.14 0,0 1,58 72.14L58,72.14A2.14,2.14 0,0 1,60.14 70z"
+    android:fillColor="#FFFFFF"/> <!-- White dot -->
+  <path
+    android:pathData="M59.8,47.8L59.8,64.2"
+    android:strokeLineJoin="round"
+    android:strokeWidth="3.6"
+    android:fillColor="#00000000"
+    android:strokeColor="#FFFFFF"
+    android:strokeLineCap="round"/> <!-- White exclamation line -->
+</vector>

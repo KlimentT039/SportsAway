@@ -1,6 +1,7 @@
 package com.diplomska.sportsaway.common.style.compose.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -22,12 +23,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.diplomska.sportsaway.common.style.compose.theme.backgroundDefault
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
+import com.diplomska.sportsaway.common.style.compose.theme.typographyTextPrimary
+import com.diplomska.sportsaway.common.style.compose.theme.typographyTextSecondary
+import com.diplomska.sportsaway.common.style.compose.typography
 
 @Composable
 fun CustomToolbar(
   title: String,
+  description: String? = null,
   onBackPressed: () -> Unit,
   backButtonIcon: ImageVector
 ) {
@@ -36,7 +42,6 @@ fun CustomToolbar(
     elevation = AppBarDefaults.TopAppBarElevation,
     shape = RoundedCornerShape(32.dp),
     modifier = Modifier.padding(10.dp)
-      .background(mainColor)
   ) {
     TopAppBar(
       elevation = 0.dp,
@@ -58,16 +63,28 @@ fun CustomToolbar(
           )
         }
         // Custom title
-        Text(
-          text = title,
-          style = MaterialTheme.typography.h6,
-          color = MaterialTheme.colors.onBackground,
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis,
-          modifier = Modifier
-            .weight(1f)
-            .padding(start = 32.dp)
-        )
+        Column(modifier = Modifier.padding(vertical = 10.dp)) {
+          Text(
+            text = title,
+            style = typography.mRegular,
+            color = MaterialTheme.colors.onBackground,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+              .padding(start = 32.dp)
+          )
+          description?.let {
+            Text(
+              text = description,
+              style = typography.xsRegular,
+              color = MaterialTheme.colors.onBackground,
+              maxLines = 1,
+              overflow = TextOverflow.Ellipsis,
+              modifier = Modifier
+                .padding(start = 32.dp)
+            )
+          }
+        }
       }
     }
   }
@@ -78,6 +95,7 @@ fun CustomToolbar(
 fun Preview() {
   CustomToolbar(
     title = "Barcelona - Real Madrid",
+    description = "Camp nou - 12.10.2021",
     onBackPressed = { /*TODO*/ },
     backButtonIcon = Icons.Filled.ArrowBack
   )

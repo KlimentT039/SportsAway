@@ -10,19 +10,29 @@ import kotlin.random.Random
 data class Ticket(
   @StringRes val title: Int = 0,
   val remainingTickets: Int = 0,
-  val price: Int = 0
-): Parcelable
+  val price: Int = 0,
+  val ticketType: TicketType = TicketType.GENERAL,
+  val matchId: Int
+) : Parcelable
 
 
-fun Ticket.initRandomGeneralTickets() = Ticket(
-  title = R.string.general_ticket,
+fun initRandomGeneralTickets(matchId: Int, isItShortSide: Boolean) = Ticket(
+  title = if (isItShortSide) R.string.shortside_ticket else R.string.longside_ticket,
   remainingTickets = Random.nextInt(from = 10, until = 20),
-  price = Random.nextInt(from = 30, until = 40)
+  price = Random.nextInt(from = 30, until = 40),
+  ticketType = TicketType.GENERAL,
+  matchId = matchId
 )
 
 
-fun Ticket.initRandomVipTickets() = Ticket(
-  title = R.string.general_ticket,
+fun initRandomVipTickets(matchId: Int) = Ticket(
+  title = R.string.vip_ticket,
   remainingTickets = Random.nextInt(from = 5, until = 15),
-  price = Random.nextInt(from = 120, until = 150)
+  price = Random.nextInt(from = 120, until = 150),
+  ticketType = TicketType.VIP,
+  matchId = matchId
 )
+
+enum class TicketType {
+  VIP, GENERAL
+}

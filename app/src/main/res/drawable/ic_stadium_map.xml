@@ -1,0 +1,72 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:width="500dp"
+  android:height="400dp"
+  android:viewportWidth="500"
+  android:viewportHeight="400"
+  tools:ignore="VectorRaster">
+
+  <!-- Long side sections (blue) -->
+  <path
+    android:fillColor="#3498db"
+    android:pathData="M50,100h400v50h-400z" />
+  <path
+    android:fillColor="#3498db"
+    android:pathData="M50,250h400v50h-400z" />
+
+  <!-- Short side sections (orange) -->
+  <path
+    android:fillColor="#e67e22"
+    android:pathData="M50,150h50v100h-50z" />
+  <path
+    android:fillColor="#e67e22"
+    android:pathData="M400,150h50v100h-50z" />
+
+  <!-- Field (green) -->
+  <path
+    android:fillColor="#2ecc71"
+    android:pathData="M100,150h300v100h-300z" />
+
+  <!-- Labels -->
+  <!-- Long side labels -->
+  <group
+    android:translateX="225"
+    android:translateY="90">
+    <path
+      android:fillColor="#3498db"
+      android:text="LONG SIDE"
+      android:textSize="20sp"
+      android:fontFamily="sans-serif"/>
+  </group>
+
+  <group
+    android:translateX="225"
+    android:translateY="370">
+    <path
+      android:fillColor="#3498db"
+      android:text="LONG SIDE"
+      android:textSize="20sp"
+      android:fontFamily="sans-serif"/>
+  </group>
+
+  <!-- Short side labels (rotated) -->
+  <group
+    android:translateX="20"
+    android:translateY="210">
+    <path
+      android:fillColor="#e67e22"
+      android:text="SHORT SIDE"
+      android:textSize="20sp"
+      android:fontFamily="sans-serif"/>
+  </group>
+
+  <group
+    android:translateX="480"
+    android:translateY="210">
+    <path
+      android:fillColor="#e67e22"
+      android:text="SHORT SIDE"
+      android:textSize="20sp"
+      android:fontFamily="sans-serif" />
+  </group>
+</vector>

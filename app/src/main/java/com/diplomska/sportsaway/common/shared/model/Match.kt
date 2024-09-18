@@ -14,8 +14,8 @@ data class Match(
   val awayTeam: Team = Team(),
   val trending: Boolean = false,
   val matchday: Int = 0,
-  val generalTicket: Ticket = Ticket(),
-  val vipTicket : Ticket = Ticket(),
+  val tickets: List<Ticket> = emptyList(),
+  val venue: String? = null
 ) : Parcelable
 
 fun MatchResponse.toMatch() = Match(
@@ -25,9 +25,13 @@ fun MatchResponse.toMatch() = Match(
   homeTeam = homeTeam.toTeam(),
   awayTeam = awayTeam.toTeam(),
   trending = isTheMatchTrending(),
+  venue = venue,
   matchday = matchday,
-  generalTicket = Ticket().initRandomGeneralTickets(),
-  vipTicket = Ticket().initRandomVipTickets()
+  tickets = listOf(
+    initRandomGeneralTickets(id, false),
+    initRandomGeneralTickets(id, true),
+    initRandomVipTickets(id)
+  )
 )
 
 private fun MatchResponse.isTheMatchTrending(): Boolean {

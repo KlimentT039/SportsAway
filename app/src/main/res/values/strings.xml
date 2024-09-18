@@ -9,7 +9,9 @@
   <string name="tennis">Tennis</string>
   <string name="formula">Formula</string>
   <string name="browse_by_category">Browse by category</string>
-  <string name="general_ticket">General Ticket</string>
+  <string name="general_ticket">General Tickets</string>
+  <string name="longside_ticket">Long side ticket</string>
+  <string name="shortside_ticket">Short side ticket</string>
   <string name="vip_ticket">VIP Ticket</string>
   <string name="log_in">Log in</string>
   <string name="password">Password</string>

@@ -227,12 +227,10 @@ fun ListDivider(
 @Composable
 fun MatchSection(
   competition: Competition,
+  isContentVisible: Boolean,
+  onVisibilityChange: (Boolean) -> Unit,
   content: @Composable () -> Unit
 ) {
-  var isContentVisible by remember {
-    mutableStateOf(true)
-  } // State to track visibility
-
   Column {
     TopAppBar(
       backgroundColor = sectionColor,
@@ -243,9 +241,7 @@ fun MatchSection(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
       ) {
-        Row(
-          verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
           GetImage(imageRes = competition.emblem, pictureSize = 30)
           Spacer(modifier = Modifier.width(8.dp))
           Text(
@@ -254,7 +250,7 @@ fun MatchSection(
             fontWeight = FontWeight.Bold
           )
         }
-        TextButton(onClick = { isContentVisible = !isContentVisible }) {
+        TextButton(onClick = { onVisibilityChange(!isContentVisible) }) {
           Text(
             text = if (isContentVisible) stringResource(id = R.string.hide_section)
             else stringResource(id = R.string.show_section),

@@ -7,6 +7,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,10 +41,14 @@ private fun EventsContent(viewState: EventsViewState, onSearchQuery: (String) ->
 
 @Composable
 fun ListOfGames(list: List<GroupedMatch>) {
+  val visibilityMap = remember { mutableStateMapOf<String, Boolean>() }
   LazyColumn {
     itemsIndexed(list) { index, league ->
-      key("matchSection-${league.competition.name}-$index") {
-        MatchSection(competition = league.competition) {
+      val competition = league.competition.name
+      key("matchSection-${competition}-$index") {
+        val isContentVisible = visibilityMap[competition] ?: true
+        MatchSection(competition = league.competition, isContentVisible = isContentVisible,
+          onVisibilityChange = { visibility -> visibilityMap[competition] = visibility }) {
           league.matches.forEachIndexed { matchIndex, match ->
             MatchItem(match = match)
             if (matchIndex != league.matches.lastIndex)
