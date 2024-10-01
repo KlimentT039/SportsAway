@@ -12,7 +12,7 @@ interface SportsEventsRepository {
 
   fun addEventsToFirebase()
 
-  suspend fun getMatches(): List<MatchResponse>
+  suspend fun getMatches(competitionId: Int? = null): List<MatchResponse>
 
   suspend fun getCompetitions(): List<CompetitionResponse>
 }

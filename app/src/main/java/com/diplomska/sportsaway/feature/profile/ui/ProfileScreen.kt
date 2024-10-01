@@ -20,7 +20,11 @@ fun ProfileScreen() {
 fun ProfileContent(uiState: ProfileViewState) {
   when (uiState) {
     is ProfileViewState.Loading -> OverlayLoader()
-    is ProfileViewState.UserHasNotLoggedIn -> AccessDeniedScreen(message = stringResource(id = R.string.access_denied_profile))
+    is ProfileViewState.UserHasNotLoggedIn -> AccessDeniedScreen(
+      message = stringResource(id = R.string.access_denied_profile),
+      buttonText = stringResource(id = R.string.log_in)
+    )
+
     is ProfileViewState.ProfileData -> {
       UserProfile()
     }

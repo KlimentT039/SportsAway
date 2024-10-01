@@ -23,9 +23,6 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,7 +37,6 @@ import com.diplomska.sportsaway.common.shared.model.Competition
 import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
 import com.diplomska.sportsaway.common.style.compose.typography
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.diplomska.sportsaway.common.style.compose.theme.sectionColor
@@ -52,13 +48,15 @@ fun TileWithIconAndText(
   text: String,
   color: Color = backgroundSurface,
   tileWidth: Dp = 120.dp,
-  tileHeight: Dp = 120.dp
+  tileHeight: Dp = 120.dp,
+  onClick: () -> Unit,
 ) {
   Surface(
     modifier = Modifier
       .padding(8.dp)
       .width(tileWidth)
-      .height(tileHeight),
+      .height(tileHeight)
+      .clickable { onClick() },
     color = color
   ) {
     Column(
@@ -117,6 +115,7 @@ fun MatchCard(
           style = typography.mLarge.copy(fontWeight = FontWeight.Bold),
           color = Color.Black
         )
+        Spacer(modifier = Modifier.width(5.dp))
         Text(
           text = match.matchday.toString(),
           style = typography.mRegular.copy(fontWeight = FontWeight.SemiBold),
@@ -177,11 +176,12 @@ fun TeamInfo(crest: String?, name: String) {
 
 
 @Composable
-fun MatchItem(match: Match) {
+fun MatchItem(match: Match, onClick: (() -> Unit)) {
   Card(
     modifier = Modifier
       .fillMaxWidth()
       .background(backgroundSurface)
+      .clickable(onClick = { onClick() })
   ) {
     Row(
       Modifier
@@ -189,7 +189,11 @@ fun MatchItem(match: Match) {
         .padding(5.dp)
     ) {
       Column(modifier = Modifier.weight(1f)) {
-        Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)) {
+        Row(
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp)
+        ) {
           GetImage(imageRes = match.homeTeam.crest, pictureSize = 20)
           Text(
             modifier = Modifier.padding(horizontal = 8.dp),
@@ -199,7 +203,11 @@ fun MatchItem(match: Match) {
         }
         Spacer(modifier = Modifier.height(20.dp))
 
-        Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)) {
+        Row(
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp)
+        ) {
           GetImage(imageRes = match.awayTeam.crest, pictureSize = 20)
           Text(
             text = match.awayTeam.name,
@@ -284,7 +292,8 @@ private fun TileDemo() {
   Column {
     TileWithIconAndText(
       imageRes = null,
-      text = "Football"
+      text = "Football",
+      onClick = {}
     )
   }
 }
@@ -304,5 +313,5 @@ private fun MatchCardPreview() {
 @Preview
 @Composable
 fun MatchItemPreview() {
-  MatchItem(match = Match())
+  MatchItem(match = Match(), onClick = {})
 }

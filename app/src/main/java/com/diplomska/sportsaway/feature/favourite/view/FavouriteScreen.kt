@@ -20,7 +20,11 @@ fun FavouriteScreen() {
 fun FavouriteContent(viewState: UserFavouriteState) {
   when (viewState) {
     UserFavouriteState.Loading -> OverlayLoader()
-    UserFavouriteState.UserHasNotLoggedIn -> AccessDeniedScreen(stringResource(id = R.string.access_denied_favourites))
+    UserFavouriteState.UserHasNotLoggedIn -> AccessDeniedScreen(
+      stringResource(id = R.string.access_denied_favourites),
+      buttonText = stringResource(id = R.string.log_in),
+    )
+
     UserFavouriteState.UserHasNotSelectedTeams -> AddFirstTeamScreen()
     else -> {}
   }

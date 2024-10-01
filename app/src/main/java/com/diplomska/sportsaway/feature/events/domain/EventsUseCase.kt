@@ -12,9 +12,22 @@ class EventsUseCase(
   private val repository: SportsEventsRepository
 ) : ErrorHandlingUseCase() {
 
-  suspend operator fun invoke(): Either<BaseError, List<GroupedMatch>> = lift {
-    val matches = repository.getMatches().map { it.toMatch() }
+  suspend operator fun invoke(competitionId: Int?): Either<BaseError, List<GroupedMatch>> = lift {
+    val matches = repository.getMatches(competitionId).map { it.toMatch() }
     groupMatches(matches)
+  }
+
+  fun searchQuery(query: String, groupedMatches: List<GroupedMatch>): List<GroupedMatch> {
+    return groupedMatches.map { groupedMatch ->
+      val sortedMatches = groupedMatch.matches.sortedBy {
+        it.homeTeam.name.contains(query, ignoreCase = true) || it.awayTeam.name.contains(
+          query,
+          ignoreCase = true
+        )
+      }
+
+      groupedMatch.copy(matches = sortedMatches)
+    }
   }
 }
 

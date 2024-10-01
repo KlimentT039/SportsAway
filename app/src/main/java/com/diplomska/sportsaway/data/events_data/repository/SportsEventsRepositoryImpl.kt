@@ -24,13 +24,13 @@ class SportsEventsRepositoryImpl(
   private val db = FirebaseFirestore.getInstance()
   private val eventsRef: CollectionReference = db.collection("events")
 
-  override suspend fun getMatches(): List<MatchResponse> {
+  override suspend fun getMatches(competitionId: Int?): List<MatchResponse> {
     val dateFrom = "2023-11-10"
     val dateTo = "2023-11-15"
     return sportsApi.getMatches(
       dateTo = dateTo,
       dateFrom = dateFrom,
-      competitions = listOfCompetitionIds.joinToString(",")
+      competitions = competitionId?.toString() ?: listOfCompetitionIds.joinToString(",")
     ).matches
   }
 

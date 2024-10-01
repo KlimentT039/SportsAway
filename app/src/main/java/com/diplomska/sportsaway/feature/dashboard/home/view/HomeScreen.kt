@@ -1,5 +1,6 @@
 package com.diplomska.sportsaway.feature.dashboard.home.view
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -23,6 +24,7 @@ import com.diplomska.sportsaway.common.style.compose.components.TileWithIconAndT
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.common.style.compose.layouts.SectionWithHeader
 import com.diplomska.sportsaway.feature.events.view.details.EventDetailsActivity
+import com.diplomska.sportsaway.feature.events.view.overview.EventOverviewActivity
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -34,6 +36,7 @@ fun HomeScreen() {
 
 @Composable
 private fun HomeContent(viewState: ViewState) {
+  val context = LocalContext.current
   when (viewState) {
     is ViewState.Loading -> OverlayLoader()
     is ViewState.HomeData -> {
@@ -46,7 +49,7 @@ private fun HomeContent(viewState: ViewState) {
         }
 
         item {
-          ListOfCompetitions(list = viewState.competitionsData.listOfCompetitions)
+          ListOfCompetitions(list = viewState.competitionsData.listOfCompetitions, context)
         }
       }
     }
@@ -81,11 +84,15 @@ fun ListOfGames(list: List<Match>) {
 }
 
 @Composable
-fun ListOfCompetitions(list: List<Competition>) {
+fun ListOfCompetitions(list: List<Competition>, context: Context) {
   SectionWithHeader(title = R.string.leagues) {
     LazyRow(modifier = Modifier.padding(horizontal = 8.dp)) {
       items(list) {
-        TileWithIconAndText(imageRes = it.emblem, text = it.name)
+        TileWithIconAndText(
+          imageRes = it.emblem,
+          text = it.name,
+          onClick = { context.startActivity(EventOverviewActivity.createIntent(context, it.id)) }
+        )
       }
     }
   }

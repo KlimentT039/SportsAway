@@ -29,4 +29,5 @@
   <string name="show_section">Show</string>
   <string name="hide_section">Hide</string>
   <string name="try_again">Try again</string>
+  <string name="no_results">No Results Found</string>
 </resources>

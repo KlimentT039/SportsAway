@@ -30,7 +30,7 @@ import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
 
 
 @Composable
-fun AccessDeniedScreen(message: String) {
+fun AccessDeniedScreen(message: String, buttonText: String?) {
   val context = LocalContext.current
   Surface(
     modifier = Modifier.fillMaxSize(),
@@ -62,7 +62,9 @@ fun AccessDeniedScreen(message: String) {
           contentColor = Color.White
         )
       ) {
-        Text(text = stringResource(id = R.string.log_in), fontSize = 18.sp)
+        if (buttonText != null) {
+          Text(text = buttonText, fontSize = 18.sp)
+        }
       }
     }
   }
@@ -71,5 +73,8 @@ fun AccessDeniedScreen(message: String) {
 @Preview
 @Composable
 private fun PreviewAccessDeniedScreen() {
-  AccessDeniedScreen(stringResource(id = R.string.access_denied_favourites))
+  AccessDeniedScreen(
+    stringResource(id = R.string.access_denied_favourites),
+    buttonText = stringResource(id = R.string.log_in)
+  )
 }
