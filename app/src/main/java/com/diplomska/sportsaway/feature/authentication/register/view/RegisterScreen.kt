@@ -47,7 +47,7 @@ fun CreateUserScreen() {
   when (uiState) {
     is RegisterViewState.Loading -> OverlayLoader()
     is RegisterViewState.Error -> ErrorScreen(
-      title = "Something gone wrong",
+      title = stringResource(R.string.something_went_wrong),
       description = "User cannot be created at the moment",
       onClick = viewModel::onTryAgainClick
     )

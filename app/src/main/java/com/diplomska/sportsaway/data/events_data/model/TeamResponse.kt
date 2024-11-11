@@ -10,5 +10,13 @@ data class TeamResponse(
   @JsonProperty("shortName") val shortName: String,
   @JsonProperty("tla") val tla: String,
   @JsonProperty("crest") val crest: String?,
-  @JsonProperty("venue") val venue: String?
+  @JsonProperty("venue") val venue: String?,
+  @JsonProperty("area") val area: Area?
+)
+
+data class Area(
+  @JsonProperty("id") val id: Int,
+  @JsonProperty("name") val name: String,
+  @JsonProperty("code") val code: String,
+  @JsonProperty("flag") val flag: String
 )

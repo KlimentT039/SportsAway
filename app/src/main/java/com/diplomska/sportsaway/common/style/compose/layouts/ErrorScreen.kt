@@ -27,9 +27,10 @@ import com.diplomska.sportsaway.common.style.compose.typography
 @Composable
 fun ErrorScreen(
   title: String,
-  description: String,
+  onClick: () -> Unit,
+  description: String? = null,
   @DrawableRes drawable: Int = R.drawable.ic_warning,
-  onClick: () -> Unit
+  buttonText: String = stringResource(R.string.try_again),
 ) {
   Column(
     modifier = Modifier
@@ -53,7 +54,9 @@ fun ErrorScreen(
       Spacer(modifier = Modifier.height(24.dp))
       Text(text = title, style = typography.mLarge)
       Spacer(modifier = Modifier.height(16.dp))
-      Text(text = description, style = typography.mRegular)
+      if (description != null) {
+        Text(text = description, style = typography.mRegular)
+      }
     }
 
     Button(modifier = Modifier
@@ -64,7 +67,7 @@ fun ErrorScreen(
         contentColor = Color.White
       ),
       onClick = { onClick() }) {
-      Text(text = stringResource(id = R.string.try_again))
+      Text(text = buttonText)
     }
   }
 }

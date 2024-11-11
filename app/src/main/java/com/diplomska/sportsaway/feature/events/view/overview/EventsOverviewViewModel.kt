@@ -20,23 +20,34 @@ internal class EventsOverviewViewModel(
   private val _viewState = MutableStateFlow<EventsViewState>(EventsViewState.Loading)
   val viewState = _viewState.asStateFlow()
 
-  private val _searchQuery = MutableStateFlow<String>("")
+  private val _searchQuery = MutableStateFlow("")
   val searchQuery = _searchQuery.asStateFlow()
+
+  private var initialList: List<GroupedMatch> = emptyList()
 
   init {
     fetchNextMatches(competitionId)
   }
 
   fun onSearchQuery(query: String) {
+    if (query.length < 3) {
+      _searchQuery.update { query }
+      _viewState.update { getEventsState().copy(groupedMatches = initialList) }
+      return
+    }
+
     _searchQuery.update { query }
-    val groupedMatches = getEventsState().groupedMatches
-    if (query.length < 3) return
     _viewState.update { EventsViewState.Loading }
+
+    val groupedMatches = getEventsState().groupedMatches
     val searchResult = getEventsUseCase.searchQuery(query, groupedMatches)
-    if (searchResult.isEmpty()) {
-      _viewState.update { EventsViewState.EmptySearchResult }
-    } else {
-      _viewState.update { getEventsState().copy(groupedMatches = searchResult) }
+
+    _viewState.update {
+      if (searchResult.isEmpty()) {
+        EventsViewState.EmptySearchResult
+      } else {
+        getEventsState().copy(groupedMatches = searchResult)
+      }
     }
   }
 
@@ -46,6 +57,7 @@ internal class EventsOverviewViewModel(
         _viewState.update { EventsViewState.Error }
       },
       onSuccess = { events ->
+        initialList = events
         _viewState.update { getEventsState().copy(groupedMatches = events) }
       }
     )

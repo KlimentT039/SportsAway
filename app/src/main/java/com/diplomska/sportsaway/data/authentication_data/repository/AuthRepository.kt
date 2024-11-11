@@ -34,7 +34,7 @@ class AuthRepository {
     return withContext(Dispatchers.IO) {
       try {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).await()
-        val user = User(mail = email, username = name, favouriteTeam = null)
+        val user = User(mail = email, username = name, favouriteTeams = emptyList())
         storeInDatabase(user)
         Either.Success(Unit)
       } catch (e: Exception) {
@@ -66,11 +66,29 @@ class AuthRepository {
     }
   }
 
+  suspend fun updateFavouritesList(teams: List<Int>): Either<BaseError, User> {
+    val currentUserResult = getCurrentUser()
+    if (currentUserResult is Either.Failure) {
+      return currentUserResult
+    }
+
+    val currentUser = (currentUserResult as Either.Success).value
+
+    val updatedUser = currentUser.copy(favouriteTeams = teams)
+
+    try {
+      storeInDatabase(updatedUser)
+      return Either.Success(updatedUser)
+    } catch (e: Exception) {
+      return Either.Failure(BaseError.UnknownError)
+    }
+  }
+
   private fun storeInDatabase(user: User) {
     val updateUser = hashMapOf(
       "name" to user.username,
       "mail" to user.mail,
-      "favouriteTeam" to user.favouriteTeam
+      "favouriteTeams" to user.favouriteTeams
     )
     db.collection("Users").document(user.mail)
       .set(updateUser)

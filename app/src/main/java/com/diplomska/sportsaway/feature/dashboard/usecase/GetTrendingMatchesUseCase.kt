@@ -16,7 +16,4 @@ class GetTrendingMatchesUseCase(
     matches.filter { it.trending }.take(limit)
   }
 
-  fun getTeams() = repository.addTeamsToFireBase()
-
-  fun getEvents() = repository.addEventsToFirebase()
 }

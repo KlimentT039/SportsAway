@@ -39,6 +39,7 @@ import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
 import com.diplomska.sportsaway.common.style.compose.typography
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import com.diplomska.sportsaway.common.shared.utils.GetImage
 import com.diplomska.sportsaway.common.style.compose.theme.sectionColor
 
 
@@ -274,18 +275,6 @@ fun MatchSection(
   }
 }
 
-@Composable
-private fun GetImage(imageRes: String?, pictureSize: Int = 40) = run {
-  if (!imageRes.isNullOrEmpty()) {
-    ImageWithUrl(imageRes, pictureSize)
-  } else {
-    Image(
-      painter = painterResource(id = R.drawable.ic_generic_club),
-      contentDescription = "Generic club picture",
-      modifier = Modifier.size(pictureSize.dp)  // Set a fixed size for the image
-    )
-  }
-}
 
 @Composable
 private fun TileDemo() {

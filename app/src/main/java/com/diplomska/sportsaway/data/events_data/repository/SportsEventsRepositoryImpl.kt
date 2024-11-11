@@ -4,18 +4,17 @@ import android.util.Log
 import com.diplomska.core.errorhandling.ErrorHandlingUseCase
 import com.diplomska.sportsaway.data.events_data.model.EventsResponse
 import com.diplomska.sportsaway.data.events_data.model.MatchResponse
+import com.diplomska.sportsaway.data.events_data.model.TeamsResponse
 import com.diplomska.sportsaway.data.events_data.model.listOfCompetitionIds
 import com.diplomska.sportsaway.data.events_data.network.SportsApi
-import com.diplomska.sportsaway.data.events_data.provider.EventsJsonProvider
-import com.diplomska.sportsaway.data.events_data.provider.TeamJsonProvider
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class SportsEventsRepositoryImpl(
-  private val teamJsonProvider: TeamJsonProvider,
-  private val eventsJsonProvider: EventsJsonProvider,
   private val sportsApi: SportsApi
 ) : SportsEventsRepository, ErrorHandlingUseCase() {
 
@@ -25,11 +24,10 @@ class SportsEventsRepositoryImpl(
   private val eventsRef: CollectionReference = db.collection("events")
 
   override suspend fun getMatches(competitionId: Int?): List<MatchResponse> {
-    val dateFrom = "2023-11-10"
-    val dateTo = "2023-11-15"
+    val getDates = getTwoWeeksDates()
     return sportsApi.getMatches(
-      dateTo = dateTo,
-      dateFrom = dateFrom,
+      dateTo = getDates.second,
+      dateFrom = getDates.first,
       competitions = competitionId?.toString() ?: listOfCompetitionIds.joinToString(",")
     ).matches
   }
@@ -41,38 +39,24 @@ class SportsEventsRepositoryImpl(
     return querySnapshot.toObjects(EventsResponse::class.java)
   }
 
-  override fun addTeamsToFireBase() {
-    val teamsList = teamJsonProvider.teams
-    for (team in teamsList) {
-      db.collection("teams").document(team.name).set(team).addOnSuccessListener {
-        Log.d(
-          "$TAG - - - database",
-          "${team.name} is added in database"
-        )
-      }
-        .addOnFailureListener {
-          Log.d(
-            "$TAG - - - database",
-            "${team.name} can not be added in database"
-          )
-        }
-    }
+  override suspend fun getTeams(): TeamsResponse {
+    return sportsApi.getTeams(limit = 100)
   }
 
-  override fun addEventsToFirebase() {
-    val events = eventsJsonProvider.events
-    for (event in events) {
-      db.collection("events").document(event.id).set(event).addOnSuccessListener {
-        Log.d(
-          "$TAG - - - database",
-          "${event.homeTeam} vs ${event.awayTeam} is added in database"
-        )
-      }.addOnFailureListener {
-        Log.d(
-          "$TAG - - - database",
-          "$${event.homeTeam} vs ${event.awayTeam}  can not be added in database"
-        )
-      }
-    }
+  override suspend fun getMatchesByTeam(id: Int): List<MatchResponse> {
+    val getDates = getTwoWeeksDates()
+    return sportsApi.getMatchesByTeam(
+      teamId = id,
+      dateFrom = getDates.first,
+      dateTo = getDates.second
+    ).matches
   }
+
+  private fun getTwoWeeksDates(): Pair<String, String> {
+    val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val dateFrom = LocalDate.now().plusWeeks(2).format(dateFormatter)
+    val dateTo = LocalDate.now().plusWeeks(2).plusDays(5).format(dateFormatter)
+    return dateFrom to dateTo
+  }
+
 }

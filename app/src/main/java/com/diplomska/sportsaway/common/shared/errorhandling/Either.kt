@@ -17,3 +17,10 @@ fun <F, S, T> Either<F, S>.map(block: (S) -> T): Either<F, T> =
     is Either.Failure -> this
     is Either.Success -> Either.Success(block(value))
   }
+
+inline fun <F, S> Either<F, S>.getOrElse(onFailure: (F) -> S): S =
+  when (this) {
+    is Either.Failure -> onFailure(value)
+    is Either.Success -> value
+  }
+

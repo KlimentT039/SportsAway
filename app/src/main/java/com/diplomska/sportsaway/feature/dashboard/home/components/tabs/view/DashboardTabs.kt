@@ -53,7 +53,10 @@ fun DashboardTabNavigator(
 }
 
 @Composable
-fun DashboardNavHost(navHostController: NavHostController) {
+fun DashboardNavHost(
+  navHostController: NavHostController,
+  startDestination: String = DashboardTab.Home.route
+) {
   NavHost(
     navController = navHostController,
     startDestination = DashboardTab.Home.route,

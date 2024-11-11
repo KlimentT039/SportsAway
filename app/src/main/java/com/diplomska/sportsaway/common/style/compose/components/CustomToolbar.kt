@@ -1,6 +1,5 @@
 package com.diplomska.sportsaway.common.style.compose.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,11 +22,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.diplomska.sportsaway.common.style.compose.theme.backgroundDefault
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
-import com.diplomska.sportsaway.common.style.compose.theme.mainColor
-import com.diplomska.sportsaway.common.style.compose.theme.typographyTextPrimary
-import com.diplomska.sportsaway.common.style.compose.theme.typographyTextSecondary
 import com.diplomska.sportsaway.common.style.compose.typography
 
 @Composable

@@ -12,13 +12,16 @@ data class Team(
   val tla: String = "",
   val crest: String? = "",
   val venue: String = "",
+  val country: String? = null,
+  val isFavourite: Boolean = false
 ) : Parcelable
 
 fun TeamResponse.toTeam() = Team(
   id = id,
   name = name,
   shortName = shortName,
-  tla  = tla,
+  tla = tla,
   crest = crest,
+  country = area?.name,
   venue = venue ?: "",
 )

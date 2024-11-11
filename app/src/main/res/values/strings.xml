@@ -30,4 +30,7 @@
   <string name="hide_section">Hide</string>
   <string name="try_again">Try again</string>
   <string name="no_results">No Results Found</string>
+  <string name="add_favourite_teams_title">Add your favourite team/s</string>
+  <string name="something_went_wrong">Something went wrong</string>
+  <string name="generic_back">Back</string>
 </resources>

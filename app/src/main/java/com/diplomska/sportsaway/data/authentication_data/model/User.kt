@@ -4,5 +4,5 @@ data class User(
   val mail: String = "",
   val username: String = "",
   val age: Int = 0,
-  val favouriteTeam: String? = null
+  val favouriteTeams: List<Int> = emptyList()
 )

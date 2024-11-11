@@ -51,6 +51,12 @@
     <activity
       android:name=".feature.events.view.overview.EventOverviewActivity"
       android:exported="true">
+
+    </activity>
+
+    <activity
+      android:name=".feature.favourite.view.addteams.AddFavouriteTeamsActivity"
+      android:exported="true">
     </activity>
 
   </application>

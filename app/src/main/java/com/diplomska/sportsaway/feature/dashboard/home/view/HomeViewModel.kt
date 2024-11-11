@@ -9,6 +9,7 @@ import com.diplomska.sportsaway.feature.dashboard.home.view.ViewState.Competitio
 import com.diplomska.sportsaway.feature.dashboard.home.view.ViewState.MatchData
 import com.diplomska.sportsaway.feature.dashboard.usecase.GetCompetitionsUseCase
 import com.diplomska.sportsaway.feature.dashboard.usecase.GetTrendingMatchesUseCase
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -23,39 +24,44 @@ internal class HomeViewModel(
   val viewState = _viewState.asStateFlow()
 
   init {
-    fetchTrendingEvents()
-    fetchCompetition()
+    fetchHomeData()
   }
 
-  private fun fetchTrendingEvents() = viewModelScope.launch {
-    getTrendingMatchesUseCase.invoke(10).fold(
-      onFailure = {
-        _viewState.update {
-          getHomeData().copy(MatchData(isError = true))
-        }
-      },
-      onSuccess = { events ->
-        _viewState.update {
-          getHomeData().copy(matchData = MatchData(listOfNextMatches = events, isError = false))
-        }
+  private fun fetchHomeData() = viewModelScope.launch {
+    val trendingResult = async { getTrendingMatchesUseCase.invoke(10) }
+    val competitionsResult = async { getCompetitionsUseCase.invoke() }
+
+    try {
+      val trendingEvents = trendingResult.await()
+      val competitions = competitionsResult.await()
+
+      val matchData = trendingEvents.fold(
+        onFailure = { MatchData(isError = true) },
+        onSuccess = { events -> MatchData(listOfNextMatches = events, isError = false) }
+      )
+
+      val competitionsData = competitions.fold(
+        onFailure = { CompetitionsData(isError = true) },
+        onSuccess = { list -> CompetitionsData(listOfCompetitions = list) }
+      )
+
+      _viewState.update {
+        getHomeData().copy(
+          matchData = matchData,
+          competitionsData = competitionsData
+        )
       }
-    )
+    } catch (e: Exception) {
+      // Handle potential exceptions in the coroutine scope
+      _viewState.update {
+        getHomeData().copy(
+          matchData = MatchData(isError = true),
+          competitionsData = CompetitionsData(isError = true)
+        )
+      }
+    }
   }
 
-  private fun fetchCompetition() = viewModelScope.launch {
-    getCompetitionsUseCase.invoke().fold(
-      onFailure = {
-        _viewState.update {
-          getHomeData().copy(competitionsData = CompetitionsData(isError = true))
-        }
-      },
-      onSuccess = { list ->
-        _viewState.update {
-          getHomeData().copy(competitionsData = CompetitionsData(listOfCompetitions = list))
-        }
-      }
-    )
-  }
 
   private fun getHomeData() = _viewState.value as? ViewState.HomeData ?: ViewState.HomeData()
 }

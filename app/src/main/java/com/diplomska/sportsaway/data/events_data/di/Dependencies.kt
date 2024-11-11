@@ -14,5 +14,5 @@ val sportDataModule = module {
   single { TeamJsonProvider(get()) }
   single { EventsJsonProvider(get()) }
   single { RestClient.createService(SportsApi::class.java) }
-  single<SportsEventsRepository> { SportsEventsRepositoryImpl(get(), get(), get()) }
+  single<SportsEventsRepository> { SportsEventsRepositoryImpl(get()) }
 }

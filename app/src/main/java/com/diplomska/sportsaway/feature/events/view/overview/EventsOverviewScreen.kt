@@ -58,7 +58,7 @@ private fun EventsContent(
     )
 
     is EventsViewState.Error -> ErrorScreen(
-      title = "Something gone wrong",
+      title = stringResource(R.string.something_went_wrong),
       description = "User cannot be created at the moment",
       onClick = onTryAgain
     )

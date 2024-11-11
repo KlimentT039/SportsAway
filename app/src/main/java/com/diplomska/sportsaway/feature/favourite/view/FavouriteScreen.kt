@@ -5,7 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.res.stringResource
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
-import com.diplomska.sportsaway.feature.favourite.view.model.UserFavouriteState
+import com.diplomska.sportsaway.feature.favourite.view.addteams.FavouriteEvent
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -17,16 +17,20 @@ fun FavouriteScreen() {
 }
 
 @Composable
-fun FavouriteContent(viewState: UserFavouriteState) {
+fun FavouriteContent(viewState: FavouriteViewState) {
   when (viewState) {
-    UserFavouriteState.Loading -> OverlayLoader()
-    UserFavouriteState.UserHasNotLoggedIn -> AccessDeniedScreen(
+    FavouriteViewState.Loading -> OverlayLoader()
+    FavouriteViewState.HasNotLoggedIn -> AccessDeniedScreen(
       stringResource(id = R.string.access_denied_favourites),
       buttonText = stringResource(id = R.string.log_in),
     )
 
-    UserFavouriteState.UserHasNotSelectedTeams -> AddFirstTeamScreen()
+    FavouriteViewState.HasNotSelectedTeams -> NoTeamScreen()
     else -> {}
   }
+
+}
+
+fun FavouriteEvent() {
 
 }
