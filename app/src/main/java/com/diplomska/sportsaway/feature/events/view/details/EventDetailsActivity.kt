@@ -13,9 +13,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class EventDetailsActivity : AppCompatActivity() {
 
   companion object {
-    fun createIntent(context: Context, selectedMatch: Match): Intent {
+    fun createIntent(context: Context, selectedMatchId: Int): Intent {
       return Intent(context, EventDetailsActivity::class.java).also {
-        it.putExtra(EXTRA_SELECTED_MATCH, selectedMatch)
+        it.putExtra(EXTRA_SELECTED_MATCH, selectedMatchId)
       }
     }
   }
@@ -24,13 +24,12 @@ class EventDetailsActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    val selectedMatch = intent.getParcelableCompat<Match>(EXTRA_SELECTED_MATCH)
-    viewModel.initData(selectedMatch)
+    val selectedMatchId = intent.getIntExtra(EXTRA_SELECTED_MATCH, 0)
+    viewModel.initData(selectedMatchId)
     setContent {
       EventDetailsScreen(
-        onBackClick = { onBackPressedDispatcher.onBackPressed() },
-        viewModel = viewModel
-      )
+        matchId = selectedMatchId,
+        onBackClick = { onBackPressedDispatcher.onBackPressed() })
     }
   }
 }

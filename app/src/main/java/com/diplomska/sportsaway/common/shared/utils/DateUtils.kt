@@ -1,8 +1,6 @@
 package com.diplomska.sportsaway.common.shared.utils
 
-import java.text.SimpleDateFormat
-import java.util.Locale
-
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
@@ -11,9 +9,29 @@ fun parseDate(initialString: String): String? {
     // Parse the ISO 8601 date string
     val dateTime = ZonedDateTime.parse(initialString, DateTimeFormatter.ISO_DATE_TIME)
 
-    // Convert to desired format
+    // Convert to system default time zone
+    val zonedDateTime = dateTime.withZoneSameInstant(ZoneId.systemDefault())
+
+    // Convert to desired date format
     val outputFormatter = DateTimeFormatter.ofPattern("dd.MMM.yyyy")
-    dateTime.format(outputFormatter)
+    zonedDateTime.format(outputFormatter)
+  } catch (e: Exception) {
+    // Handle parsing exceptions
+    null
+  }
+}
+
+fun parseDateToTime(initialString: String): String? {
+  return try {
+    // Parse the ISO 8601 date string
+    val dateTime = ZonedDateTime.parse(initialString, DateTimeFormatter.ISO_DATE_TIME)
+
+    // Convert to system default time zone
+    val zonedDateTime = dateTime.withZoneSameInstant(ZoneId.systemDefault())
+
+    // Convert to 24-hour time format
+    val outputFormatter = DateTimeFormatter.ofPattern("HH:mm")
+    zonedDateTime.format(outputFormatter)
   } catch (e: Exception) {
     // Handle parsing exceptions
     null

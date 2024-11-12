@@ -71,7 +71,7 @@ fun ListOfGames(list: List<Match>) {
                 context.startActivity(
                   EventDetailsActivity.createIntent(
                     context,
-                    listItem
+                    listItem.id
                   )
                 )
               }

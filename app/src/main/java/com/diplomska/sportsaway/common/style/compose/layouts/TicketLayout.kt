@@ -2,7 +2,6 @@ package com.diplomska.sportsaway.common.style.compose.layouts
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,7 +23,7 @@ import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.shared.model.Ticket
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
-import com.diplomska.sportsaway.common.style.compose.typography
+import java.math.BigDecimal
 
 @Composable
 fun TicketForm(ticket: Ticket, isSelected: Boolean, onClick: () -> Unit) {

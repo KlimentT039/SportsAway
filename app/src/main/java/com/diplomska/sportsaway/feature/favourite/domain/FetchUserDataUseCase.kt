@@ -17,7 +17,7 @@ class FetchUserDataUseCase(
         if (it.favouriteTeams.isEmpty()) {
           FavouriteViewState.HasNotSelectedTeams
         } else {
-          FavouriteViewState.FavouriteTeams(it.favouriteTeams)
+          FavouriteViewState.TeamsAndMatches(it.favouriteTeams)
         }
       },
       onFailure = {

@@ -88,7 +88,7 @@ class AuthRepository {
     val updateUser = hashMapOf(
       "name" to user.username,
       "mail" to user.mail,
-      "favouriteTeams" to user.favouriteTeams
+      "favouriteTeams" to user.favouriteTeams,
     )
     db.collection("Users").document(user.mail)
       .set(updateUser)

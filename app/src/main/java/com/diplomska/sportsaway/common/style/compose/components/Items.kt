@@ -235,7 +235,8 @@ fun ListDivider(
 
 @Composable
 fun MatchSection(
-  competition: Competition,
+  imageUrl: String?,
+  name: String,
   isContentVisible: Boolean,
   onVisibilityChange: (Boolean) -> Unit,
   content: @Composable () -> Unit
@@ -251,10 +252,10 @@ fun MatchSection(
         horizontalArrangement = Arrangement.SpaceBetween
       ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-          GetImage(imageRes = competition.emblem, pictureSize = 30)
+          GetImage(imageRes = imageUrl, pictureSize = 30)
           Spacer(modifier = Modifier.width(8.dp))
           Text(
-            text = competition.name,
+            text = name,
             style = typography.mRegular,
             fontWeight = FontWeight.Bold
           )

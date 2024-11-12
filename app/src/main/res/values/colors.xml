@@ -7,4 +7,6 @@
   <color name="typographyTextPrimary">#FF000000</color>
   <color name="typographyTextSecondary">#FF636366</color>
   <color name="cardColor">#FFF5F5F5</color>
+  <color name="cardBackground">#F5F5F5</color>
+  <color name="priceColor">#2ECC71</color>
 </resources>

@@ -85,13 +85,17 @@ fun ListOfGames(list: List<GroupedMatch>) {
       val competition = league.competition.name
       key("matchSection-${competition}-$index") {
         val isContentVisible = visibilityMap[competition] ?: true
-        MatchSection(competition = league.competition, isContentVisible = isContentVisible,
-          onVisibilityChange = { visibility -> visibilityMap[competition] = visibility }) {
+        MatchSection(
+          imageUrl = league.competition.emblem,
+          name = league.competition.name,
+          isContentVisible = isContentVisible,
+          onVisibilityChange = { visibility -> visibilityMap[competition] = visibility }
+        ) {
           league.matches.forEachIndexed { matchIndex, match ->
             MatchItem(
               match = match,
               onClick = {
-                context.startActivity(EventDetailsActivity.createIntent(context, match))
+                context.startActivity(EventDetailsActivity.createIntent(context, match.id))
               })
             if (matchIndex != league.matches.lastIndex)
               ListDivider()

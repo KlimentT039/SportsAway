@@ -7,7 +7,7 @@
 //import com.diplomska.sportsaway.shared.model.Ticket
 //import com.diplomska.sportsaway.events.model.mapToIconRes
 //import com.diplomska.sportsaway.shared.model.Match
-//import com.diplomska.sportsaway.shared.utils.parseDate
+//import com.diplomska.sportsaway.shared.utils.com.diplomska.sportsaway.common.shared.utils.parseDate
 //
 //class MapEventsResponseToMatch {
 //  operator fun invoke(eventsResponse: EventsResponse): Match {

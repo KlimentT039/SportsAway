@@ -11,7 +11,7 @@ val favouriteModule = module {
   single { FetchUserDataUseCase(get()) }
   single { TeamsUseCase(get(), get()) }
 
-  viewModel { FavouriteViewModel(get()) }
+  viewModel { FavouriteViewModel(get(), get()) }
   viewModel { AddFavouriteTeamsViewModel(get()) }
 
 }

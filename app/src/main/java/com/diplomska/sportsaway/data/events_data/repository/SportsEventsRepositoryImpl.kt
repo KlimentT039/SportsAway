@@ -52,6 +52,10 @@ class SportsEventsRepositoryImpl(
     ).matches
   }
 
+  override suspend fun getMatchById(id: Int): MatchResponse {
+    return sportsApi.getMatchDetails(id)
+  }
+
   private fun getTwoWeeksDates(): Pair<String, String> {
     val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val dateFrom = LocalDate.now().plusWeeks(2).format(dateFormatter)

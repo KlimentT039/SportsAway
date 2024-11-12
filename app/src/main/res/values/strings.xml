@@ -33,4 +33,6 @@
   <string name="add_favourite_teams_title">Add your favourite team/s</string>
   <string name="something_went_wrong">Something went wrong</string>
   <string name="generic_back">Back</string>
+  <string name="generic_tickets">Tickets</string>
+  <string name="event_banner">Event banner</string>
 </resources>
