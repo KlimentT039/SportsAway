@@ -19,14 +19,14 @@ class EventsUseCase(
 
   fun searchQuery(query: String, groupedMatches: List<GroupedMatch>): List<GroupedMatch> {
     return groupedMatches.map { groupedMatch ->
-      val sortedMatches = groupedMatch.matches.sortedBy {
+      val sortedMatches = groupedMatch.matches.filter {
         it.homeTeam.name.contains(query, ignoreCase = true) || it.awayTeam.name.contains(
           query,
           ignoreCase = true
         )
       }
 
-      groupedMatch.copy(matches = sortedMatches)
+      groupedMatch.copy(matches = sortedMatches, showSection = sortedMatches.isNotEmpty())
     }
   }
 }
@@ -34,6 +34,6 @@ class EventsUseCase(
 private fun groupMatches(matches: List<Match>): List<GroupedMatch> {
   return matches.groupBy { it.competition }
     .mapNotNull { (competition, matches) ->
-      GroupedMatch(competition, matches)
+      GroupedMatch(competition, matches, showSection = matches.isNotEmpty())
     }
 }

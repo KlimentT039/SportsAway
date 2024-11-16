@@ -37,10 +37,9 @@ internal class EventsOverviewViewModel(
     }
 
     _searchQuery.update { query }
-    _viewState.update { EventsViewState.Loading }
-
     val groupedMatches = getEventsState().groupedMatches
-    val searchResult = getEventsUseCase.searchQuery(query, groupedMatches)
+    _viewState.update { EventsViewState.Loading }
+    val searchResult = getEventsUseCase.searchQuery(query, initialList)
 
     _viewState.update {
       if (searchResult.isEmpty()) {

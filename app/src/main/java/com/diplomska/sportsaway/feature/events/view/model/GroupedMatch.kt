@@ -5,5 +5,6 @@ import com.diplomska.sportsaway.common.shared.model.Match
 
 data class GroupedMatch(
   val competition: Competition,
-  val matches: List<Match>
+  val matches: List<Match>,
+  val showSection: Boolean
 )

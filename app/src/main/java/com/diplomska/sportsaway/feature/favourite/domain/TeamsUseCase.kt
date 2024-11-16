@@ -40,9 +40,12 @@ class TeamsUseCase(
             val matches = sportsRepository.getMatchesByTeam(id).map {
               it.toMatch()
             }
-            FavouriteTeam(favouriteTeam = getTeamById(id, matches.first()), matches = matches)
+            if (matches.isEmpty()) {
+              FavouriteTeam(favouriteTeam = getTeamFromBackend(id), matches = matches)
+            } else {
+              FavouriteTeam(favouriteTeam = getTeamById(id, matches.first()), matches = matches)
+            }
           }
-
         }
       }
 
@@ -72,5 +75,9 @@ class TeamsUseCase(
 
   private fun getTeamById(id: Int, match: Match): Team {
     return if (match.homeTeam.id == id) match.homeTeam else match.awayTeam
+  }
+
+  private suspend fun getTeamFromBackend(id: Int): Team {
+    return sportsRepository.getTeamById(id).toTeam()
   }
 }

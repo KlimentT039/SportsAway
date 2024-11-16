@@ -57,6 +57,7 @@ object AppBar {
   @Composable
   fun CustomTopAppBar(
     title: String,
+    showBackButton: Boolean = true,
     onBackClick: () -> Unit,
     actionIcons: @Composable (RowScope.() -> Unit)? = null,
     containerColor: Color = mainColor,
@@ -71,12 +72,14 @@ object AppBar {
         )
       },
       navigationIcon = {
-        IconButton(onClick = onBackClick) {
-          Icon(
-            imageVector = androidx.compose.material.icons.Icons.Default.ArrowBack,
-            contentDescription = "Back",
-            tint = topBarTextColor
-          )
+        if (showBackButton) {
+          IconButton(onClick = onBackClick) {
+            Icon(
+              imageVector = androidx.compose.material.icons.Icons.Default.ArrowBack,
+              contentDescription = "Back",
+              tint = topBarTextColor
+            )
+          }
         }
       },
       actions = actionIcons ?: {},

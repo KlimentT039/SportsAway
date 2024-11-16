@@ -35,43 +35,38 @@ fun EventsOverviewScreen(competitionId: Int? = null) {
   }
   val viewState = viewModel.viewState.collectAsState()
   val searchQuery = viewModel.searchQuery.collectAsState()
-  EventsContent(
-    viewState = viewState.value,
-    onTryAgain = { viewModel.fetchNextMatches(competitionId) },
+  AppBar.SearchAppBar(
     searchQuery = searchQuery.value,
-    onSearchQuery = viewModel::onSearchQuery
-  )
+    onSearchQueryChange = viewModel::onSearchQuery
+  ) {
+    EventsContent(
+      viewState = viewState.value,
+      onTryAgain = { viewModel.fetchNextMatches(competitionId) })
+  }
 }
 
 @Composable
 private fun EventsContent(
   viewState: EventsViewState,
   onTryAgain: () -> Unit,
-  searchQuery: String,
-  onSearchQuery: (String) -> Unit
 ) {
   when (viewState) {
     is EventsViewState.Loading -> OverlayLoader()
     is EventsViewState.EmptySearchResult -> AccessDeniedScreen(
       message = stringResource(id = R.string.no_results),
-      buttonText = null
+      buttonText = null,
+      onButtonClicked = {}
     )
 
     is EventsViewState.Error -> ErrorScreen(
       title = stringResource(R.string.something_went_wrong),
-      description = "User cannot be created at the moment",
       onClick = onTryAgain
     )
 
     is EventsViewState.EventData -> {
-      AppBar.SearchAppBar(
-        searchQuery = searchQuery,
-        onSearchQueryChange = onSearchQuery
-      ) {
-        ListOfGames(
-          list = viewState.groupedMatches
-        )
-      }
+      ListOfGames(
+        list = viewState.groupedMatches
+      )
     }
   }
 }
@@ -85,20 +80,22 @@ fun ListOfGames(list: List<GroupedMatch>) {
       val competition = league.competition.name
       key("matchSection-${competition}-$index") {
         val isContentVisible = visibilityMap[competition] ?: true
-        MatchSection(
-          imageUrl = league.competition.emblem,
-          name = league.competition.name,
-          isContentVisible = isContentVisible,
-          onVisibilityChange = { visibility -> visibilityMap[competition] = visibility }
-        ) {
-          league.matches.forEachIndexed { matchIndex, match ->
-            MatchItem(
-              match = match,
-              onClick = {
-                context.startActivity(EventDetailsActivity.createIntent(context, match.id))
-              })
-            if (matchIndex != league.matches.lastIndex)
-              ListDivider()
+        if (league.showSection) {
+          MatchSection(
+            imageUrl = league.competition.emblem,
+            name = league.competition.name,
+            isContentVisible = isContentVisible,
+            onVisibilityChange = { visibility -> visibilityMap[competition] = visibility }
+          ) {
+            league.matches.forEachIndexed { matchIndex, match ->
+              MatchItem(
+                match = match,
+                onClick = {
+                  context.startActivity(EventDetailsActivity.createIntent(context, match.id))
+                })
+              if (matchIndex != league.matches.lastIndex)
+                ListDivider()
+            }
           }
         }
       }

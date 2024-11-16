@@ -30,7 +30,7 @@ import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
 
 
 @Composable
-fun AccessDeniedScreen(message: String, buttonText: String?) {
+fun AccessDeniedScreen(message: String, buttonText: String?, onButtonClicked: () -> Unit) {
   val context = LocalContext.current
   Surface(
     modifier = Modifier.fillMaxSize(),
@@ -51,18 +51,19 @@ fun AccessDeniedScreen(message: String, buttonText: String?) {
         color = MaterialTheme.colorScheme.onBackground
       )
       Spacer(modifier = Modifier.height(32.dp))
-      Button(
-        shape = RoundedCornerShape(8.dp),
-        onClick = { context.startActivity(LoginActivity.createIntent(context)) },
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(horizontal = 16.dp),
-        colors = ButtonDefaults.textButtonColors(
-          backgroundColor = mainColor,
-          contentColor = Color.White
-        )
-      ) {
-        if (buttonText != null) {
+      buttonText?.let {
+        Button(
+          shape = RoundedCornerShape(8.dp),
+          onClick = onButtonClicked,
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+          colors = ButtonDefaults.textButtonColors(
+            backgroundColor = mainColor,
+            contentColor = Color.White
+          )
+        ) {
+
           Text(text = buttonText, fontSize = 18.sp)
         }
       }
@@ -75,6 +76,7 @@ fun AccessDeniedScreen(message: String, buttonText: String?) {
 private fun PreviewAccessDeniedScreen() {
   AccessDeniedScreen(
     stringResource(id = R.string.access_denied_favourites),
-    buttonText = stringResource(id = R.string.log_in)
+    buttonText = stringResource(id = R.string.log_in),
+    onButtonClicked = {}
   )
 }

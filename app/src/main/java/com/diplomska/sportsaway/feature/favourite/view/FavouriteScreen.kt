@@ -1,7 +1,6 @@
 package com.diplomska.sportsaway.feature.favourite.view
 
 import ErrorScreen
-import android.util.Log
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +19,7 @@ import com.diplomska.sportsaway.common.style.compose.components.ListDivider
 import com.diplomska.sportsaway.common.style.compose.components.MatchItem
 import com.diplomska.sportsaway.common.style.compose.components.MatchSection
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
+import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
 import com.diplomska.sportsaway.feature.events.view.details.EventDetailsActivity
 import com.diplomska.sportsaway.feature.favourite.model.FavouriteTeam
 import org.koin.androidx.compose.koinViewModel
@@ -42,11 +42,13 @@ fun FavouriteContent(
   favouriteTeams: List<FavouriteTeam>,
   onTryAgainClicked: () -> Unit,
 ) {
+  val context = LocalContext.current
   when (viewState) {
     is FavouriteViewState.Loading -> OverlayLoader()
     is FavouriteViewState.HasNotLoggedIn -> AccessDeniedScreen(
       stringResource(id = R.string.access_denied_favourites),
       buttonText = stringResource(id = R.string.log_in),
+      onButtonClicked = { context.startActivity(LoginActivity.createIntent(context)) }
     )
 
     is FavouriteViewState.HasNotSelectedTeams -> NoTeamScreen()
