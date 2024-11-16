@@ -13,10 +13,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -47,6 +51,14 @@ import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.common.style.compose.typography
 import org.koin.androidx.compose.koinViewModel
 
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
+import coil.compose.AsyncImage
+import com.diplomska.sportsaway.common.shared.model.initRandomGeneralTickets
+import com.diplomska.sportsaway.common.shared.utils.GetImage
+import com.diplomska.sportsaway.common.style.compose.theme.mainColor
+import kotlinx.coroutines.channels.ticker
+
 @Composable
 fun EventDetailsScreen(
   onBackClick: () -> Unit,
@@ -54,6 +66,7 @@ fun EventDetailsScreen(
 ) {
   val viewModel = koinViewModel<EventDetailsViewModel>()
   val state = viewModel.state.collectAsStateWithLifecycle()
+
   when (state.value) {
     is EventDetailsViewState.Loading -> OverlayLoader()
     is EventDetailsViewState.ShowError -> ErrorScreen(
@@ -69,7 +82,7 @@ fun EventDetailsScreen(
             title = {
               Text(
                 text = "${match.homeTeam.name} vs ${match.awayTeam.name}",
-                color = Color.White
+                color = colorResource(id = R.color.topBarTextColor)
               )
             },
             navigationIcon = {
@@ -77,11 +90,11 @@ fun EventDetailsScreen(
                 Icon(
                   imageVector = Icons.Default.ArrowBack,
                   contentDescription = "Back",
-                  tint = Color.White
+                  tint = colorResource(id = R.color.topBarTextColor)
                 )
               }
             },
-            backgroundColor = colorResource(R.color.mainColor),
+            backgroundColor = colorResource(id = R.color.mainColor),
             elevation = 8.dp
           )
         }
@@ -102,65 +115,93 @@ fun CustomEventDetailsContent(
   onTicketSelected: (Ticket) -> Unit,
   modifier: Modifier = Modifier
 ) {
-  Column(
+  LazyColumn(
     modifier = modifier
       .fillMaxSize()
-      .background(color = colorResource(R.color.backgroundDefault))
+      .background(color = colorResource(id = R.color.backgroundDefault))
       .padding(16.dp)
   ) {
-    EventBanner()
+    item {
+      EventBanner(match)
+    }
+    item {
+      Spacer(modifier = Modifier.height(16.dp))
+    }
 
-    Spacer(modifier = Modifier.height(16.dp))
+    item {
+      EventInfoSection(match = match)
+    }
 
-    EventInfoSection(match = match)
+    item {
+      Spacer(modifier = Modifier.height(24.dp))
+    }
 
-    Spacer(modifier = Modifier.height(24.dp))
+    item {
+      Text(
+        text = "Tickets",
+        style = MaterialTheme.typography.h5.copy(
+          fontSize = 22.sp,
+          color = colorResource(id = R.color.typographyTextPrimary)
+        ),
+      )
+    }
 
-    Text(
-      text = "Tickets",
-      style = MaterialTheme.typography.h6.copy(fontSize = 20.sp),
-      color = colorResource(R.color.mainColor)
-    )
+    item {
 
-    Spacer(modifier = Modifier.height(8.dp))
+      Spacer(modifier = Modifier.height(8.dp))
+    }
 
-    LazyColumn(
-      modifier = Modifier.fillMaxWidth(),
-      verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-      items(match.tickets) { ticket ->
-        TicketOption(
-          ticket = ticket,
-          onTicketSelected = { onTicketSelected(ticket) }
-        )
+    item {
+      Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+      ) {
+        match.tickets.forEach { ticket ->
+          TicketOption(
+            ticket = ticket,
+            onClick = { onTicketSelected(ticket) }
+          )
+        }
       }
+    }
+
+    item {
+      BuyButton(onClick = {})
     }
   }
 }
 
 @Composable
-fun EventBanner() {
+fun EventBanner(match: Match) {
   Box(
     modifier = Modifier
       .fillMaxWidth()
-      .height(220.dp)
-      .clip(RoundedCornerShape(12.dp))
+      .height(250.dp)
+      .clip(RoundedCornerShape(16.dp))
   ) {
-    Image(
-      painter = painterResource(id = R.drawable.stadium_map),
-      contentDescription = "Event Banner",
-      modifier = Modifier.matchParentSize(),
-      contentScale = ContentScale.Crop
-    )
-    Box(
+    if (!match.venueImage.isNullOrEmpty()) {
+      AsyncImage(
+        model = match.venueImage,
+        contentDescription = null,
+        modifier = Modifier.matchParentSize(),
+      )
+    } else {
+      Image(
+        painter = painterResource(id = R.drawable.stadium_map),
+        contentDescription = "Event Banner",
+        modifier = Modifier.matchParentSize(),
+        contentScale = ContentScale.Crop
+      )
+    }
+    Text(
+      text = "",
+      style = MaterialTheme.typography.h4.copy(
+        color = colorResource(id = R.color.topBarTextColor),
+        fontSize = 24.sp
+      ),
       modifier = Modifier
-        .matchParentSize()
-        .background(
-          Brush.verticalGradient(
-            colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f)),
-            startY = 100f
-          )
-        )
+        .align(Alignment.BottomStart)
+        .padding(16.dp)
     )
   }
 }
@@ -174,59 +215,92 @@ fun EventInfoSection(match: Match) {
   ) {
     Text(
       text = match.venue ?: "",
-      style = typography.mRegular,
-      color = colorResource(R.color.typographyTextPrimary)
+      style = typography.mRegular.copy(color = colorResource(id = R.color.typographyTextSecondary))
     )
 
     Text(
       text = "Date: ${match.date}",
-      style = typography.sRegularPrimary,
-      color = colorResource(R.color.typographyTextPrimary).copy(alpha = 0.7f)
+      style = typography.sRegularPrimary.copy(color = colorResource(id = R.color.typographyTextSecondary))
     )
 
     Text(
       text = "Time: ${match.time.takeIf { it.isNotEmpty() } ?: "TBA"}",
-      style = typography.sRegularPrimary,
-      color = colorResource(R.color.typographyTextPrimary).copy(alpha = 0.7f)
+      style = typography.sRegularPrimary.copy(color = colorResource(id = R.color.typographyTextSecondary))
     )
   }
 }
 
 @Composable
-fun TicketOption(ticket: Ticket, onTicketSelected: () -> Unit) {
+fun TicketOption(ticket: Ticket, onClick: (Ticket) -> Unit) {
   Card(
     modifier = Modifier
       .fillMaxWidth()
-      .clickable(onClick = onTicketSelected)
-      .padding(horizontal = 8.dp, vertical = 4.dp),
-    shape = RoundedCornerShape(12.dp),
+      .padding(horizontal = 16.dp, vertical = 8.dp)
+      .clickable { onClick(ticket) },
     elevation = 4.dp,
-    backgroundColor = colorResource(R.color.cardBackground)
+    shape = RoundedCornerShape(8.dp)
   ) {
     Row(
       modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp),
+      horizontalArrangement = Arrangement.SpaceBetween,
       verticalAlignment = Alignment.CenterVertically
     ) {
-      Column(modifier = Modifier.weight(1f)) {
+      Column {
         Text(
           text = stringResource(ticket.title),
-          style = typography.mRegular,
-          color = colorResource(R.color.typographyTextPrimary)
+          style = typography.mRegular.copy(fontSize = 16.sp),
+          fontWeight = FontWeight.Bold
         )
         Text(
           text = "Remaining: ${ticket.remainingTickets}",
-          style = typography.sRegularPrimary,
-          color = colorResource(R.color.typographyTextPrimary).copy(alpha = 0.6f)
+          style = typography.xsRegular,
+          color = Color.Gray
         )
       }
       Text(
         text = "$${ticket.price}",
-        style = typography.xsRegular.copy(color = colorResource(R.color.priceColor)),
-        modifier = Modifier.padding(start = 8.dp)
+        style = typography.mRegular.copy(
+          color = Color(0xFF2E7D32),
+          fontSize = 14.sp
+        ), // Green for emphasis
+        fontWeight = FontWeight.Bold
       )
     }
   }
 }
 
+@Composable
+fun BuyButton(onClick: () -> Unit) {
+  Box(
+    modifier = Modifier
+      .padding(16.dp)
+      .fillMaxWidth()
+      .padding(vertical = 16.dp),
+    contentAlignment = Alignment.Center
+  ) {
+    Button(
+      onClick = onClick,
+      shape = RoundedCornerShape(24.dp),
+      colors = ButtonDefaults.buttonColors(backgroundColor = mainColor), // Your app's green color
+      modifier = Modifier.fillMaxWidth()
+    ) {
+      Text(
+        text = "Buy Tickets",
+        style = MaterialTheme.typography.button,
+        color = Color.White,
+        fontWeight = FontWeight.Bold
+      )
+    }
+  }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun CustomEventDetailsPreview() {
+  CustomEventDetailsContent(
+    match = Match(tickets = listOf(initRandomGeneralTickets(0, false))),
+    onTicketSelected = {})
+}

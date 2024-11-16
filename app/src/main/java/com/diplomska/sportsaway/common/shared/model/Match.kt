@@ -17,7 +17,8 @@ data class Match(
   val trending: Boolean = false,
   val matchday: Int = 0,
   val tickets: List<Ticket> = emptyList(),
-  val venue: String? = null
+  val venue: String? = null,
+  val venueImage: String? = null
 ) : Parcelable
 
 fun MatchResponse.toMatch() = Match(

@@ -12,8 +12,8 @@ import retrofit2.http.Query
 
 interface SportsApi {
 
-  @GET("/teams")
-  suspend fun fetchTeams(): List<TeamResponse>
+  @GET("v4/teams/{id}")
+  suspend fun getTeamsById(@Path("id") id: Int): TeamResponse
 
   @GET("v4/matches")
   suspend fun getMatches(

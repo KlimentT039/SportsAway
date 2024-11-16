@@ -11,6 +11,7 @@ class AttachSharedHeadersInterceptor : Interceptor {
       .request()
       .newBuilder()
       .addHeader("X-Auth-Token", "6ed4449883e7408f85a146b48f0f8ce0")
+      .addHeader("X-API-KEY","60130162")
 
     return chain.proceed(builder.build())
   }

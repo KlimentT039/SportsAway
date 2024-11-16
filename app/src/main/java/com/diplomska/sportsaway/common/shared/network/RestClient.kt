@@ -9,14 +9,19 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 
 object RestClient {
 
-  private const val BASE_URL = "https://api.football-data.org"
+  private const val FOOTBALL_BASE_URL = "https://api.football-data.org"
 
   private val httpClient: OkHttpClient by KoinJavaComponent.inject(OkHttpClient::class.java)
 
-  private val retrofit: Retrofit by lazy {
-    try {
+
+  fun <T> createService(serviceClass: Class<T>, baseUrl: String = FOOTBALL_BASE_URL): T {
+    return createRetrofitInstance(baseUrl).create(serviceClass)
+  }
+
+  private fun createRetrofitInstance(baseUrl: String): Retrofit {
+    return try {
       Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(baseUrl)
         .client(httpClient)
         .addConverterFactory(createConverter())
         .build()
@@ -24,10 +29,6 @@ object RestClient {
       // Handle exception, e.g., log an error
       throw RuntimeException("Error creating Retrofit instance", e)
     }
-  }
-
-  fun <T> createService(serviceClass: Class<T>): T {
-    return retrofit.create(serviceClass)
   }
 
   private fun createConverter(): JacksonConverterFactory {

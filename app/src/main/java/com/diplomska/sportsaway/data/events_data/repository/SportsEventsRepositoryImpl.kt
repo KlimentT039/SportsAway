@@ -1,12 +1,15 @@
 package com.diplomska.sportsaway.data.events_data.repository
 
-import android.util.Log
 import com.diplomska.core.errorhandling.ErrorHandlingUseCase
 import com.diplomska.sportsaway.data.events_data.model.EventsResponse
 import com.diplomska.sportsaway.data.events_data.model.MatchResponse
+import com.diplomska.sportsaway.data.events_data.model.StadiumResponse
+import com.diplomska.sportsaway.data.events_data.model.Venue
+import com.diplomska.sportsaway.data.events_data.model.TeamResponse
 import com.diplomska.sportsaway.data.events_data.model.TeamsResponse
 import com.diplomska.sportsaway.data.events_data.model.listOfCompetitionIds
 import com.diplomska.sportsaway.data.events_data.network.SportsApi
+import com.diplomska.sportsaway.data.events_data.network.StadiumApi
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -15,7 +18,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class SportsEventsRepositoryImpl(
-  private val sportsApi: SportsApi
+  private val sportsApi: SportsApi,
+  private val stadiumApi: StadiumApi
 ) : SportsEventsRepository, ErrorHandlingUseCase() {
 
   private val TAG = "SportsRepository"
@@ -54,6 +58,14 @@ class SportsEventsRepositoryImpl(
 
   override suspend fun getMatchById(id: Int): MatchResponse {
     return sportsApi.getMatchDetails(id)
+  }
+
+  override suspend fun getStadiumPic(stadiumName: String): StadiumResponse {
+    return stadiumApi.searchVenues(stadiumName)
+  }
+
+  override suspend fun getTeamById(id: Int): TeamResponse {
+    return sportsApi.getTeamsById(id)
   }
 
   private fun getTwoWeeksDates(): Pair<String, String> {
