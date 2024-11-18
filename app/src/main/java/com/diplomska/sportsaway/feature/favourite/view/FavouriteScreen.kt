@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateMapOf
@@ -15,9 +17,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.diplomska.sportsaway.R
+import com.diplomska.sportsaway.common.style.compose.components.AppBar
 import com.diplomska.sportsaway.common.style.compose.components.ListDivider
 import com.diplomska.sportsaway.common.style.compose.components.MatchItem
 import com.diplomska.sportsaway.common.style.compose.components.MatchSection
+import com.diplomska.sportsaway.common.style.compose.components.Scaffold
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
 import com.diplomska.sportsaway.feature.events.view.details.EventDetailsActivity
@@ -29,10 +33,24 @@ fun FavouriteScreen() {
   val viewModel = koinViewModel<FavouriteViewModel>()
   val viewState = viewModel.viewState.collectAsStateWithLifecycle().value
   val favouriteTeams = viewModel.favouriteTeams.collectAsStateWithLifecycle().value
-  FavouriteContent(
-    viewState = viewState,
-    favouriteTeams = favouriteTeams,
-    onTryAgainClicked = viewModel::initScreen
+  Scaffold.WithTopBarOnly(
+    topBar = {
+      AppBar.CustomTopAppBar(
+        title = stringResource(R.string.favourites),
+        showBackButton = false,
+        onBackClick = {},
+        actionIcons = {
+          AppBar.Icons.Custom(image = Icons.Default.Edit, onClick = {})
+        }
+      )
+    },
+    content = {
+      FavouriteContent(
+        viewState = viewState,
+        favouriteTeams = favouriteTeams,
+        onTryAgainClicked = viewModel::initScreen
+      )
+    }
   )
 }
 

@@ -13,14 +13,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
-import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -36,28 +34,23 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.shared.model.Match
-
 import com.diplomska.sportsaway.common.shared.model.Ticket
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
-import com.diplomska.sportsaway.common.style.compose.typography
 import org.koin.androidx.compose.koinViewModel
-
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import coil.compose.AsyncImage
-import com.diplomska.sportsaway.common.shared.model.initRandomGeneralTickets
-import com.diplomska.sportsaway.common.shared.utils.GetImage
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
-import kotlinx.coroutines.channels.ticker
+import com.diplomska.sportsaway.common.style.compose.typography
+import com.diplomska.sportsaway.feature.events.view.model.TicketFilter
 
 @Composable
 fun EventDetailsScreen(
@@ -100,9 +93,10 @@ fun EventDetailsScreen(
         }
       ) { paddingValues ->
         CustomEventDetailsContent(
-          match = match,
+          state = state.value as EventDetailsViewState.EventData,
           onTicketSelected = { },
-          modifier = Modifier.padding(paddingValues)
+          modifier = Modifier.padding(paddingValues),
+          onFilterClicked = viewModel::onTicketFilterSelected
         )
       }
     }
@@ -111,10 +105,12 @@ fun EventDetailsScreen(
 
 @Composable
 fun CustomEventDetailsContent(
-  match: Match,
+  state: EventDetailsViewState.EventData,
   onTicketSelected: (Ticket) -> Unit,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  onFilterClicked: (TicketFilter) -> Unit
 ) {
+  val match = state.match
   LazyColumn(
     modifier = modifier
       .fillMaxSize()
@@ -147,7 +143,12 @@ fun CustomEventDetailsContent(
     }
 
     item {
-
+      Spacer(modifier = Modifier.height(8.dp))
+    }
+    item {
+      TicketFilters(selectedFilter = state.selectedFilter, onFilterSelected = onFilterClicked)
+    }
+    item {
       Spacer(modifier = Modifier.height(8.dp))
     }
 
@@ -184,6 +185,7 @@ fun EventBanner(match: Match) {
         model = match.venueImage,
         contentDescription = null,
         modifier = Modifier.matchParentSize(),
+        contentScale = ContentScale.Crop
       )
     } else {
       Image(
@@ -193,11 +195,27 @@ fun EventBanner(match: Match) {
         contentScale = ContentScale.Crop
       )
     }
+
+    // Gradient Overlay
+    Box(
+      modifier = Modifier
+        .fillMaxWidth()
+        .height(80.dp)
+        .align(Alignment.BottomCenter)
+        .background(
+          Brush.verticalGradient(
+            colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f))
+          )
+        )
+    )
+
+    // Text Content
     Text(
-      text = "",
+      text = match.venue.takeIf { match.venueImage != null } ?: "",
       style = MaterialTheme.typography.h4.copy(
-        color = colorResource(id = R.color.topBarTextColor),
-        fontSize = 24.sp
+        color = Color.White,
+        fontSize = 24.sp,
+        fontWeight = FontWeight.Bold
       ),
       modifier = Modifier
         .align(Alignment.BottomStart)
@@ -208,27 +226,43 @@ fun EventBanner(match: Match) {
 
 @Composable
 fun EventInfoSection(match: Match) {
-  Column(
+  Card(
+    shape = RoundedCornerShape(12.dp),
+    backgroundColor = Color.White,
+    elevation = 4.dp,
     modifier = Modifier
       .fillMaxWidth()
-      .padding(horizontal = 16.dp)
+      .padding(horizontal = 16.dp, vertical = 8.dp)
   ) {
-    Text(
-      text = match.venue ?: "",
-      style = typography.mRegular.copy(color = colorResource(id = R.color.typographyTextSecondary))
-    )
+    Column(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp),
+      verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+      if (match.venueImage == null) {
+        Text(
+          text = match.venue ?: "Unknown Venue",
+          style = typography.mRegular.copy(
+            fontWeight = FontWeight.Bold // Make the venue bold for emphasis
+          )
+        )
+      }
 
-    Text(
-      text = "Date: ${match.date}",
-      style = typography.sRegularPrimary.copy(color = colorResource(id = R.color.typographyTextSecondary))
-    )
+      Text(
+        text = "Date: ${match.date}",
+        style = typography.sRegularSecundary
+      )
 
-    Text(
-      text = "Time: ${match.time.takeIf { it.isNotEmpty() } ?: "TBA"}",
-      style = typography.sRegularPrimary.copy(color = colorResource(id = R.color.typographyTextSecondary))
-    )
+      // Time
+      Text(
+        text = "Time: ${match.time.takeIf { it.isNotEmpty() } ?: "TBA"}",
+        style = typography.sRegularSecundary
+      )
+    }
   }
 }
+
 
 @Composable
 fun TicketOption(ticket: Ticket, onClick: (Ticket) -> Unit) {
@@ -260,7 +294,7 @@ fun TicketOption(ticket: Ticket, onClick: (Ticket) -> Unit) {
         )
       }
       Text(
-        text = "$${ticket.price}",
+        text = "$${ticket.price} each",
         style = typography.mRegular.copy(
           color = Color(0xFF2E7D32),
           fontSize = 14.sp
@@ -296,11 +330,22 @@ fun BuyButton(onClick: () -> Unit) {
   }
 }
 
-
-@Preview(showBackground = true)
 @Composable
-fun CustomEventDetailsPreview() {
-  CustomEventDetailsContent(
-    match = Match(tickets = listOf(initRandomGeneralTickets(0, false))),
-    onTicketSelected = {})
+fun TicketFilters(selectedFilter: TicketFilter?, onFilterSelected: (TicketFilter) -> Unit) {
+  val filters = TicketFilter.entries
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(vertical = 8.dp, horizontal = 16.dp),
+    horizontalArrangement = Arrangement.Center
+  ) {
+    filters.forEach { filter ->
+      FilterChip(
+        text = filter.displayName,
+        isSelected = filter == selectedFilter,
+        onClick = { onFilterSelected(filter) }
+      )
+      Spacer(Modifier.width(16.dp))
+    }
+  }
 }

@@ -27,7 +27,6 @@ internal class DashboardActivity : AppCompatActivity() {
       val navController = rememberNavController()
 
       Scaffold(
-        topBar = { AppBar.HomeAppBar(title = stringResource(id = R.string.app_name)) },
         bottomBar = {
           DashboardTabNavigator(navController = navController)
         },

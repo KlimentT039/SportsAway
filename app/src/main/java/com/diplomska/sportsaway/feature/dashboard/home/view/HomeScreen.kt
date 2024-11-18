@@ -13,13 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.shared.model.Competition
 import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.common.shared.utils.chunkedList
+import com.diplomska.sportsaway.common.style.compose.components.AppBar
 import com.diplomska.sportsaway.common.style.compose.components.MatchCard
+import com.diplomska.sportsaway.common.style.compose.components.Scaffold
 import com.diplomska.sportsaway.common.style.compose.components.TileWithIconAndText
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.common.style.compose.layouts.SectionWithHeader
@@ -31,7 +34,9 @@ import org.koin.androidx.compose.koinViewModel
 fun HomeScreen() {
   val viewModel = koinViewModel<HomeViewModel>()
   val viewState = viewModel.viewState.collectAsState()
-  HomeContent(viewState = viewState.value)
+  Scaffold.WithTopBarOnly(
+    topBar = { AppBar.HomeAppBar(title = stringResource(id = R.string.app_name)) },
+    content = { HomeContent(viewState = viewState.value) })
 }
 
 @Composable
