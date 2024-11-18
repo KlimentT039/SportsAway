@@ -38,6 +38,9 @@ fun MatchResponse.toMatch() = Match(
   )
 )
 
+fun Match.getMatchTitle() = "${homeTeam.name} vs ${awayTeam.name}"
+fun Match.getMatchDescription() = "$date, $time at $venue".takeIf { venue != null }
+
 private fun MatchResponse.isTheMatchTrending(): Boolean {
   val listOfTrendingTeams = listOf(
     "Manchester",
