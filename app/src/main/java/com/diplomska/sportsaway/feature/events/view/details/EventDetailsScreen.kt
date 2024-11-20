@@ -19,12 +19,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -34,7 +31,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -80,38 +76,20 @@ fun EventDetailsScreen(
       Scaffold(
         modifier = Modifier.background(backgroundDefault),
         topBar = {
-//          TopAppBar(
-//            title = {
-//              Text(
-//                text = "${match.homeTeam.name} vs ${match.awayTeam.name}",
-//                color = colorResource(id = R.color.topBarTextColor)
-//              )
-//            },
-//            navigationIcon = {
-//              IconButton(onClick = onBackClick) {
-//                Icon(
-//                  imageVector = Icons.Default.ArrowBack,
-//                  contentDescription = "Back",
-//                  tint = colorResource(id = R.color.topBarTextColor)
-//                )
-//              }
-//            },
-//            backgroundColor = colorResource(id = R.color.mainColor),
-//            elevation = 8.dp
-//          )
           CustomToolbar(
             title = match.getMatchTitle(),
             description = match.getMatchDescription(),
             backButtonIcon = Icons.Default.ArrowBack,
             onBackPressed = onBackClick
           )
-        }
+        },
       ) { paddingValues ->
         CustomEventDetailsContent(
           state = state.value as EventDetailsViewState.EventData,
-          onTicketSelected = { },
+          onTicketSelected = viewModel::onTicketClicked,
           modifier = Modifier.padding(paddingValues),
-          onFilterClicked = viewModel::onTicketFilterSelected
+          onFilterClicked = viewModel::onTicketFilterSelected,
+          onBuyButtonClick = viewModel::onBuyButtonClicked
         )
       }
     }
@@ -123,7 +101,8 @@ fun CustomEventDetailsContent(
   state: EventDetailsViewState.EventData,
   onTicketSelected: (Ticket) -> Unit,
   modifier: Modifier = Modifier,
-  onFilterClicked: (TicketFilter) -> Unit
+  onFilterClicked: (TicketFilter) -> Unit,
+  onBuyButtonClick: () -> Unit
 ) {
   val match = state.match
   Column(
@@ -131,20 +110,19 @@ fun CustomEventDetailsContent(
       .fillMaxSize()
       .background(color = colorResource(id = R.color.backgroundDefault))
   ) {
-    // Top Section
     LazyColumn(
       modifier = Modifier
-        .weight(1f) // Allow it to take required content height
-        .fillMaxSize() // Ensure the LazyColumn takes up all available height
+        .weight(1f)
+        .fillMaxSize()
     ) {
       item { EventBanner(match) }
       item { Spacer(modifier = Modifier.height(16.dp)) }
     }
 
-    // Bottom Section (Fills remaining space)
     Box(
       modifier = Modifier
         .fillMaxWidth()
+        .weight(2f)
         .background(backgroundSurface)
     ) {
       Column(
@@ -169,19 +147,23 @@ fun CustomEventDetailsContent(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        state.match.tickets.forEach { ticket ->
+        state.availableTickets.forEach { ticket ->
           TicketOption(
             ticket = ticket,
-            onClick = { onTicketSelected(ticket) }
+            onClick = onTicketSelected,
+            isSelected = ticket == state.selectedTicket
           )
         }
+        Box(modifier = Modifier.weight(3f))
 
-        BuyButton(onClick = {})
+        BuyButton(
+          onClick = onBuyButtonClick,
+          state.selectedTicket
+        )
       }
     }
   }
 }
-
 
 @Composable
 fun EventBanner(match: Match) {
@@ -201,27 +183,12 @@ fun EventBanner(match: Match) {
       )
     } else {
       Image(
-        painter = painterResource(id = R.drawable.stadium_map),
+        painter = painterResource(id = R.drawable.stadium_pic),
         contentDescription = "Event Banner",
         modifier = Modifier.matchParentSize(),
         contentScale = ContentScale.Crop
       )
     }
-
-    // Gradient Overlay
-    Box(
-      modifier = Modifier
-        .fillMaxWidth()
-        .height(80.dp)
-        .align(Alignment.BottomCenter)
-        .background(
-          Brush.verticalGradient(
-            colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f))
-          )
-        )
-    )
-
-    // Text Content
     Text(
       text = match.venue.takeIf { match.venueImage != null } ?: "",
       style = MaterialTheme.typography.h4.copy(
@@ -237,54 +204,19 @@ fun EventBanner(match: Match) {
 }
 
 @Composable
-fun EventInfoSection(match: Match) {
-  Card(
-    shape = RoundedCornerShape(12.dp),
-    backgroundColor = Color.White,
-    elevation = 4.dp,
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(horizontal = 16.dp, vertical = 8.dp)
-  ) {
-    Column(
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp),
-      verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-      if (match.venueImage == null) {
-        Text(
-          text = match.venue ?: "Unknown Venue",
-          style = typography.mRegular.copy(
-            fontWeight = FontWeight.Bold // Make the venue bold for emphasis
-          )
-        )
-      }
-
-      Text(
-        text = "Date: ${match.date}",
-        style = typography.sRegularSecundary
-      )
-
-      // Time
-      Text(
-        text = "Time: ${match.time.takeIf { it.isNotEmpty() } ?: "TBA"}",
-        style = typography.sRegularSecundary
-      )
-    }
-  }
-}
-
-
-@Composable
-fun TicketOption(ticket: Ticket, onClick: (Ticket) -> Unit) {
+fun TicketOption(
+  ticket: Ticket,
+  isSelected: Boolean,
+  onClick: (Ticket) -> Unit
+) {
   Card(
     modifier = Modifier
       .fillMaxWidth()
       .padding(horizontal = 16.dp, vertical = 8.dp)
       .clickable { onClick(ticket) },
     elevation = 4.dp,
-    shape = RoundedCornerShape(8.dp)
+    shape = RoundedCornerShape(8.dp),
+    backgroundColor = if (isSelected) Color(0xFFB2DFDB) else Color.White
   ) {
     Row(
       modifier = Modifier
@@ -319,27 +251,21 @@ fun TicketOption(ticket: Ticket, onClick: (Ticket) -> Unit) {
 
 
 @Composable
-fun BuyButton(onClick: () -> Unit) {
-  Box(
+fun BuyButton(onClick: () -> Unit, selectedTicket: Ticket?) {
+  Button(
+    onClick = onClick,
+    shape = RoundedCornerShape(24.dp),
+    enabled = selectedTicket != null,
+    colors = ButtonDefaults.buttonColors(backgroundColor = mainColor), // Your app's green color
     modifier = Modifier
-      .padding(16.dp)
-      .fillMaxWidth()
-      .padding(vertical = 16.dp),
-    contentAlignment = Alignment.Center
+      .fillMaxWidth(),
   ) {
-    Button(
-      onClick = onClick,
-      shape = RoundedCornerShape(24.dp),
-      colors = ButtonDefaults.buttonColors(backgroundColor = mainColor), // Your app's green color
-      modifier = Modifier.fillMaxWidth()
-    ) {
-      Text(
-        text = "Buy Tickets",
-        style = MaterialTheme.typography.button,
-        color = Color.White,
-        fontWeight = FontWeight.Bold
-      )
-    }
+    Text(
+      text = "Buy Tickets",
+      style = MaterialTheme.typography.button,
+      color = Color.White,
+      fontWeight = FontWeight.Bold
+    )
   }
 }
 
@@ -368,15 +294,15 @@ fun TicketFilters(selectedFilter: TicketFilter?, onFilterSelected: (TicketFilter
 fun CustomEventDetailsPreview() {
   CustomEventDetailsContent(
     state = EventDetailsViewState.EventData(
-      Match(
-        tickets = listOf(
-          initRandomGeneralTickets(0, false),
-          initRandomVipTickets(0)
-        )
-      ),
-      selectedFilter = TicketFilter.VIP
+      Match(),
+      selectedFilter = TicketFilter.VIP,
+      availableTickets = listOf(
+        initRandomGeneralTickets(0, false),
+        initRandomVipTickets(0)
+      )
     ),
     onTicketSelected = {},
-    onFilterClicked = {}
+    onFilterClicked = {},
+    onBuyButtonClick = {}
   )
 }

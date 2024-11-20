@@ -66,7 +66,7 @@ fun CustomToolbar(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
-              .padding(start = 32.dp)
+              .padding(start = 5.dp)
           )
           description?.let {
             Text(
@@ -76,7 +76,7 @@ fun CustomToolbar(
               maxLines = 1,
               overflow = TextOverflow.Ellipsis,
               modifier = Modifier
-                .padding(start = 32.dp)
+                .padding(start = 5.dp)
             )
           }
         }

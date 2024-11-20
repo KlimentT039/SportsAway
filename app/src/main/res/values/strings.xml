@@ -36,4 +36,12 @@
   <string name="generic_tickets">Tickets</string>
   <string name="event_banner">Event banner</string>
   <string name="favourites">Favourites</string>
+  <string name="add_card">Add Card</string>
+  <string name="update_card">Update Card</string>
+  <string name="add_address">Add</string>
+  <string name="generic_update">Update</string>
+  <string name="billing_address">Billing Address</string>
+  <string name="credit_card">Credit Card</string>
+  <string name="num_tickets">%1$d Tickets</string>
+  <string name="generic_edit">Edit</string>
 </resources>

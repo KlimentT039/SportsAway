@@ -17,7 +17,7 @@ fun Venue.toStadiumPics() = StadiumPics(
 )
 
 fun StadiumPics.getPic() =
-  imagePrimary ?:
   imageSecondary ?:
+  imagePrimary ?:
   imageTertiary ?:
   imageQuaternary

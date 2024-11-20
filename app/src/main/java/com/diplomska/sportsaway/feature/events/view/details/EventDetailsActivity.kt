@@ -5,9 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.common.shared.utils.EXTRA_SELECTED_MATCH
 import com.diplomska.sportsaway.common.shared.utils.getParcelableCompat
+import com.diplomska.sportsaway.feature.events.view.model.OrderBundle
+import com.diplomska.sportsaway.feature.events.view.order.OrderTicketsActivity
+import com.google.firestore.v1.StructuredQuery.Order
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EventDetailsActivity : AppCompatActivity() {
@@ -31,5 +37,18 @@ class EventDetailsActivity : AppCompatActivity() {
         matchId = selectedMatchId,
         onBackClick = { onBackPressedDispatcher.onBackPressed() })
     }
+    observeEvents()
+  }
+
+  private fun observeEvents() = lifecycleScope.launch {
+    viewModel.event.collect { event ->
+      when (event) {
+        is DetailsEvent.ProceedToOrderScreen -> navigateToOrderScreen(event.orderBundle)
+      }
+    }
+  }
+
+  private fun navigateToOrderScreen(bundle: OrderBundle) {
+    startActivity(OrderTicketsActivity.createIntent(this, bundle))
   }
 }
