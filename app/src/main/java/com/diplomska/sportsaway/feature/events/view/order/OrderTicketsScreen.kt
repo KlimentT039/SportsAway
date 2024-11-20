@@ -7,10 +7,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -128,6 +132,10 @@ private fun OrderDetailsSection(
 @Composable
 private fun BannerContent(modifier: Modifier, match: Match, onBackClick: () -> Unit) {
   val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+  val bannerHeight = screenHeight / 2
+
+  val imageModel = match.venueImage ?: R.drawable.stadium_pic
+
   Column(
     modifier = modifier
       .fillMaxWidth()
@@ -136,29 +144,31 @@ private fun BannerContent(modifier: Modifier, match: Match, onBackClick: () -> U
     Box(
       modifier = Modifier
         .fillMaxWidth()
-        .height(screenHeight / 2)
+        .height(bannerHeight)
         .clip(RoundedCornerShape(16.dp))
     ) {
-      if (!match.venueImage.isNullOrEmpty()) {
-        AsyncImage(
-          model = match.venueImage,
-          contentDescription = null,
-          modifier = Modifier.matchParentSize(),
-          contentScale = ContentScale.Crop
-        )
-      } else {
-        Image(
-          painter = painterResource(id = R.drawable.stadium_pic),
-          contentDescription = "Event Banner",
-          modifier = Modifier.matchParentSize(),
-          contentScale = ContentScale.Crop
-        )
-      }
+      AsyncImage(
+        model = imageModel,
+        contentDescription = match.getMatchTitle(),
+        modifier = Modifier.matchParentSize(),
+        contentScale = ContentScale.Crop,
+        error = painterResource(R.drawable.stadium_pic)
+      )
 
-      Row(modifier = modifier.align(Alignment.BottomStart)) {
+      Row(
+        modifier = Modifier
+          .align(Alignment.TopStart)
+          .fillMaxWidth()
+          .background(
+            Brush.verticalGradient(
+              colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f))
+            )
+          )
+          .padding(16.dp) // Increased padding
+      ) {
         IconButton(
           onClick = onBackClick,
-          modifier = Modifier.padding(start = 4.dp)
+          modifier = Modifier.padding(end = 8.dp)
         ) {
           Icon(
             Icons.Default.ArrowBack,
@@ -170,15 +180,27 @@ private fun BannerContent(modifier: Modifier, match: Match, onBackClick: () -> U
         Column {
           Text(
             text = match.getMatchTitle(),
-            style = typography.xsRegular.copy(
+            style = typography.sRegularPrimary.copy(
               fontWeight = FontWeight.Bold,
-              color = Color.White
+              color = Color.White,
+              shadow = Shadow(
+                color = Color.Black,
+                offset = Offset(2f, 2f),
+                blurRadius = 6f
+              )
             ),
           )
           match.getMatchDescription()?.let {
             Text(
               text = it,
-              style = typography.sRegularPrimary.copy(color = Color.White),
+              style = typography.sRegularPrimary.copy(
+                color = Color.White,
+                shadow = Shadow(
+                  color = Color.Black,
+                  offset = Offset(1f, 1f),
+                  blurRadius = 4f
+                )
+              ),
             )
           }
         }
