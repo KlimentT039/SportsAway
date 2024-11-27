@@ -1,22 +1,19 @@
-import androidx.compose.foundation.Image
+import android.content.Intent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,18 +27,21 @@ import com.diplomska.sportsaway.common.shared.model.Ticket
 import com.diplomska.sportsaway.common.shared.model.getMatchDescription
 import com.diplomska.sportsaway.common.shared.model.getMatchTitle
 import com.diplomska.sportsaway.common.shared.model.initRandomVipTickets
-import com.diplomska.sportsaway.common.style.compose.components.AppBar
+import com.diplomska.sportsaway.common.style.compose.components.Buttons
 import com.diplomska.sportsaway.common.style.compose.components.ListDivider
 import com.diplomska.sportsaway.common.style.compose.components.Scaffold
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundDefault
-import com.diplomska.sportsaway.common.style.compose.theme.mainColor
-import com.diplomska.sportsaway.common.style.compose.theme.topBarTextColor
 import com.diplomska.sportsaway.common.style.compose.typography
+import com.diplomska.sportsaway.feature.dashboard.home.components.tabs.model.DashboardTab
+import com.diplomska.sportsaway.feature.dashboard.view.DashboardActivity
 import com.diplomska.sportsaway.feature.events.view.model.BillingAddress
 import com.diplomska.sportsaway.feature.events.view.model.SavedCard
 import com.diplomska.sportsaway.feature.events.view.order.OrderTicketsState
 import com.diplomska.sportsaway.feature.events.view.order.OrderTicketsViewModel
+import com.diplomska.sportsaway.feature.events.view.order.dialogs.BillingAddressDialog
+import com.diplomska.sportsaway.feature.events.view.order.dialogs.OrderSuccessDialog
+import com.diplomska.sportsaway.feature.events.view.order.dialogs.TicketSelectionDialog
 
 @Composable
 fun OrderTicketsScreen(viewModel: OrderTicketsViewModel, onBackClick: () -> Unit) {
@@ -49,7 +49,7 @@ fun OrderTicketsScreen(viewModel: OrderTicketsViewModel, onBackClick: () -> Unit
   val modifier = Modifier
   Scaffold.WithBottomBarOnly(
     bottomBar = {
-      SlideToPlaceOrderButton(modifier)
+      SlideToPlaceOrderButton(viewModel::slideOrderComplete)
     },
     content = { padding ->
       when (uiState.value) {
@@ -60,7 +60,11 @@ fun OrderTicketsScreen(viewModel: OrderTicketsViewModel, onBackClick: () -> Unit
           onAddAddressClick = viewModel::onAddBillingAddressClicked,
           onAddCardClick = viewModel::onAddCardClicked,
           onEditNumTickets = viewModel::onEditNumOfTickets,
-          onBackClick = onBackClick
+          onBackClick = onBackClick,
+          onDismissClicked = viewModel::onDismissClicked,
+          onSaveCard = viewModel::onSaveCardClicked,
+          onSaveBillingAddress = viewModel::onSaveBillingAddress,
+          onSelectNumOfTickets = viewModel::onSelectNumOfTickets
         )
       }
     })
@@ -73,7 +77,11 @@ private fun OrderTicketsContent(
   modifier: Modifier,
   onAddCardClick: () -> Unit,
   onAddAddressClick: () -> Unit,
-  onEditNumTickets: () -> Unit
+  onEditNumTickets: () -> Unit,
+  onDismissClicked: () -> Unit,
+  onSaveCard: (String, String, String) -> Unit,
+  onSaveBillingAddress: (String, String, String, String, String, String) -> Unit,
+  onSelectNumOfTickets: (Int) -> Unit
 ) {
   Column(
     modifier = Modifier
@@ -88,7 +96,11 @@ private fun OrderTicketsContent(
       orderTicketsData = data,
       onAddCardClick = onAddCardClick,
       onAddAddressClick = onAddAddressClick,
-      onEditNumTickets = onEditNumTickets
+      onEditNumTickets = onEditNumTickets,
+      onDismissClicked = onDismissClicked,
+      onSaveCard = onSaveCard,
+      onSaveBillingAddress = onSaveBillingAddress,
+      onSelectNumOfTickets = onSelectNumOfTickets
     )
   }
 }
@@ -99,8 +111,14 @@ private fun OrderDetailsSection(
   orderTicketsData: OrderTicketsState.OrderTicketsData,
   onAddCardClick: () -> Unit,
   onAddAddressClick: () -> Unit,
-  onEditNumTickets: () -> Unit
+  onEditNumTickets: () -> Unit,
+  onDismissClicked: () -> Unit,
+  onSaveCard: (String, String, String) -> Unit,
+  onSaveBillingAddress: (String, String, String, String, String, String) -> Unit,
+  onSelectNumOfTickets: (Int) -> Unit
 ) {
+  val context = LocalContext.current
+
   val ticket = orderTicketsData.ticket
   Column(modifier = modifier.padding(16.dp)) {
 
@@ -127,6 +145,26 @@ private fun OrderDetailsSection(
       total = orderTicketsData.total
     )
   }
+
+  if (orderTicketsData.showAddCard) {
+    AddCardDialog(onDismissClicked, onSaveCard)
+  }
+
+  if (orderTicketsData.showBillingAddress) {
+    BillingAddressDialog(onDismiss = onDismissClicked, onSave = onSaveBillingAddress)
+  }
+
+  if (orderTicketsData.showTicketWindow) {
+    TicketSelectionDialog(onDismiss = onDismissClicked, onSelect = onSelectNumOfTickets)
+  }
+
+  if (orderTicketsData.showOrderIsSuccessful) {
+    OrderSuccessDialog {
+      context.startActivity(Intent(context, DashboardActivity::class.java).apply {
+        putExtra("startDestination", DashboardTab.Home.route)
+      })
+    }
+  }
 }
 
 @Composable
@@ -145,7 +183,6 @@ private fun BannerContent(modifier: Modifier, match: Match, onBackClick: () -> U
       modifier = Modifier
         .fillMaxWidth()
         .height(bannerHeight)
-        .clip(RoundedCornerShape(16.dp))
     ) {
       AsyncImage(
         model = imageModel,
@@ -164,7 +201,7 @@ private fun BannerContent(modifier: Modifier, match: Match, onBackClick: () -> U
               colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f))
             )
           )
-          .padding(16.dp) // Increased padding
+          .padding(16.dp)
       ) {
         IconButton(
           onClick = onBackClick,
@@ -334,22 +371,14 @@ private fun PriceRow(modifier: Modifier, label: String, value: String, isBold: B
 }
 
 @Composable
-private fun SlideToPlaceOrderButton(modifier: Modifier) {
+private fun SlideToPlaceOrderButton(onSlideComplete: () -> Unit) {
   Box(
-    modifier = modifier
+    modifier = Modifier
       .fillMaxWidth()
       .padding(16.dp)
-      .background(mainColor, RoundedCornerShape(50.dp))
-      .clickable { /* Handle slide to place order */ },
-    contentAlignment = Alignment.Center
   ) {
-    Text(
-      text = "Slide to place order",
-      style = typography.mLarge.copy(
-        color = topBarTextColor,
-        fontWeight = FontWeight.Bold
-      ),
-      modifier = Modifier.padding(vertical = 12.dp)
+    Buttons.SlideToOrderButton(
+      onSlideComplete = onSlideComplete,
     )
   }
 }
@@ -368,7 +397,15 @@ private fun OrderTicketsScreenPreview() {
       onAddAddressClick = {},
       onAddCardClick = {},
       onEditNumTickets = {},
-      onBackClick = {}
+      onBackClick = {},
+      onDismissClicked = {},
+      onSaveCard = { cardHolderName, cardNumber, expirationDate ->
+        //
+      },
+      onSaveBillingAddress = { st1, st2, st3, st4, st5, st6 ->
+      },
+      onSelectNumOfTickets = { int1 ->
+      }
     )
   }
 }

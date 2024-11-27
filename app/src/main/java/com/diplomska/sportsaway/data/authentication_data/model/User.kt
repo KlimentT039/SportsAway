@@ -1,7 +1,10 @@
 package com.diplomska.sportsaway.data.authentication_data.model
 
+import com.diplomska.sportsaway.common.shared.model.Match
+
 data class User(
   val mail: String = "",
   val username: String = "",
-  val favouriteTeams: List<Int> = emptyList()
+  val favouriteTeams: List<Int> = emptyList(),
+  val matches: List<Match> = emptyList()
 )

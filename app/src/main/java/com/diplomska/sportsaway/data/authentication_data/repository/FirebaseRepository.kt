@@ -3,6 +3,7 @@ package com.diplomska.sportsaway.data.authentication_data.repository
 import android.util.Log
 import com.diplomska.sportsaway.common.shared.errorhandling.BaseError
 import com.diplomska.sportsaway.common.shared.errorhandling.Either
+import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.data.authentication_data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -10,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class AuthRepository {
+class FirebaseRepository {
 
   private val auth: FirebaseAuth = FirebaseAuth.getInstance()
   private val db = FirebaseFirestore.getInstance()
@@ -84,11 +85,29 @@ class AuthRepository {
     }
   }
 
+  suspend fun addMatchToUserDatabase(match: Match): Either<BaseError, User> {
+    val currentUserResult = getCurrentUser()
+    if (currentUserResult is Either.Failure) {
+      return currentUserResult
+    }
+    val currentUser = (currentUserResult as Either.Success).value
+    val updatedMatches = (currentUser.matches + match).sortedBy { it.date }
+    val updatedUser = currentUser.copy(matches = updatedMatches)
+
+    try {
+      storeInDatabase(updatedUser)
+      return Either.Success(updatedUser)
+    } catch (e: Exception) {
+      return Either.Failure(BaseError.UnknownError)
+    }
+  }
+
   private fun storeInDatabase(user: User) {
     val updateUser = hashMapOf(
       "name" to user.username,
       "mail" to user.mail,
       "favouriteTeams" to user.favouriteTeams,
+      "matches" to user.matches
     )
     db.collection("Users").document(user.mail)
       .set(updateUser)

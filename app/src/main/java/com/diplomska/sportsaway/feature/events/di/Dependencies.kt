@@ -14,5 +14,5 @@ val eventModule = module {
 
   viewModel { (competitionId: Int?) -> EventsOverviewViewModel(competitionId, get()) }
   viewModel { EventDetailsViewModel(get()) }
-  viewModel { OrderTicketsViewModel() }
+  viewModel { OrderTicketsViewModel(get()) }
 }

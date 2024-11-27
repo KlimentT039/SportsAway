@@ -44,4 +44,23 @@
   <string name="credit_card">Credit Card</string>
   <string name="num_tickets">%1$d Tickets</string>
   <string name="generic_edit">Edit</string>
+  <string name="cardholder_name">Cardholder Name</string>
+  <string name="add_card_information">Add Card Information</string>
+  <string name="card_number">Card Number</string>
+  <string name="expiration_date_mm_yy">Expiration Date (MM/YY)</string>
+  <string name="cvv">CVV</string>
+  <string name="cancel">Cancel</string>
+  <string name="full_name">Full Name</string>
+  <string name="address_line_1">Address Line 1</string>
+  <string name="city">City</string>
+  <string name="country">Country</string>
+  <string name="zip_code">Zip Code</string>
+  <string name="address_line_2_optional">Address Line 2 (Optional)</string>
+  <string name="save">Save</string>
+  <string name="select_number_of_tickets">Select Number of Tickets</string>
+  <string name="slide_to_place_order">Slide to place order</string>
+  <string name="order_successful">Order Successful!</string>
+  <string name="your_order_has_been_placed_successfully">Your order has been placed successfully.</string>
+  <string name="we_appreciate_your_business">We appreciate your business!</string>
+  <string name="generic_contiunue">Continue</string>
 </resources>

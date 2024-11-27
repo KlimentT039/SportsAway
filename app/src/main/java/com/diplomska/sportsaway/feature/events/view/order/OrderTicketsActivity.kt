@@ -23,7 +23,6 @@ class OrderTicketsActivity : AppCompatActivity() {
 
   private val viewModel: OrderTicketsViewModel by viewModel()
 
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     val orderBundle = intent.getParcelableCompat<OrderBundle>(EXTRA_BUNDLE) ?: return
@@ -35,5 +34,4 @@ class OrderTicketsActivity : AppCompatActivity() {
       )
     }
   }
-
 }
