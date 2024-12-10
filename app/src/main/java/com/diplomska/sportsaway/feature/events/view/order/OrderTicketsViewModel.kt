@@ -65,7 +65,12 @@ class OrderTicketsViewModel(private val firebaseRepository: FirebaseRepository) 
   }
 
   fun onSelectNumOfTickets(numberOfTickets: Int) = runWithViewStateData { state ->
-    _state.update { state.copy(numberOfTickets = numberOfTickets) }
+    _state.update {
+      state.copy(
+        numberOfTickets = numberOfTickets,
+        total = numberOfTickets * state.ticket.price
+      )
+    }
   }
 
   fun onDismissClicked() = runWithViewStateData { state ->
@@ -81,7 +86,10 @@ class OrderTicketsViewModel(private val firebaseRepository: FirebaseRepository) 
   fun onSaveCardClicked(cardName: String, cardNum: String, expDate: String) {
     val savedCard = SavedCard(cardholderName = cardName, cardNumber = cardNum, expiryDate = expDate)
     runWithViewStateData { state ->
-      _state.update { state.copy(cardData = savedCard).apply { this.isButtonEnabled() } }
+      _state.update {
+        val updatedState = state.copy(cardData = savedCard)
+        updatedState.copy(isButtonEnabled = updatedState.isButtonEnabled())
+      }
     }
   }
 
@@ -102,7 +110,10 @@ class OrderTicketsViewModel(private val firebaseRepository: FirebaseRepository) 
       country = country,
     )
     runWithViewStateData { state ->
-      _state.update { state.copy(billingAddress = billingAddress).apply { this.isButtonEnabled() } }
+      _state.update {
+        val updatedState = state.copy(billingAddress = billingAddress)
+        updatedState.copy(isButtonEnabled = updatedState.isButtonEnabled())
+      }
     }
   }
 
@@ -115,10 +126,8 @@ class OrderTicketsViewModel(private val firebaseRepository: FirebaseRepository) 
     }
   }
 
-  private fun OrderTicketsState.OrderTicketsData.isButtonEnabled() {
-    val isButtonEnabled = this.billingAddress != null && this.cardData != null
-    _state.update { this.copy(isButtonEnabled = isButtonEnabled) }
-  }
+  private fun OrderTicketsState.OrderTicketsData.isButtonEnabled(): Boolean =
+    this.billingAddress != null && this.cardData != null
 
   private inline fun runWithViewStateData(block: (OrderTicketsState.OrderTicketsData) -> Unit) {
     val viewStateData = _state.value as? OrderTicketsState.OrderTicketsData ?: return

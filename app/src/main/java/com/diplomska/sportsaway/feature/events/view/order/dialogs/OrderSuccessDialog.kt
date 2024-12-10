@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
 import com.diplomska.sportsaway.common.style.compose.theme.typographyTextPrimary
+import com.diplomska.sportsaway.common.style.compose.typography
 
 @Composable
 fun OrderSuccessDialog(
@@ -31,7 +32,7 @@ fun OrderSuccessDialog(
         text = stringResource(R.string.order_successful),
         fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
-        color = typographyTextPrimary // Green for success
+        color = typographyTextPrimary
       )
     },
     text = {
@@ -43,8 +44,7 @@ fun OrderSuccessDialog(
       ) {
         Text(
           text = stringResource(R.string.your_order_has_been_placed_successfully),
-          fontSize = 16.sp,
-          color = Color.Gray,
+          style = typography.sRegularSecundary,
           modifier = Modifier.padding(bottom = 16.dp)
         )
 

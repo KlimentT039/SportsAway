@@ -1,7 +1,5 @@
 package com.diplomska.sportsaway.feature.profile.model
 
-import com.diplomska.sportsaway.data.authentication_data.model.User
-
 
 sealed interface ProfileViewState {
 
@@ -9,10 +7,11 @@ sealed interface ProfileViewState {
 
   data object UserHasNotLoggedIn : ProfileViewState
 
-  data class ProfileData(
-    val user: User
-  ) : ProfileViewState
+  data object ShowError : ProfileViewState
 
+  data class ProfileData(
+    val user: UserData
+  ) : ProfileViewState
 }
 
 

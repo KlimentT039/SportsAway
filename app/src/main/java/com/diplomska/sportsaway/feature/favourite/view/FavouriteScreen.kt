@@ -40,7 +40,9 @@ fun FavouriteScreen() {
         showBackButton = false,
         onBackClick = {},
         actionIcons = {
-          AppBar.Icons.Custom(image = Icons.Default.Edit, onClick = {})
+          if(viewState is FavouriteViewState.TeamsAndMatches){
+            AppBar.Icons.Custom(image = Icons.Default.Edit, onClick = {})
+          }
         }
       )
     },

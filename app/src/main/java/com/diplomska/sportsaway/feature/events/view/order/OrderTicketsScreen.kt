@@ -1,3 +1,6 @@
+package com.diplomska.sportsaway.feature.events.view.order
+
+import AddCardDialog
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -37,8 +40,6 @@ import com.diplomska.sportsaway.feature.dashboard.home.components.tabs.model.Das
 import com.diplomska.sportsaway.feature.dashboard.view.DashboardActivity
 import com.diplomska.sportsaway.feature.events.view.model.BillingAddress
 import com.diplomska.sportsaway.feature.events.view.model.SavedCard
-import com.diplomska.sportsaway.feature.events.view.order.OrderTicketsState
-import com.diplomska.sportsaway.feature.events.view.order.OrderTicketsViewModel
 import com.diplomska.sportsaway.feature.events.view.order.dialogs.BillingAddressDialog
 import com.diplomska.sportsaway.feature.events.view.order.dialogs.OrderSuccessDialog
 import com.diplomska.sportsaway.feature.events.view.order.dialogs.TicketSelectionDialog
@@ -47,27 +48,32 @@ import com.diplomska.sportsaway.feature.events.view.order.dialogs.TicketSelectio
 fun OrderTicketsScreen(viewModel: OrderTicketsViewModel, onBackClick: () -> Unit) {
   val uiState = viewModel.state.collectAsStateWithLifecycle()
   val modifier = Modifier
-  Scaffold.WithBottomBarOnly(
-    bottomBar = {
-      SlideToPlaceOrderButton(viewModel::slideOrderComplete)
-    },
-    content = { padding ->
-      when (uiState.value) {
-        is OrderTicketsState.Loading -> OverlayLoader()
-        is OrderTicketsState.OrderTicketsData -> OrderTicketsContent(
-          data = uiState.value as OrderTicketsState.OrderTicketsData,
-          modifier = modifier.padding(padding),
-          onAddAddressClick = viewModel::onAddBillingAddressClicked,
-          onAddCardClick = viewModel::onAddCardClicked,
-          onEditNumTickets = viewModel::onEditNumOfTickets,
-          onBackClick = onBackClick,
-          onDismissClicked = viewModel::onDismissClicked,
-          onSaveCard = viewModel::onSaveCardClicked,
-          onSaveBillingAddress = viewModel::onSaveBillingAddress,
-          onSelectNumOfTickets = viewModel::onSelectNumOfTickets
-        )
-      }
-    })
+  when (uiState.value) {
+    is OrderTicketsState.Loading -> OverlayLoader()
+
+    is OrderTicketsState.OrderTicketsData -> {
+      Scaffold.WithBottomBarOnly(
+        bottomBar = {
+          SlideToPlaceOrderButton(
+            viewModel::slideOrderComplete,
+            isEnabled = (uiState.value as OrderTicketsState.OrderTicketsData).isButtonEnabled
+          )
+        }, content = { paddingValues ->
+          OrderTicketsContent(
+            data = uiState.value as OrderTicketsState.OrderTicketsData,
+            modifier = modifier.padding(paddingValues),
+            onAddAddressClick = viewModel::onAddBillingAddressClicked,
+            onAddCardClick = viewModel::onAddCardClicked,
+            onEditNumTickets = viewModel::onEditNumOfTickets,
+            onBackClick = onBackClick,
+            onDismissClicked = viewModel::onDismissClicked,
+            onSaveCard = viewModel::onSaveCardClicked,
+            onSaveBillingAddress = viewModel::onSaveBillingAddress,
+            onSelectNumOfTickets = viewModel::onSelectNumOfTickets
+          )
+        })
+    }
+  }
 }
 
 @Composable
@@ -371,7 +377,7 @@ private fun PriceRow(modifier: Modifier, label: String, value: String, isBold: B
 }
 
 @Composable
-private fun SlideToPlaceOrderButton(onSlideComplete: () -> Unit) {
+private fun SlideToPlaceOrderButton(onSlideComplete: () -> Unit, isEnabled: Boolean) {
   Box(
     modifier = Modifier
       .fillMaxWidth()
@@ -379,6 +385,7 @@ private fun SlideToPlaceOrderButton(onSlideComplete: () -> Unit) {
   ) {
     Buttons.SlideToOrderButton(
       onSlideComplete = onSlideComplete,
+      isEnabled = isEnabled
     )
   }
 }
@@ -399,12 +406,12 @@ private fun OrderTicketsScreenPreview() {
       onEditNumTickets = {},
       onBackClick = {},
       onDismissClicked = {},
-      onSaveCard = { cardHolderName, cardNumber, expirationDate ->
+      onSaveCard = { _, _, _ ->
         //
       },
-      onSaveBillingAddress = { st1, st2, st3, st4, st5, st6 ->
+      onSaveBillingAddress = { _, _, _, _, _, _ ->
       },
-      onSelectNumOfTickets = { int1 ->
+      onSelectNumOfTickets = {
       }
     )
   }

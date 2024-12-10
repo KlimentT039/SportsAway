@@ -1,5 +1,6 @@
 package com.diplomska.sportsaway.common.style.compose.components
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
@@ -32,8 +33,9 @@ object Buttons {
     handleColor: Color = Color.White,
     textColor: Color = Color.White,
     buttonText: String = stringResource(R.string.slide_to_place_order),
+    isEnabled: Boolean = true,
   ) {
-    var offsetX by remember { mutableStateOf(0f) }
+    var offsetX by remember { mutableFloatStateOf(0f) }
     var isCompleted by remember { mutableStateOf(false) }
 
     val sliderHeight = 56.dp
@@ -53,7 +55,7 @@ object Buttons {
           .fillMaxWidth()
           .height(sliderHeight)
           .background(
-            color = trackColor,
+            color = if (isEnabled) trackColor else trackColor.copy(alpha = 0.5f),
             shape = RoundedCornerShape(30.dp)
           ),
         contentAlignment = Alignment.Center
@@ -62,7 +64,7 @@ object Buttons {
           text = buttonText,
           fontSize = 16.sp,
           fontWeight = FontWeight.Bold,
-          color = textColor
+          color = if (isEnabled) textColor else textColor.copy(alpha = 0.5f)
         )
       }
 
@@ -74,17 +76,19 @@ object Buttons {
           .padding(5.dp)
           .align(Alignment.CenterStart)
           .background(
-            color = handleColor,
+            color = if (isEnabled) handleColor else handleColor.copy(alpha = 0.5f),
             shape = CircleShape
           )
-          .pointerInput(Unit) {
-            detectHorizontalDragGestures { _, dragAmount ->
-              if (!isCompleted) {
-                offsetX = (offsetX + dragAmount)
-                  .coerceIn(0f, maxWidth - handleDiameterPx)
-                if (offsetX >= maxWidth - handleDiameterPx) {
-                  isCompleted = true
-                  onSlideComplete()
+          .pointerInput(isEnabled) {
+            if (isEnabled) {
+              detectHorizontalDragGestures { _, dragAmount ->
+                if (!isCompleted) {
+                  offsetX = (offsetX + dragAmount)
+                    .coerceIn(0f, maxWidth - handleDiameterPx)
+                  if (offsetX >= maxWidth - handleDiameterPx) {
+                    isCompleted = true
+                    onSlideComplete()
+                  }
                 }
               }
             }
@@ -97,5 +101,15 @@ object Buttons {
 @Preview(showBackground = true)
 @Composable
 fun SlideToOrderButtonPreview() {
-  Buttons.SlideToOrderButton(onSlideComplete = {})
+  Column {
+    Buttons.SlideToOrderButton(
+      onSlideComplete = { /* Handle completion */ },
+      isEnabled = true // Enabled button
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+    Buttons.SlideToOrderButton(
+      onSlideComplete = { /* Handle completion */ },
+      isEnabled = false // Disabled button
+    )
+  }
 }

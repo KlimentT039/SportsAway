@@ -63,4 +63,7 @@
   <string name="your_order_has_been_placed_successfully">Your order has been placed successfully.</string>
   <string name="we_appreciate_your_business">We appreciate your business!</string>
   <string name="generic_contiunue">Continue</string>
+  <string name="profile_picture">Profile Picture</string>
+  <string name="visited">Visited</string>
+  <string name="upcoming">Upcoming</string>
 </resources>

@@ -67,7 +67,7 @@ class FirebaseRepository {
     }
   }
 
-  suspend fun updateFavouritesList(teams: List<Int>): Either<BaseError, User> {
+  suspend fun updateFavouritesList(teams: List<Int>): Either<BaseError, User?> {
     val currentUserResult = getCurrentUser()
     if (currentUserResult is Either.Failure) {
       return currentUserResult
@@ -85,10 +85,10 @@ class FirebaseRepository {
     }
   }
 
-  suspend fun addMatchToUserDatabase(match: Match): Either<BaseError, User> {
+  suspend fun addMatchToUserDatabase(match: Match): Either<BaseError, User?> {
     val currentUserResult = getCurrentUser()
     if (currentUserResult is Either.Failure) {
-      return currentUserResult
+      return Either.Success(null)
     }
     val currentUser = (currentUserResult as Either.Success).value
     val updatedMatches = (currentUser.matches + match).sortedBy { it.date }

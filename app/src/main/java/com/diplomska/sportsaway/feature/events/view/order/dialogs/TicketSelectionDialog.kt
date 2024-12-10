@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.style.compose.theme.buttonColor
+import com.diplomska.sportsaway.common.style.compose.theme.topBarTextColor
 import com.diplomska.sportsaway.common.style.compose.typography
 
 @Composable
@@ -51,7 +52,10 @@ fun TicketSelectionDialog(
     dismissButton = {
       TextButton(
         onClick = onDismiss,
-        colors = ButtonDefaults.buttonColors(contentColor = buttonColor)
+        colors = ButtonDefaults.buttonColors(
+          contentColor = topBarTextColor,
+          backgroundColor = buttonColor
+        ),
       ) {
         Text(stringResource(R.string.cancel))
       }
