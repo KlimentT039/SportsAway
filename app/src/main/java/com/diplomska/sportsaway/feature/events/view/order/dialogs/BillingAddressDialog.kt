@@ -2,7 +2,14 @@ package com.diplomska.sportsaway.feature.events.view.order.dialogs
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -25,8 +32,7 @@ fun BillingAddressDialog(
   var country by remember { mutableStateOf("") }
   var zipCode by remember { mutableStateOf("") }
 
-  val outlinedTextColor = TextFieldDefaults.outlinedTextFieldColors(focusedBorderColor = mainColor)
-
+  val outlinedTextColor = TextFieldDefaults.colors(focusedContainerColor = mainColor)
 
   AlertDialog(
     onDismissRequest = onDismiss,
@@ -83,7 +89,7 @@ fun BillingAddressDialog(
     },
     confirmButton = {
       Button(colors = ButtonDefaults.buttonColors(
-        backgroundColor = mainColor,
+        containerColor = mainColor,
         contentColor = topBarTextColor
       ),
         onClick = {

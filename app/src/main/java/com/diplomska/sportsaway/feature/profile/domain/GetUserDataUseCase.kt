@@ -26,11 +26,10 @@ class GetUserDataUseCase(private val firebaseRepository: FirebaseRepository) :
     }
   }
 
-
   private fun User.mapToUserData(): UserData {
     val separateMatches = separateMatchesWithStringDates(matches, LocalDate.now())
     return UserData(
-      username = username,
+      username = name,
       visitedMatches = separateMatches.first,
       upcomingMatches = separateMatches.second
     )

@@ -15,11 +15,11 @@
     android:label="@string/app_name"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
-    android:theme="@style/SportsAway"
     tools:targetApi="31">
 
     <activity
       android:name=".common.startup.splashscreen.view.SplashScreenActivity"
+      android:theme="@style/AppTheme.SportsAway"
       android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -30,36 +30,43 @@
 
     <activity
       android:name=".feature.dashboard.view.DashboardActivity"
+      android:theme="@style/AppTheme.SportsAway"
       android:exported="true">
     </activity>
 
     <activity
       android:name=".feature.events.view.details.EventDetailsActivity"
+      android:theme="@style/AppTheme.SportsAway"
       android:exported="true">
     </activity>
 
     <activity
       android:name=".feature.authentication.login.view.LoginActivity"
+      android:theme="@style/AppTheme.SportsAway"
       android:exported="true">
     </activity>
 
     <activity
       android:name=".feature.authentication.register.view.RegisterActivity"
+      android:theme="@style/AppTheme.SportsAway"
       android:exported="true">
     </activity>
 
     <activity
       android:name=".feature.events.view.overview.EventOverviewActivity"
+      android:theme="@style/AppTheme.SportsAway"
       android:exported="true">
     </activity>
 
     <activity
       android:name=".feature.favourite.view.addteams.AddFavouriteTeamsActivity"
+      android:theme="@style/AppTheme.SportsAway"
       android:exported="true">
     </activity>
 
     <activity
       android:name=".feature.events.view.order.OrderTicketsActivity"
+      android:theme="@style/AppTheme.SportsAway"
       android:exported="true">
     </activity>
 

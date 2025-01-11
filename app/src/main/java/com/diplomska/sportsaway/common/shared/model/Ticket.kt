@@ -16,7 +16,7 @@ data class Ticket(
   val section: String = "101",
   val row: Int? = null,
   val ticketType: TicketFilter = TicketFilter.GENERAL,
-  val matchId: Int
+  val matchId: Int = -1
 ) : Parcelable
 
 

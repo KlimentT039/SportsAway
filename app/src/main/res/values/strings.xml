@@ -66,4 +66,8 @@
   <string name="profile_picture">Profile Picture</string>
   <string name="visited">Visited</string>
   <string name="upcoming">Upcoming</string>
+  <string name="no_visited_matches">Looks like you haven’t been to any games. Start exploring upcoming matches!</string>
+  <string name="no_upcoming_matches_scheduled">No upcoming matches scheduled.</string>
+  <string name="error_has_occurred">An error has occurred</string>
+  <string name="please_try_again">Please try again.</string>
 </resources>

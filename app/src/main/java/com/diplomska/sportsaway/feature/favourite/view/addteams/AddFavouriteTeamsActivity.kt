@@ -17,7 +17,7 @@ class AddFavouriteTeamsActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
-      AddFavouriteTeamsScreen(onBackClick = onBackPressedDispatcher::onBackPressed)
+      AddFavouriteTeamsScreen(onBackClick = { finish() })
     }
     observeEvents()
   }

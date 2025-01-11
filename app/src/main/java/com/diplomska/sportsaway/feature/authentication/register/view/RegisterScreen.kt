@@ -37,6 +37,7 @@ import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundDefault
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
+import com.diplomska.sportsaway.common.style.compose.theme.typographyTextPrimary
 import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
 import org.koin.androidx.compose.koinViewModel
 
@@ -102,7 +103,12 @@ private fun CreateUserContent(
         keyboardType = KeyboardType.Email,
         imeAction = ImeAction.Next
       ),
-      colors = TextFieldDefaults.textFieldColors(backgroundColor = backgroundDefault)
+      colors = TextFieldDefaults.textFieldColors(
+        backgroundColor = backgroundDefault,
+        focusedLabelColor = mainColor,
+        focusedIndicatorColor = mainColor,
+        cursorColor = typographyTextPrimary
+      )
     )
 
     Spacer(modifier = Modifier.height(16.dp))
@@ -119,7 +125,12 @@ private fun CreateUserContent(
         keyboardType = KeyboardType.Password,
         imeAction = ImeAction.Next
       ),
-      colors = TextFieldDefaults.textFieldColors(backgroundColor = backgroundDefault)
+      colors = TextFieldDefaults.textFieldColors(
+        backgroundColor = backgroundDefault,
+        focusedLabelColor = mainColor,
+        focusedIndicatorColor = mainColor,
+        cursorColor = typographyTextPrimary
+      )
     )
 
     Spacer(modifier = Modifier.height(16.dp))
@@ -133,7 +144,12 @@ private fun CreateUserContent(
         keyboardType = KeyboardType.Password,
         imeAction = ImeAction.Next
       ),
-      colors = TextFieldDefaults.textFieldColors(backgroundColor = backgroundDefault)
+      colors = TextFieldDefaults.textFieldColors(
+        backgroundColor = backgroundDefault,
+        focusedLabelColor = mainColor,
+        focusedIndicatorColor = mainColor,
+        cursorColor = typographyTextPrimary
+      )
     )
 
     Spacer(modifier = Modifier.height(16.dp))
@@ -150,7 +166,12 @@ private fun CreateUserContent(
         keyboardType = KeyboardType.Text,
         imeAction = ImeAction.Done
       ),
-      colors = TextFieldDefaults.textFieldColors(backgroundColor = backgroundDefault)
+      colors = TextFieldDefaults.textFieldColors(
+        backgroundColor = backgroundDefault,
+        focusedLabelColor = mainColor,
+        focusedIndicatorColor = mainColor,
+        cursorColor = typographyTextPrimary
+      )
     )
 
     Spacer(modifier = Modifier.height(40.dp))

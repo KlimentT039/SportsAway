@@ -35,7 +35,7 @@ class FirebaseRepository {
     return withContext(Dispatchers.IO) {
       try {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).await()
-        val user = User(mail = email, username = name, favouriteTeams = emptyList())
+        val user = User(mail = email, name = name, favouriteTeams = emptyList())
         storeInDatabase(user)
         Either.Success(Unit)
       } catch (e: Exception) {
@@ -104,7 +104,7 @@ class FirebaseRepository {
 
   private fun storeInDatabase(user: User) {
     val updateUser = hashMapOf(
-      "name" to user.username,
+      "name" to user.name,
       "mail" to user.mail,
       "favouriteTeams" to user.favouriteTeams,
       "matches" to user.matches
@@ -114,13 +114,13 @@ class FirebaseRepository {
       .addOnSuccessListener {
         Log.d(
           "$TAG - - - database",
-          "${user.username} is added in database"
+          "${user.name} is added in database"
         )
       }
       .addOnFailureListener {
         Log.d(
           "$TAG - - - database",
-          "${user.username} can not be added in database"
+          "${user.name} can not be added in database"
         )
       }
   }

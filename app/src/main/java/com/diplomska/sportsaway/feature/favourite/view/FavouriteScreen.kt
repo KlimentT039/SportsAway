@@ -1,6 +1,7 @@
 package com.diplomska.sportsaway.feature.favourite.view
 
 import ErrorScreen
+import android.content.Intent
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,6 +27,7 @@ import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
 import com.diplomska.sportsaway.feature.events.view.details.EventDetailsActivity
 import com.diplomska.sportsaway.feature.favourite.model.FavouriteTeam
+import com.diplomska.sportsaway.feature.favourite.view.addteams.AddFavouriteTeamsActivity
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -33,6 +35,7 @@ fun FavouriteScreen() {
   val viewModel = koinViewModel<FavouriteViewModel>()
   val viewState = viewModel.viewState.collectAsStateWithLifecycle().value
   val favouriteTeams = viewModel.favouriteTeams.collectAsStateWithLifecycle().value
+  val context = LocalContext.current
   Scaffold.WithTopBarOnly(
     topBar = {
       AppBar.CustomTopAppBar(
@@ -40,8 +43,10 @@ fun FavouriteScreen() {
         showBackButton = false,
         onBackClick = {},
         actionIcons = {
-          if(viewState is FavouriteViewState.TeamsAndMatches){
-            AppBar.Icons.Custom(image = Icons.Default.Edit, onClick = {})
+          if (viewState is FavouriteViewState.TeamsAndMatches) {
+            AppBar.Icons.Custom(image = Icons.Default.Edit, onClick = {
+              context.startActivity(Intent(context, AddFavouriteTeamsActivity::class.java))
+            })
           }
         }
       )

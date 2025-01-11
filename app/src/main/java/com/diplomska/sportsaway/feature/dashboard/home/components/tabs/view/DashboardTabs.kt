@@ -59,7 +59,7 @@ fun DashboardNavHost(
 ) {
   NavHost(
     navController = navHostController,
-    startDestination = DashboardTab.Home.route,
+    startDestination = startDestination,
   ) {
     composable(DashboardTab.Home.route) {
       HomeScreen()
