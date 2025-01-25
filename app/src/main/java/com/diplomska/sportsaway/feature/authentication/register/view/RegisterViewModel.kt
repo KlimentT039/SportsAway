@@ -21,7 +21,12 @@ sealed class RegisterViewState {
   data class UserData(
     val email: String = "",
     val password: String = "",
-    val username: String = ""
+    val username: String = "",
+    val confirmPassword: String = "",
+    val isUsernameValid: Boolean = true,
+    val isPasswordValid: Boolean = true,
+    val isEmailValid: Boolean = true,
+    val isConfirmPasswordValid: Boolean = true
   ) : RegisterViewState()
 
   data object Error : RegisterViewState()
@@ -49,6 +54,10 @@ class RegisterViewModel(private val registerUseCase: RegisterUseCase) : ViewMode
 
   fun onUsernameInputChanged(username: String) = updateViewStateWithData {
     it.copy(username = username)
+  }
+
+  fun onConfirmPasswordInputChanged(password: String) = updateViewStateWithData {
+    it.copy(confirmPassword = password)
   }
 
   fun onTryAgainClick() = viewModelScope.launch {

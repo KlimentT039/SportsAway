@@ -65,7 +65,7 @@ fun DashboardNavHost(
       HomeScreen()
     }
     composable(DashboardTab.Search.route) {
-      EventsOverviewScreen()
+      EventsOverviewScreen(showBackButton = false)
     }
     composable(DashboardTab.Favourite.route) {
       FavouriteScreen()

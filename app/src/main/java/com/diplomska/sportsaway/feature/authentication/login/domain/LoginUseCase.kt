@@ -9,4 +9,15 @@ class LoginUseCase(private val firebaseRepository: FirebaseRepository) {
   suspend operator fun invoke(email: String, password: String): Either<BaseError, String> {
     return firebaseRepository.loginUser(email, password)
   }
+
+  fun validateEmail(email: String): Boolean {
+    val emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$".toRegex()
+    return email.matches(emailRegex)
+  }
+
+  fun validatePassword(password: String): Boolean {
+    val passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\d\\s]).{6,30}$".toRegex()
+    return password.matches(passwordRegex)
+  }
+
 }

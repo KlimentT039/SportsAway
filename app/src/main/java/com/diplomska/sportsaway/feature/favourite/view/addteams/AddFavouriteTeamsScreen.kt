@@ -66,7 +66,7 @@ private fun AddFavouriteTeamsContent(
     )
 
     is ViewState.TeamsData -> {
-      AppBar.SearchAppBar(searchQuery = searchQuery, onSearchChanged) {
+      AppBar.SearchAppBar(searchQuery = searchQuery, onSearchChanged, onBackClick = {}) {
         TeamsList(
           modifier = modifier,
           teams = viewState.teams,

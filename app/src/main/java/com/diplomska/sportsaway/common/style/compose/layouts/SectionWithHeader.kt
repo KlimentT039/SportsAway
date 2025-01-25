@@ -2,6 +2,7 @@ package com.diplomska.sportsaway.common.style.compose.layouts
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,7 +24,8 @@ fun SectionWithHeader(
   modifier: Modifier = Modifier,
   @StringRes endWord: Int? = null,
   titleStyle: TextStyle = typography.mRegular,
-  content: @Composable () -> Unit
+  onEndWordClick: (() -> Unit)? = null,
+  content: @Composable () -> Unit,
 ) {
   Column(modifier.background(backgroundDefault)) {
     Row {
@@ -38,7 +40,13 @@ fun SectionWithHeader(
         Text(
           text = stringResource(it),
           style = typography.xsRegular,
-          modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 4.dp)
+          modifier = Modifier
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 4.dp)
+            .clickable {
+              if (onEndWordClick != null) {
+                onEndWordClick()
+              }
+            }
         )
       }
     }

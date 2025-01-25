@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.diplomska.sportsaway.R
@@ -39,6 +40,7 @@ import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundDefault
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
 import com.diplomska.sportsaway.common.style.compose.theme.typographyTextPrimary
+import com.diplomska.sportsaway.common.style.compose.typography
 import com.diplomska.sportsaway.feature.authentication.register.view.RegisterActivity
 import org.koin.androidx.compose.koinViewModel
 
@@ -49,6 +51,7 @@ fun LoginScreen() {
   when (uiState.value) {
     is LoginViewState.Loading -> OverlayLoader()
     is LoginViewState.UserData -> LoginContent(
+      uiState = uiState.value as LoginViewState.UserData,
       onEmailInputChanged = viewModel::onEmailInputChanged,
       onPasswordInputChanged = viewModel::onPasswordInputChanged,
       onLoginButtonClicked = viewModel::onLoginClick
@@ -58,6 +61,7 @@ fun LoginScreen() {
 
 @Composable
 private fun LoginContent(
+  uiState: LoginViewState.UserData,
   onEmailInputChanged: (String) -> Unit,
   onPasswordInputChanged: (String) -> Unit,
   onLoginButtonClicked: () -> Unit
@@ -86,6 +90,7 @@ private fun LoginContent(
         email = it
         onEmailInputChanged(it)
       },
+      isError = !uiState.isEmailValid,
       modifier = Modifier
         .fillMaxWidth(),
       label = { Text(stringResource(id = R.string.email)) },
@@ -104,6 +109,14 @@ private fun LoginContent(
       )
     )
 
+    if (!uiState.isEmailValid) {
+      Spacer(Modifier.height(10.dp))
+      Text(
+        stringResource(R.string.invalid_email_format),
+        style = typography.xsRegular.copy(color = Color.Red)
+      )
+    }
+
     Spacer(modifier = Modifier.height(16.dp))
     TextField(
       value = password,
@@ -111,6 +124,7 @@ private fun LoginContent(
         password = it
         onPasswordInputChanged(it)
       },
+      isError = !uiState.isPasswordValid,
       visualTransformation = PasswordVisualTransformation(),
       modifier = Modifier
         .fillMaxWidth(),
@@ -124,9 +138,17 @@ private fun LoginContent(
         backgroundColor = backgroundDefault,
         focusedLabelColor = mainColor,
         focusedIndicatorColor = mainColor,
-        cursorColor = typographyTextPrimary
+        cursorColor = typographyTextPrimary,
       )
     )
+
+    if (uiState.isPasswordValid) {
+      Text(
+        text = stringResource(R.string.invalid_password),
+        style = typography.xsRegular.copy(color = Color.Red),
+        textAlign = TextAlign.Center
+      )
+    }
 
     Spacer(modifier = Modifier.height(20.dp))
 
@@ -162,6 +184,7 @@ fun PreviewLoginScreen() {
   LoginContent(
     onEmailInputChanged = { },
     onPasswordInputChanged = { },
-    onLoginButtonClicked = { }
+    onLoginButtonClicked = { },
+    uiState = LoginViewState.UserData()
   )
 }

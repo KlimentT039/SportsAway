@@ -20,6 +20,8 @@ sealed class LoginViewState {
   data class UserData(
     val email: String = "",
     val password: String = "",
+    val isEmailValid: Boolean = true,
+    val isPasswordValid: Boolean = true
   ) : LoginViewState()
 
 }
@@ -42,7 +44,7 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
   }
 
   fun onPasswordInputChanged(password: String) = updateViewStateWithData {
-    it.copy(password = password)
+    it.copy(password = password, isPasswordValid = loginUseCase.validatePassword(password))
   }
 
   fun onLoginClick() = beginLoginProcess()
@@ -51,7 +53,15 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
 
   private fun beginLoginProcess() = viewModelScope.launch {
     val userInput = (_viewState.value as? UserData) ?: return@launch
+    if (!loginUseCase.validateEmail(email = userInput.email)) {
+      updateViewStateWithData { state ->
+        state.copy(isEmailValid = false)
+      }
+      return@launch
+    }
+
     _viewState.update { Loading }
+
     loginUseCase(email = userInput.email, password = userInput.password).fold(
       onFailure = {
         _event.emit(LoginEvents.LoginFailed)

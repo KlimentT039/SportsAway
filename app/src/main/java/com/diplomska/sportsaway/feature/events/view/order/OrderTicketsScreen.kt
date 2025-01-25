@@ -1,6 +1,6 @@
 package com.diplomska.sportsaway.feature.events.view.order
 
-import AddCardDialog
+import com.diplomska.sportsaway.feature.events.view.order.dialogs.carddialog.AddCardDialog
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -40,7 +40,7 @@ import com.diplomska.sportsaway.feature.dashboard.home.components.tabs.model.Das
 import com.diplomska.sportsaway.feature.dashboard.view.DashboardActivity
 import com.diplomska.sportsaway.feature.events.view.model.BillingAddress
 import com.diplomska.sportsaway.feature.events.view.model.SavedCard
-import com.diplomska.sportsaway.feature.events.view.order.dialogs.BillingAddressDialog
+import com.diplomska.sportsaway.feature.events.view.order.dialogs.billingaddress.BillingAddressDialog
 import com.diplomska.sportsaway.feature.events.view.order.dialogs.OrderSuccessDialog
 import com.diplomska.sportsaway.feature.events.view.order.dialogs.TicketSelectionDialog
 
@@ -85,7 +85,7 @@ private fun OrderTicketsContent(
   onAddAddressClick: () -> Unit,
   onEditNumTickets: () -> Unit,
   onDismissClicked: () -> Unit,
-  onSaveCard: (String, String, String) -> Unit,
+  onSaveCard: (String, String, String, String) -> Unit,
   onSaveBillingAddress: (String, String, String, String, String, String) -> Unit,
   onSelectNumOfTickets: (Int) -> Unit
 ) {
@@ -119,7 +119,7 @@ private fun OrderDetailsSection(
   onAddAddressClick: () -> Unit,
   onEditNumTickets: () -> Unit,
   onDismissClicked: () -> Unit,
-  onSaveCard: (String, String, String) -> Unit,
+  onSaveCard: (String, String, String, String) -> Unit,
   onSaveBillingAddress: (String, String, String, String, String, String) -> Unit,
   onSelectNumOfTickets: (Int) -> Unit
 ) {
@@ -406,7 +406,7 @@ private fun OrderTicketsScreenPreview() {
       onEditNumTickets = {},
       onBackClick = {},
       onDismissClicked = {},
-      onSaveCard = { _, _, _ ->
+      onSaveCard = { _, _, _, _ ->
         //
       },
       onSaveBillingAddress = { _, _, _, _, _, _ ->

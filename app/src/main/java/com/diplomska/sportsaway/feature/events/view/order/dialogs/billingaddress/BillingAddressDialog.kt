@@ -1,4 +1,4 @@
-package com.diplomska.sportsaway.feature.events.view.order.dialogs
+package com.diplomska.sportsaway.feature.events.view.order.dialogs.billingaddress
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -19,20 +19,16 @@ import androidx.compose.ui.unit.dp
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
 import com.diplomska.sportsaway.common.style.compose.theme.topBarTextColor
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BillingAddressDialog(
   onDismiss: () -> Unit,
   onSave: (String, String, String, String, String, String) -> Unit
 ) {
-  var fullName by remember { mutableStateOf("") }
-  var addressLine1 by remember { mutableStateOf("") }
-  var addressLine2 by remember { mutableStateOf("") }
-  var city by remember { mutableStateOf("") }
-  var country by remember { mutableStateOf("") }
-  var zipCode by remember { mutableStateOf("") }
-
+  val viewModel = koinViewModel<BillingAddressViewModel>()
   val outlinedTextColor = TextFieldDefaults.colors(focusedContainerColor = mainColor)
+  val errors = viewModel.errors.value
 
   AlertDialog(
     onDismissRequest = onDismiss,
@@ -43,59 +39,115 @@ fun BillingAddressDialog(
         verticalArrangement = Arrangement.spacedBy(8.dp)
       ) {
         OutlinedTextField(
-          value = fullName,
-          onValueChange = { fullName = it },
+          value = viewModel.fullName,
+          onValueChange = { viewModel.fullName = it },
           label = { Text(stringResource(R.string.full_name)) },
           modifier = Modifier.fillMaxWidth(),
-          colors = outlinedTextColor
+          colors = outlinedTextColor,
+          isError = errors.containsKey("fullName")
         )
+        if (errors.containsKey("fullName")) {
+          Text(
+            text = errors["fullName"]!!,
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodySmall
+          )
+        }
+
         OutlinedTextField(
-          value = addressLine1,
-          onValueChange = { addressLine1 = it },
+          value = viewModel.addressLine1,
+          onValueChange = { viewModel.addressLine1 = it },
           label = { Text(stringResource(R.string.address_line_1)) },
           modifier = Modifier.fillMaxWidth(),
-          colors = outlinedTextColor
+          colors = outlinedTextColor,
+          isError = errors.containsKey("addressLine1")
         )
+        if (errors.containsKey("addressLine1")) {
+          Text(
+            text = errors["addressLine1"]!!,
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodySmall
+          )
+        }
+
         OutlinedTextField(
-          value = addressLine2,
-          onValueChange = { addressLine2 = it },
+          value = viewModel.addressLine2,
+          onValueChange = { viewModel.addressLine2 = it },
           label = { Text(stringResource(R.string.address_line_2_optional)) },
           modifier = Modifier.fillMaxWidth(),
           colors = outlinedTextColor
         )
+
         OutlinedTextField(
-          value = city,
-          onValueChange = { city = it },
+          value = viewModel.city,
+          onValueChange = { viewModel.city = it },
           label = { Text(stringResource(R.string.city)) },
           modifier = Modifier.fillMaxWidth(),
-          colors = outlinedTextColor
+          colors = outlinedTextColor,
+          isError = errors.containsKey("city")
         )
+        if (errors.containsKey("city")) {
+          Text(
+            text = errors["city"]!!,
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodySmall
+          )
+        }
+
         OutlinedTextField(
-          value = country,
-          onValueChange = { country = it },
+          value = viewModel.country,
+          onValueChange = { viewModel.country = it },
           label = { Text(stringResource(R.string.country)) },
           modifier = Modifier.fillMaxWidth(),
-          colors = outlinedTextColor
+          colors = outlinedTextColor,
+          isError = errors.containsKey("country")
         )
+        if (errors.containsKey("country")) {
+          Text(
+            text = errors["country"]!!,
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodySmall
+          )
+        }
+
         OutlinedTextField(
-          value = zipCode,
-          onValueChange = { zipCode = it },
+          value = viewModel.zipCode,
+          onValueChange = { viewModel.zipCode = it },
           label = { Text(stringResource(R.string.zip_code)) },
           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
           modifier = Modifier.fillMaxWidth(),
-          colors = outlinedTextColor
+          colors = outlinedTextColor,
+          isError = errors.containsKey("zipCode")
         )
+        if (errors.containsKey("zipCode")) {
+          Text(
+            text = errors["zipCode"]!!,
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodySmall
+          )
+        }
       }
     },
     confirmButton = {
-      Button(colors = ButtonDefaults.buttonColors(
-        containerColor = mainColor,
-        contentColor = topBarTextColor
-      ),
+      Button(
+        colors = ButtonDefaults.buttonColors(
+          containerColor = mainColor,
+          contentColor = topBarTextColor
+        ),
         onClick = {
-          onSave(fullName, addressLine1, addressLine2, city, zipCode, country)
-          onDismiss()
-        }) {
+          if (viewModel.validateFields()) {
+            onSave(
+              viewModel.fullName,
+              viewModel.addressLine1,
+              viewModel.addressLine2,
+              viewModel.city,
+              viewModel.zipCode,
+              viewModel.country
+            )
+            onDismiss()
+          }
+        }
+      ) {
         Text(stringResource(R.string.save))
       }
     },
@@ -106,6 +158,7 @@ fun BillingAddressDialog(
     }
   )
 }
+
 
 @Preview(showBackground = true, widthDp = 360, heightDp = 640)
 @Composable

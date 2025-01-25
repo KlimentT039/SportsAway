@@ -28,4 +28,8 @@ class ProfileViewModel(private val getUserDataUseCase: GetUserDataUseCase) : Vie
       )
     }
   }
+
+  fun onLogout(){
+
+  }
 }

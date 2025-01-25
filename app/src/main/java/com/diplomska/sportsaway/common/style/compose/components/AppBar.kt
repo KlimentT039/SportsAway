@@ -1,8 +1,11 @@
 package com.diplomska.sportsaway.common.style.compose.components
 
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -16,6 +19,7 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -89,6 +93,8 @@ object AppBar {
   fun SearchAppBar(
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
+    onBackClick: () -> Unit,
+    showBackButton: Boolean = false,
     content: @Composable ColumnScope.() -> Unit
   ) {
     SearchBar(
@@ -96,14 +102,33 @@ object AppBar {
       onQueryChange = onSearchQueryChange,
       onSearch = {},
       placeholder = {
-        Text(text = "Search events")
+        Row(
+          verticalAlignment = Alignment.CenterVertically
+        ) {
+          Spacer(modifier = Modifier.width(8.dp))
+          Text(text = "Search events")
+        }
       },
       leadingIcon = {
-        Icon(
-          imageVector = androidx.compose.material.icons.Icons.Default.Search,
-          tint = MaterialTheme.colorScheme.onSurface,
-          contentDescription = null
-        )
+        Row(
+          verticalAlignment = Alignment.CenterVertically
+        ) {
+          if (showBackButton) {
+            IconButton(onClick = onBackClick) {
+              Icon(
+                imageVector = androidx.compose.material.icons.Icons.Default.ArrowBack,
+                tint = MaterialTheme.colorScheme.onSurface,
+                contentDescription = "Back"
+              )
+            }
+          }
+          Spacer(modifier = Modifier.width(8.dp))
+          Icon(
+            imageVector = androidx.compose.material.icons.Icons.Default.Search,
+            tint = MaterialTheme.colorScheme.onSurface,
+            contentDescription = null
+          )
+        }
       },
       trailingIcon = {},
       content = content,
@@ -144,7 +169,13 @@ private fun PreviewCenterAlignedTopBar() {
 @Preview
 @Composable
 private fun SearchBarPreview() {
-  AppBar.SearchAppBar(searchQuery = "", onSearchQueryChange = {}, content = {})
+  AppBar.SearchAppBar(
+    searchQuery = "",
+    onSearchQueryChange = {},
+    content = {},
+    showBackButton = true,
+    onBackClick = {}
+  )
 }
 
 

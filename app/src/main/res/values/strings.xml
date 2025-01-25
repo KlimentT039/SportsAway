@@ -70,4 +70,8 @@
   <string name="no_upcoming_matches_scheduled">No upcoming matches scheduled.</string>
   <string name="error_has_occurred">An error has occurred</string>
   <string name="please_try_again">Please try again.</string>
+  <string name="invalid_email_format">Invalid email format</string>
+  <string name="invalid_password">Password must contain at least one uppercase letter, lowercase letter, number, and special character.</string>
+  <string name="logout">logout</string>
+  <string name="menu">menu</string>
 </resources>

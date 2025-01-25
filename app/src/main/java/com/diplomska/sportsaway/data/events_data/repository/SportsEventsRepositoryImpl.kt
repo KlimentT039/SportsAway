@@ -70,8 +70,8 @@ class SportsEventsRepositoryImpl(
 
   private fun getTwoWeeksDates(): Pair<String, String> {
     val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val dateFrom = LocalDate.now().plusWeeks(2).format(dateFormatter)
-    val dateTo = LocalDate.now().plusWeeks(2).plusDays(5).format(dateFormatter)
+    val dateFrom = LocalDate.now().plusWeeks(1).format(dateFormatter)
+    val dateTo = LocalDate.now().plusWeeks(1).plusDays(5).format(dateFormatter)
     return dateFrom to dateTo
   }
 

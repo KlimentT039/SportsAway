@@ -20,7 +20,7 @@ class EventOverviewActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     val competitionId = intent.getIntExtra(EXTRA_COMPETITION, -1)
     setContent {
-      EventsOverviewScreen(competitionId = competitionId)
+      EventsOverviewScreen(competitionId = competitionId, showBackButton = true)
     }
   }
 }

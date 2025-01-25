@@ -65,7 +65,13 @@ private fun HomeContent(viewState: ViewState) {
 fun ListOfGames(list: List<Match>) {
   val context = LocalContext.current
 
-  SectionWithHeader(title = R.string.trending_events, endWord = R.string.see_more) {
+  SectionWithHeader(
+    title = R.string.trending_events,
+    endWord = R.string.see_more,
+    onEndWordClick = {
+      context.startActivity(EventOverviewActivity.createIntent(context, null))
+    }
+  ) {
     LazyRow(modifier = Modifier.padding(horizontal = 8.dp)) {
       itemsIndexed(chunkedList(list, 2)) { index, columnEvents ->
         Column(modifier = Modifier.fillParentMaxWidth(0.8f)) {
