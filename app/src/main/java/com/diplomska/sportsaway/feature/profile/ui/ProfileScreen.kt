@@ -1,6 +1,7 @@
 package com.diplomska.sportsaway.feature.profile.ui
 
 import ErrorScreen
+import android.content.Intent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -31,6 +32,7 @@ import com.diplomska.sportsaway.common.shared.model.Team
 import com.diplomska.sportsaway.common.style.compose.components.MatchTile
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
+import com.diplomska.sportsaway.feature.dashboard.view.DashboardActivity
 import com.diplomska.sportsaway.feature.favourite.view.AccessDeniedScreen
 import com.diplomska.sportsaway.feature.profile.model.ProfileViewState
 import com.diplomska.sportsaway.feature.profile.model.SelectedTab
@@ -40,6 +42,16 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel = koinViewModel()) {
   val uiState by viewModel.viewState.collectAsStateWithLifecycle()
+  val context = LocalContext.current
+
+  LaunchedEffect(key1 = Unit) {
+    viewModel.event.collect { value ->
+      if (value is ProfileEvents.NavigateToDashboard) {
+        context.startActivity(Intent(context, DashboardActivity::class.java))
+      }
+    }
+  }
+
   ProfileContent(
     uiState = uiState,
     onErrorClicked = viewModel::requestState,

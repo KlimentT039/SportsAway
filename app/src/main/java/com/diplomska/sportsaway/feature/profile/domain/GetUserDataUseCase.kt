@@ -26,6 +26,9 @@ class GetUserDataUseCase(private val firebaseRepository: FirebaseRepository) :
     }
   }
 
+  fun logout(): Either<BaseError, Unit> =
+    firebaseRepository.logout()
+
   private fun User.mapToUserData(): UserData {
     val separateMatches = separateMatchesWithStringDates(matches, LocalDate.now())
     return UserData(

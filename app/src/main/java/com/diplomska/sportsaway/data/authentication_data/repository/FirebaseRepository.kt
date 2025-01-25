@@ -48,6 +48,15 @@ class FirebaseRepository {
     return auth.currentUser != null
   }
 
+  fun logout(): Either<BaseError, Unit> {
+    return try {
+      FirebaseAuth.getInstance().signOut()
+      Either.Success(Unit)
+    } catch (e: Exception) {
+      Either.Failure(BaseError.AuthenticationError(e.message ?: "Login error"))
+    }
+  }
+
   suspend fun getCurrentUser(): Either<BaseError, User> {
     val currentUserEmail = FirebaseAuth.getInstance().currentUser?.email
       ?: return Either.Failure(BaseError.AuthenticationError("No user is logged in"))
