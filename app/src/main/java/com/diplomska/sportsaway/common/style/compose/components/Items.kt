@@ -342,22 +342,6 @@ fun MatchTile(match: Match) {
 }
 
 @Composable
-fun VerticalDivider(
-  modifier: Modifier = Modifier,
-  color: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
-  thickness: Dp = 1.dp,
-  height: Dp = 24.dp
-) {
-  Box(
-    modifier = modifier
-      .fillMaxHeight()
-      .width(thickness)
-      .background(color)
-      .height(height)
-  )
-}
-
-@Composable
 private fun TileDemo() {
   Column {
     TileWithIconAndText(

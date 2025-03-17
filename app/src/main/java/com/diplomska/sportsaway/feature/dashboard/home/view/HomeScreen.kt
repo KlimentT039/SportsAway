@@ -35,7 +35,12 @@ fun HomeScreen() {
   val viewModel = koinViewModel<HomeViewModel>()
   val viewState = viewModel.viewState.collectAsState()
   Scaffold.WithTopBarOnly(
-    topBar = { AppBar.HomeAppBar(title = stringResource(id = R.string.app_name)) },
+    topBar = {
+      AppBar.HomeAppBar(
+        title = stringResource(id = R.string.app_name),
+        icon = R.drawable.ic_logo
+      )
+    },
     content = { HomeContent(viewState = viewState.value) })
 }
 

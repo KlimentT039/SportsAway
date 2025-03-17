@@ -4,12 +4,13 @@ import com.diplomska.core.errorhandling.ErrorHandlingUseCase
 import com.diplomska.sportsaway.data.events_data.model.EventsResponse
 import com.diplomska.sportsaway.data.events_data.model.MatchResponse
 import com.diplomska.sportsaway.data.events_data.model.StadiumResponse
-import com.diplomska.sportsaway.data.events_data.model.Venue
 import com.diplomska.sportsaway.data.events_data.model.TeamResponse
 import com.diplomska.sportsaway.data.events_data.model.TeamsResponse
 import com.diplomska.sportsaway.data.events_data.model.listOfCompetitionIds
 import com.diplomska.sportsaway.data.events_data.network.SportsApi
 import com.diplomska.sportsaway.data.events_data.network.StadiumApi
+import com.diplomska.sportsaway.data.events_data.model.TeamInfo
+import com.diplomska.sportsaway.data.events_data.provider.TeamInfoJsonProvider
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -19,13 +20,9 @@ import java.time.format.DateTimeFormatter
 
 class SportsEventsRepositoryImpl(
   private val sportsApi: SportsApi,
-  private val stadiumApi: StadiumApi
+  private val stadiumApi: StadiumApi,
+//  private val teamInfoJsonProvider: TeamInfoJsonProvider
 ) : SportsEventsRepository, ErrorHandlingUseCase() {
-
-  private val TAG = "SportsRepository"
-
-  private val db = FirebaseFirestore.getInstance()
-  private val eventsRef: CollectionReference = db.collection("events")
 
   override suspend fun getMatches(competitionId: Int?): List<MatchResponse> {
     val getDates = getTwoWeeksDates()
@@ -37,11 +34,6 @@ class SportsEventsRepositoryImpl(
   }
 
   override suspend fun getCompetitions() = sportsApi.getCompetitions().competitions
-
-  override suspend fun fetchAllEvents(): List<EventsResponse> {
-    val querySnapshot: QuerySnapshot = eventsRef.get().await()
-    return querySnapshot.toObjects(EventsResponse::class.java)
-  }
 
   override suspend fun getTeams(): TeamsResponse {
     return sportsApi.getTeams(limit = 100)
@@ -68,10 +60,14 @@ class SportsEventsRepositoryImpl(
     return sportsApi.getTeamsById(id)
   }
 
+  override suspend fun fetchLatestTeamInfo(id: Int): TeamInfo? {
+   return null
+  }
+
   private fun getTwoWeeksDates(): Pair<String, String> {
     val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val dateFrom = LocalDate.now().plusWeeks(1).format(dateFormatter)
-    val dateTo = LocalDate.now().plusWeeks(1).plusDays(5).format(dateFormatter)
+    val dateFrom = LocalDate.now().plusDays(1).format(dateFormatter)
+    val dateTo = LocalDate.now().plusDays(5).format(dateFormatter)
     return dateFrom to dateTo
   }
 

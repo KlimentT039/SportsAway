@@ -10,8 +10,8 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val eventModule = module {
-  single { EventsUseCase(get()) }
-  single { EventDetailsUseCase(get()) }
+  factory { EventsUseCase(get()) }
+  factory { EventDetailsUseCase(get()) }
 
   viewModel { (competitionId: Int?) -> EventsOverviewViewModel(competitionId, get()) }
   viewModel { EventDetailsViewModel(get()) }

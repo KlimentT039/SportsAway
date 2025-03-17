@@ -1,0 +1,94 @@
+{
+  "teams": {
+    "Liverpool": {
+      "latest_news": [
+        {
+          "title": "Liverpool Secures Crucial Win Against Man City",
+          "date": "2025-02-10",
+          "summary": "Liverpool defeated Manchester City 2-1 in a thrilling encounter, boosting their Premier League title hopes.",
+          "link": "https://example.com/liverpool-vs-man-city"
+        },
+        {
+          "title": "Mohamed Salah Extends Contract Until 2027",
+          "date": "2025-02-08",
+          "summary": "Liverpool's star forward Mohamed Salah has signed a contract extension keeping him at Anfield until 2027.",
+          "link": "https://example.com/salah-contract-extension"
+        }
+      ],
+      "injury_reports": [
+        {
+          "player": "Virgil van Dijk",
+          "injury": "Hamstring Strain",
+          "expected_return": "2025-03-01",
+          "status": "Doubtful for next match"
+        },
+        {
+          "player": "Trent Alexander-Arnold",
+          "injury": "Ankle Sprain",
+          "expected_return": "2025-02-20",
+          "status": "Recovering"
+        }
+      ]
+    },
+    "Barcelona": {
+      "latest_news": [
+        {
+          "title": "Barcelona Advances to Champions League Quarterfinals",
+          "date": "2025-02-12",
+          "summary": "Barcelona secured a dramatic 3-2 victory to qualify for the Champions League quarterfinals.",
+          "link": "https://example.com/barcelona-champions-league"
+        },
+        {
+          "title": "Barcelona Extends Xavi's Contract as Head Coach",
+          "date": "2025-02-09",
+          "summary": "FC Barcelona has confirmed the extension of Xavi Hernández's contract until 2027.",
+          "link": "https://example.com/xavi-contract-extension"
+        }
+      ],
+      "injury_reports": [
+        {
+          "player": "Pedri",
+          "injury": "Muscle Fatigue",
+          "expected_return": "2025-02-25",
+          "status": "Day-to-day"
+        },
+        {
+          "player": "Frenkie de Jong",
+          "injury": "Knee Injury",
+          "expected_return": "2025-03-15",
+          "status": "Undergoing recovery"
+        }
+      ]
+    },
+    "Bayern Munich": {
+      "latest_news": [
+        {
+          "title": "Bayern Munich Signs Top Striker from Serie A",
+          "date": "2025-02-11",
+          "summary": "Bayern Munich has officially announced the signing of a top striker from the Italian league.",
+          "link": "https://example.com/bayern-new-striker"
+        },
+        {
+          "title": "Thomas Müller to Retire at End of the Season",
+          "date": "2025-02-07",
+          "summary": "Bayern legend Thomas Müller has announced his retirement from professional football at the end of the season.",
+          "link": "https://example.com/muller-retirement"
+        }
+      ],
+      "injury_reports": [
+        {
+          "player": "Joshua Kimmich",
+          "injury": "Thigh Strain",
+          "expected_return": "2025-02-28",
+          "status": "Recovering"
+        },
+        {
+          "player": "Kingsley Coman",
+          "injury": "Ankle Injury",
+          "expected_return": "2025-03-20",
+          "status": "Out for 4 weeks"
+        }
+      ]
+    }
+  }
+}

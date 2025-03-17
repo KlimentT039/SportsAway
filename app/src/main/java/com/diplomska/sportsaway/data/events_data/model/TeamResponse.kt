@@ -2,6 +2,7 @@ package com.diplomska.sportsaway.data.events_data.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import net.bytebuddy.matcher.StringMatcher
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class TeamResponse(
@@ -11,7 +12,8 @@ data class TeamResponse(
   @JsonProperty("tla") val tla: String,
   @JsonProperty("crest") val crest: String?,
   @JsonProperty("venue") val venue: String?,
-  @JsonProperty("area") val area: Area?
+  @JsonProperty("area") val area: Area?,
+  @JsonProperty("squad") val squad: List<Player>?
 )
 
 data class Area(
@@ -19,4 +21,9 @@ data class Area(
   @JsonProperty("name") val name: String,
   @JsonProperty("code") val code: String,
   @JsonProperty("flag") val flag: String
+)
+
+data class Player(
+  @JsonProperty("name") val name: String,
+  @JsonProperty("position") val position: String
 )

@@ -1,10 +1,13 @@
 package com.diplomska.sportsaway.common.style.compose.components
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -23,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,17 +42,34 @@ object AppBar {
   @Composable
   fun HomeAppBar(
     title: String?,
+    @DrawableRes icon: Int? = null,
     containerColor: Color = mainColor,
     contentColor: Color = topBarTextColor
   ) {
     CenterAlignedTopAppBar(
-      title = { Text(text = title.orEmpty()) },
+      title = {
+        if (icon != null) {
+          Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+              painter = painterResource(icon),
+              contentDescription = null,
+              modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+          }
+        } else {
+          Text(text = title.orEmpty())
+        }
+      },
       colors = TopAppBarDefaults.topAppBarColors(
         containerColor = containerColor,
         titleContentColor = contentColor
       )
     )
   }
+
 
   @OptIn(ExperimentalMaterial3Api::class)
   @Composable
@@ -163,7 +184,7 @@ object AppBar {
 @Preview
 @Composable
 private fun PreviewCenterAlignedTopBar() {
-  HomeAppBar(title = "SportsAway")
+  HomeAppBar(title = "SportsAway", icon = R.drawable.ic_logo)
 }
 
 @Preview

@@ -122,3 +122,4 @@ private fun ListOfFavouriteTeamsAndMatches(teams: List<FavouriteTeam>) {
     }
   }
 }
+

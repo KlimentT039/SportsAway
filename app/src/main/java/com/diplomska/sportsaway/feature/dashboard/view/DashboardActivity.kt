@@ -19,8 +19,6 @@ import com.diplomska.sportsaway.feature.dashboard.home.components.tabs.view.Dash
 internal class DashboardActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
-    // Get the start destination from the intent
     val startDestination = intent.getStringExtra("startDestination") ?: DashboardTab.Home.route
 
     setContent {
