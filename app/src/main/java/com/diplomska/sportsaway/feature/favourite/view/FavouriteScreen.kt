@@ -2,6 +2,7 @@ package com.diplomska.sportsaway.feature.favourite.view
 
 import ErrorScreen
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,7 +28,10 @@ import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
 import com.diplomska.sportsaway.feature.events.view.details.EventDetailsActivity
 import com.diplomska.sportsaway.feature.favourite.model.FavouriteTeam
+import com.diplomska.sportsaway.feature.favourite.view.accessdenied.AccessDeniedScreen
 import com.diplomska.sportsaway.feature.favourite.view.addteams.AddFavouriteTeamsActivity
+import com.diplomska.sportsaway.feature.favourite.view.news.LatestNewsActivity
+import com.diplomska.sportsaway.feature.favourite.view.noteam.NoTeamScreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -103,6 +107,15 @@ private fun ListOfFavouriteTeamsAndMatches(teams: List<FavouriteTeam>) {
           imageUrl = team.favouriteTeam.crest,
           name = favouriteTeam,
           isContentVisible = isContentVisible,
+          showInfo = true,
+          onInfoClick = {
+            context.startActivity(
+              LatestNewsActivity.createIntent(
+                context,
+                teamId = team.favouriteTeam.id
+              )
+            )
+          },
           onVisibilityChange = { visibility -> visibilityMap[favouriteTeam] = visibility }
         ) {
           team.matches.forEachIndexed { matchIndex, match ->
@@ -122,4 +135,3 @@ private fun ListOfFavouriteTeamsAndMatches(teams: List<FavouriteTeam>) {
     }
   }
 }
-

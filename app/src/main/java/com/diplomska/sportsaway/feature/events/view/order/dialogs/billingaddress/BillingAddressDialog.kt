@@ -27,7 +27,8 @@ fun BillingAddressDialog(
   onSave: (String, String, String, String, String, String) -> Unit
 ) {
   val viewModel = koinViewModel<BillingAddressViewModel>()
-  val outlinedTextColor = TextFieldDefaults.colors(focusedContainerColor = mainColor)
+  val outlinedTextColor =
+    TextFieldDefaults.colors(focusedIndicatorColor = mainColor, focusedTextColor = mainColor)
   val errors = viewModel.errors.value
 
   AlertDialog(

@@ -74,4 +74,8 @@
   <string name="invalid_password">Password must contain at least one uppercase letter, lowercase letter, number, and special character.</string>
   <string name="logout">logout</string>
   <string name="menu">menu</string>
+  <string name="team_latest_info">%1$s Latest info</string>
+  <string name="news">News</string>
+  <string name="squad">Squad</string>
+  <string name="injuries">Injuries</string>
 </resources>

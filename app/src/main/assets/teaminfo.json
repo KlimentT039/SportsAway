@@ -1,18 +1,18 @@
 {
   "teams": {
-    "Liverpool": {
+    "80": {
       "latest_news": [
         {
           "title": "Liverpool Secures Crucial Win Against Man City",
           "date": "2025-02-10",
           "summary": "Liverpool defeated Manchester City 2-1 in a thrilling encounter, boosting their Premier League title hopes.",
-          "link": "https://example.com/liverpool-vs-man-city"
+          "link": "https://backend.liverpoolfc.com/sites/default/files/styles/lg/public/2025-04/mohamed-salah-liverpool-fc-030425_c2ea0dd8e2668472e08c287ecff92243.webp?itok=exJcmN3W&width=1680"
         },
         {
           "title": "Mohamed Salah Extends Contract Until 2027",
           "date": "2025-02-08",
           "summary": "Liverpool's star forward Mohamed Salah has signed a contract extension keeping him at Anfield until 2027.",
-          "link": "https://example.com/salah-contract-extension"
+          "link": "https://backend.liverpoolfc.com/sites/default/files/styles/lg/public/2025-04/mohamed-salah-liverpool-fc-030425_c2ea0dd8e2668472e08c287ecff92243.webp?itok=exJcmN3W&width=1680"
         }
       ],
       "injury_reports": [
@@ -30,19 +30,19 @@
         }
       ]
     },
-    "Barcelona": {
+    "81": {
       "latest_news": [
         {
           "title": "Barcelona Advances to Champions League Quarterfinals",
           "date": "2025-02-12",
           "summary": "Barcelona secured a dramatic 3-2 victory to qualify for the Champions League quarterfinals.",
-          "link": "https://example.com/barcelona-champions-league"
+          "link": "https://www.fcbarcelona.com/photo-resources/2025/04/04/dd5fdb74-6a4b-4959-9fca-8ed703482714/entrades.jpg?width=1280&height=800"
         },
         {
-          "title": "Barcelona Extends Xavi's Contract as Head Coach",
+          "title": "Barcelona Extends Flick's Contract as Head Coach",
           "date": "2025-02-09",
-          "summary": "FC Barcelona has confirmed the extension of Xavi Hernández's contract until 2027.",
-          "link": "https://example.com/xavi-contract-extension"
+          "summary": "FC Barcelona has confirmed the extension of Hansi Flick's contract until 2027.",
+          "link": "https://www.fcbarcelona.com/photo-resources/2025/04/04/dd5fdb74-6a4b-4959-9fca-8ed703482714/entrades.jpg?width=1280&height=800"
         }
       ],
       "injury_reports": [
@@ -60,7 +60,7 @@
         }
       ]
     },
-    "Bayern Munich": {
+    "82": {
       "latest_news": [
         {
           "title": "Bayern Munich Signs Top Striker from Serie A",

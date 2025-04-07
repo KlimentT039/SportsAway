@@ -1,6 +1,5 @@
 package com.diplomska.sportsaway.feature.favourite.view
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.diplomska.sportsaway.common.shared.errorhandling.fold

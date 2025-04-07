@@ -1,5 +1,6 @@
 package com.diplomska.sportsaway.feature.authentication.login.view
 
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,9 +14,14 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -36,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.diplomska.sportsaway.R
+import com.diplomska.sportsaway.common.style.compose.components.Scaffold
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundDefault
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
@@ -69,113 +76,131 @@ private fun LoginContent(
   val context = LocalContext.current
   var email by remember { mutableStateOf("") }
   var password by remember { mutableStateOf("") }
+  val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .background(backgroundDefault)
-      .padding(horizontal = 16.dp),
-    horizontalAlignment = Alignment.CenterHorizontally,
-  ) {
-    Image(
-      modifier = Modifier.padding(top = 100.dp),
-      painter = painterResource(id = R.drawable.ic_logo),
-      contentDescription = "Logo",
-      contentScale = ContentScale.Fit
-    )
-    Spacer(modifier = Modifier.height(30.dp))
-    TextField(
-      value = email,
-      onValueChange = {
-        email = it
-        onEmailInputChanged(it)
-      },
-      isError = !uiState.isEmailValid,
-      modifier = Modifier
-        .fillMaxWidth(),
-      label = { Text(stringResource(id = R.string.email)) },
-      keyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Email,
-        imeAction = ImeAction.Next
-      ),
-      keyboardActions = KeyboardActions(
-        onNext = { }
-      ),
-      colors = TextFieldDefaults.textFieldColors(
+  Scaffold.WithTopBarOnly(
+    topBar = {
+      TopAppBar(
+        title = {},
+        navigationIcon = {
+          IconButton(onClick = { backDispatcher?.onBackPressed() }) {
+            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+          }
+        },
         backgroundColor = backgroundDefault,
-        focusedLabelColor = mainColor,
-        focusedIndicatorColor = mainColor,
-        cursorColor = typographyTextPrimary
+        elevation = 0.dp
       )
-    )
+    },
+    content = {
+      Column(
+        modifier = Modifier
+          .fillMaxSize()
+          .background(backgroundDefault)
+          .padding(horizontal = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+      ) {
+        Image(
+          modifier = Modifier.padding(top = 100.dp),
+          painter = painterResource(id = R.drawable.ic_logo),
+          contentDescription = "Logo",
+          contentScale = ContentScale.Fit
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+        TextField(
+          value = email,
+          onValueChange = {
+            email = it
+            onEmailInputChanged(it)
+          },
+          isError = !uiState.isEmailValid,
+          modifier = Modifier
+            .fillMaxWidth(),
+          label = { Text(stringResource(id = R.string.email)) },
+          keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next
+          ),
+          keyboardActions = KeyboardActions(
+            onNext = { }
+          ),
+          colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = backgroundDefault,
+            focusedLabelColor = mainColor,
+            focusedIndicatorColor = mainColor,
+            cursorColor = typographyTextPrimary
+          )
+        )
 
-    if (!uiState.isEmailValid) {
-      Spacer(Modifier.height(10.dp))
-      Text(
-        stringResource(R.string.invalid_email_format),
-        style = typography.xsRegular.copy(color = Color.Red)
-      )
+        if (!uiState.isEmailValid) {
+          Spacer(Modifier.height(10.dp))
+          Text(
+            stringResource(R.string.invalid_email_format),
+            style = typography.xsRegular.copy(color = Color.Red)
+          )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+        TextField(
+          value = password,
+          onValueChange = {
+            password = it
+            onPasswordInputChanged(it)
+          },
+          isError = !uiState.isPasswordValid,
+          visualTransformation = PasswordVisualTransformation(),
+          modifier = Modifier
+            .fillMaxWidth(),
+          label = { Text(stringResource(id = R.string.password)) },
+          keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Done
+          ),
+
+          colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = backgroundDefault,
+            focusedLabelColor = mainColor,
+            focusedIndicatorColor = mainColor,
+            cursorColor = typographyTextPrimary,
+          )
+        )
+
+        if (!uiState.isPasswordValid) {
+          Text(
+            text = stringResource(R.string.invalid_password),
+            style = typography.xsRegular.copy(color = Color.Red),
+            textAlign = TextAlign.Center
+          )
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text(
+          text = stringResource(id = R.string.no_account),
+          color = mainColor,
+          modifier = Modifier.clickable {
+            context.startActivity(RegisterActivity.createIntent(context))
+          })
+
+        Spacer(modifier = Modifier.weight(1f))
+        Button(
+          onClick = { onLoginButtonClicked() },
+          modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp),
+          colors = ButtonDefaults.textButtonColors(
+            backgroundColor = mainColor,
+            contentColor = Color.White
+          )
+        ) {
+          Text(text = "Log in")
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+      }
     }
+  )
 
-    Spacer(modifier = Modifier.height(16.dp))
-    TextField(
-      value = password,
-      onValueChange = {
-        password = it
-        onPasswordInputChanged(it)
-      },
-      isError = !uiState.isPasswordValid,
-      visualTransformation = PasswordVisualTransformation(),
-      modifier = Modifier
-        .fillMaxWidth(),
-      label = { Text(stringResource(id = R.string.password)) },
-      keyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Password,
-        imeAction = ImeAction.Done
-      ),
-
-      colors = TextFieldDefaults.textFieldColors(
-        backgroundColor = backgroundDefault,
-        focusedLabelColor = mainColor,
-        focusedIndicatorColor = mainColor,
-        cursorColor = typographyTextPrimary,
-      )
-    )
-
-    if (uiState.isPasswordValid) {
-      Text(
-        text = stringResource(R.string.invalid_password),
-        style = typography.xsRegular.copy(color = Color.Red),
-        textAlign = TextAlign.Center
-      )
-    }
-
-    Spacer(modifier = Modifier.height(20.dp))
-
-    Text(
-      text = stringResource(id = R.string.no_account),
-      color = mainColor,
-      modifier = Modifier.clickable {
-        context.startActivity(RegisterActivity.createIntent(context))
-      })
-
-    Spacer(modifier = Modifier.weight(1f))
-    Button(
-      onClick = { onLoginButtonClicked() },
-      modifier = Modifier
-        .fillMaxWidth()
-        .height(50.dp),
-      colors = ButtonDefaults.textButtonColors(
-        backgroundColor = mainColor,
-        contentColor = Color.White
-      )
-    ) {
-      Text(text = "Log in")
-    }
-
-    Spacer(modifier = Modifier.height(30.dp))
-
-  }
 }
 
 @Preview

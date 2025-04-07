@@ -5,10 +5,10 @@ import com.diplomska.sportsaway.data.events_data.model.TeamsData
 
 class TeamInfoJsonProvider(assetConfigRead: AssetConfigRead) {
 
-//  private val jsonObject: TeamsData by lazy {
-//    assetConfigRead("teaminfo.json", TeamsData::class)
-//  }
-//
-//  val teamsData = jsonObject.teams
+  private val jsonObject: TeamsData by lazy {
+    assetConfigRead("teaminfo.json", TeamsData::class)
+  }
+
+  val teamsData = jsonObject.teams
 
 }

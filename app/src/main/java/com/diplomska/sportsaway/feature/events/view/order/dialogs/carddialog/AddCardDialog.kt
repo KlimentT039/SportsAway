@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
 import com.diplomska.sportsaway.common.style.compose.theme.topBarTextColor
+import com.diplomska.sportsaway.feature.events.view.visualtransformation.ExpirationDateVisualTransformation
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -21,7 +22,10 @@ fun AddCardDialog(
 ) {
   val viewModel = koinViewModel<AddCardViewModel>()
   val errors = viewModel.errors.value
-  val outlinedTextColor = TextFieldDefaults.outlinedTextFieldColors(focusedBorderColor = mainColor)
+  val outlinedTextColor = TextFieldDefaults.outlinedTextFieldColors(
+    focusedBorderColor = mainColor,
+    focusedLabelColor = mainColor
+  )
 
   AlertDialog(
     onDismissRequest = onDismiss,
@@ -71,38 +75,43 @@ fun AddCardDialog(
           horizontalArrangement = Arrangement.spacedBy(8.dp),
           modifier = Modifier.fillMaxWidth()
         ) {
-          OutlinedTextField(
-            value = viewModel.expirationDate,
-            onValueChange = { viewModel.expirationDate = it },
-            label = { Text(stringResource(R.string.expiration_date_mm_yy)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.weight(1f),
-            colors = outlinedTextColor,
-            isError = errors.containsKey("expirationDate")
-          )
-          if (errors.containsKey("expirationDate")) {
-            Text(
-              text = errors["expirationDate"]!!,
-              color = MaterialTheme.colors.error,
-              style = MaterialTheme.typography.body2
+          Column(modifier = Modifier.weight(1f)) {
+            OutlinedTextField(
+              value = viewModel.expirationDate,
+              onValueChange = { viewModel.expirationDate = it },
+              label = { Text(stringResource(R.string.expiration_date_mm_yy)) },
+              keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+              modifier = Modifier.fillMaxWidth(),
+              visualTransformation = ExpirationDateVisualTransformation(),
+              colors = outlinedTextColor,
+              isError = errors.containsKey("expirationDate")
             )
+            if (errors.containsKey("expirationDate")) {
+              Text(
+                text = errors["expirationDate"]!!,
+                color = MaterialTheme.colors.error,
+                style = MaterialTheme.typography.body2
+              )
+            }
           }
 
-          OutlinedTextField(
-            value = viewModel.cvv,
-            onValueChange = { viewModel.cvv = it },
-            label = { Text(stringResource(R.string.cvv)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier.weight(1f),
-            colors = outlinedTextColor,
-            isError = errors.containsKey("cvv")
-          )
-          if (errors.containsKey("cvv")) {
-            Text(
-              text = errors["cvv"]!!,
-              color = MaterialTheme.colors.error,
-              style = MaterialTheme.typography.body2
+          Column(modifier = Modifier.weight(1f)) {
+            OutlinedTextField(
+              value = viewModel.cvv,
+              onValueChange = { viewModel.cvv = it },
+              label = { Text(stringResource(R.string.cvv)) },
+              keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+              modifier = Modifier.fillMaxWidth(),
+              colors = outlinedTextColor,
+              isError = errors.containsKey("cvv")
             )
+            if (errors.containsKey("cvv")) {
+              Text(
+                text = errors["cvv"]!!,
+                color = MaterialTheme.colors.error,
+                style = MaterialTheme.typography.body2
+              )
+            }
           }
         }
       }

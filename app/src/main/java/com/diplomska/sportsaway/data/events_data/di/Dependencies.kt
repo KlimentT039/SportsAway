@@ -14,9 +14,9 @@ const val STADIUM_URL = "https://www.thesportsdb.com/api/v1/json/3/"
 
 val sportDataModule = module {
   single { getCoreHttpBuilder().build() }
-//  single { TeamInfoJsonProvider(get()) }
+  single { TeamInfoJsonProvider(get()) }
   single { EventsJsonProvider(get()) }
   single { RestClient.createService(SportsApi::class.java) }
   single { RestClient.createService(StadiumApi::class.java, STADIUM_URL) }
-  single<SportsEventsRepository> { SportsEventsRepositoryImpl(get(), get()) }
+  single<SportsEventsRepository> { SportsEventsRepositoryImpl(get(), get(), get()) }
 }

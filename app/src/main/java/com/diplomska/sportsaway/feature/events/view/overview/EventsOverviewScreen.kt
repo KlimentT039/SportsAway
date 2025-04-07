@@ -17,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.diplomska.sportsaway.R
-import com.diplomska.sportsaway.common.shared.errorhandling.view.GeneralErrorActivity
 import com.diplomska.sportsaway.common.style.compose.components.AppBar
 import com.diplomska.sportsaway.common.style.compose.components.ListDivider
 import com.diplomska.sportsaway.common.style.compose.components.MatchItem
@@ -25,7 +24,7 @@ import com.diplomska.sportsaway.common.style.compose.components.MatchSection
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.feature.events.view.details.EventDetailsActivity
 import com.diplomska.sportsaway.feature.events.view.model.GroupedMatch
-import com.diplomska.sportsaway.feature.favourite.view.AccessDeniedScreen
+import com.diplomska.sportsaway.feature.favourite.view.accessdenied.AccessDeniedScreen
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 

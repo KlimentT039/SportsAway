@@ -1,4 +1,4 @@
-package com.diplomska.sportsaway.feature.favourite.view
+package com.diplomska.sportsaway.feature.favourite.view.accessdenied
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
-import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
 
 
 @Composable

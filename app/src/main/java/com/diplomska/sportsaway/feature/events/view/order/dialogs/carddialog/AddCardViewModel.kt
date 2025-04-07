@@ -18,7 +18,7 @@ class AddCardViewModel : ViewModel() {
 
     if (cardHolderName.isBlank()) validationErrors["cardHolderName"] = "Cardholder name is required."
     if (cardNumber.isBlank() || cardNumber.length != 16) validationErrors["cardNumber"] = "Enter a valid 16-digit card number."
-    if (expirationDate.isBlank() || !expirationDate.matches(Regex("\\d{2}/\\d{2}"))) {
+    if (expirationDate.isBlank() || !expirationDate.matches(Regex("\\d{4}"))) {
       validationErrors["expirationDate"] = "Enter a valid expiration date (MM/YY)."
     }
     if (cvv.isBlank() || cvv.length != 3) validationErrors["cvv"] = "Enter a valid 3-digit CVV."

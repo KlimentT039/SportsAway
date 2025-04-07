@@ -1,4 +1,4 @@
-package com.diplomska.sportsaway.feature.favourite.view
+package com.diplomska.sportsaway.feature.favourite.view.noteam
 
 import android.content.Intent
 import androidx.compose.foundation.background

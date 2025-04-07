@@ -1,7 +1,9 @@
 package com.diplomska.sportsaway.data.events_data.model
 
+import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.parcelize.Parcelize
 import net.bytebuddy.matcher.StringMatcher
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -23,7 +25,10 @@ data class Area(
   @JsonProperty("flag") val flag: String
 )
 
+@Parcelize
 data class Player(
   @JsonProperty("name") val name: String,
-  @JsonProperty("position") val position: String
-)
+  @JsonProperty("position") val position: String,
+  @JsonProperty("dateOfBirth") val dateOfBirth: String,
+  @JsonProperty("nationality") val nationality: String
+) : Parcelable

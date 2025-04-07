@@ -14,12 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -33,7 +30,7 @@ import com.diplomska.sportsaway.common.style.compose.components.MatchTile
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
 import com.diplomska.sportsaway.feature.dashboard.view.DashboardActivity
-import com.diplomska.sportsaway.feature.favourite.view.AccessDeniedScreen
+import com.diplomska.sportsaway.feature.favourite.view.accessdenied.AccessDeniedScreen
 import com.diplomska.sportsaway.feature.profile.model.ProfileViewState
 import com.diplomska.sportsaway.feature.profile.model.SelectedTab
 import com.diplomska.sportsaway.feature.profile.model.UserData

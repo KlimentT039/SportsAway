@@ -1,6 +1,7 @@
 package com.diplomska.sportsaway.feature.authentication.register.view
 
 import ErrorScreen
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,9 +14,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,9 +37,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.diplomska.sportsaway.R
+import com.diplomska.sportsaway.common.style.compose.components.Scaffold
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundDefault
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
@@ -76,126 +84,146 @@ private fun CreateUserContent(
   var confirmPassword by remember { mutableStateOf("") }
   var username by remember { mutableStateOf("") }
 
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .background(backgroundDefault)
-      .padding(horizontal = 16.dp),
-    horizontalAlignment = Alignment.CenterHorizontally,
-  ) {
-    Image(
-      modifier = Modifier.padding(top = 100.dp),
-      painter = painterResource(id = R.drawable.ic_logo),
-      contentDescription = "Logo",
-      contentScale = ContentScale.Fit
-    )
-    Spacer(modifier = Modifier.height(30.dp))
-    TextField(
-      value = email,
-      onValueChange = {
-        email = it
-        onEmailInputChanged(it)
-      },
-      modifier = Modifier
-        .fillMaxWidth(),
-      label = { Text(stringResource(id = R.string.email)) },
-      keyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Email,
-        imeAction = ImeAction.Next
-      ),
-      colors = TextFieldDefaults.textFieldColors(
+  val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
+  Scaffold.WithTopBarOnly(
+    topBar = {
+      TopAppBar(
+        title = {},
+        navigationIcon = {
+          IconButton(onClick = { backDispatcher?.onBackPressed() }) {
+            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+          }
+        },
         backgroundColor = backgroundDefault,
-        focusedLabelColor = mainColor,
-        focusedIndicatorColor = mainColor,
-        cursorColor = typographyTextPrimary
+        elevation = 0.dp
       )
-    )
+    },
+    content = {
 
-    Spacer(modifier = Modifier.height(16.dp))
-    TextField(
-      value = password,
-      onValueChange = {
-        password = it
-        onPasswordInputChanged(it)
-      },
-      modifier = Modifier
-        .fillMaxWidth(),
-      label = { Text(stringResource(id = R.string.password)) },
-      keyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Password,
-        imeAction = ImeAction.Next
-      ),
-      colors = TextFieldDefaults.textFieldColors(
-        backgroundColor = backgroundDefault,
-        focusedLabelColor = mainColor,
-        focusedIndicatorColor = mainColor,
-        cursorColor = typographyTextPrimary
-      )
-    )
+      Column(
+        modifier = Modifier
+          .fillMaxSize()
+          .background(backgroundDefault)
+          .padding(horizontal = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+      ) {
+        Image(
+          modifier = Modifier.padding(top = 100.dp),
+          painter = painterResource(id = R.drawable.ic_logo),
+          contentDescription = "Logo",
+          contentScale = ContentScale.Fit
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+        TextField(
+          value = email,
+          onValueChange = {
+            email = it
+            onEmailInputChanged(it)
+          },
+          modifier = Modifier
+            .fillMaxWidth(),
+          label = { Text(stringResource(id = R.string.email)) },
+          keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next
+          ),
+          colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = backgroundDefault,
+            focusedLabelColor = mainColor,
+            focusedIndicatorColor = mainColor,
+            cursorColor = typographyTextPrimary
+          )
+        )
 
-    Spacer(modifier = Modifier.height(16.dp))
-    TextField(
-      value = confirmPassword,
-      onValueChange = { confirmPassword = it },
-      modifier = Modifier
-        .fillMaxWidth(),
-      label = { Text(stringResource(id = R.string.confirm_password)) },
-      keyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Password,
-        imeAction = ImeAction.Next
-      ),
-      colors = TextFieldDefaults.textFieldColors(
-        backgroundColor = backgroundDefault,
-        focusedLabelColor = mainColor,
-        focusedIndicatorColor = mainColor,
-        cursorColor = typographyTextPrimary
-      )
-    )
+        Spacer(modifier = Modifier.height(16.dp))
+        TextField(
+          value = password,
+          onValueChange = {
+            password = it
+            onPasswordInputChanged(it)
+          },
+          modifier = Modifier
+            .fillMaxWidth(),
+          label = { Text(stringResource(id = R.string.password)) },
+          visualTransformation = PasswordVisualTransformation(),
+          keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Next
+          ),
+          colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = backgroundDefault,
+            focusedLabelColor = mainColor,
+            focusedIndicatorColor = mainColor,
+            cursorColor = typographyTextPrimary
+          )
+        )
 
-    Spacer(modifier = Modifier.height(16.dp))
-    TextField(
-      value = username,
-      onValueChange = {
-        username = it
-        onUsernameInputChanged(it)
-      },
-      modifier = Modifier
-        .fillMaxWidth(),
-      label = { Text(stringResource(id = R.string.username)) },
-      keyboardOptions = KeyboardOptions(
-        keyboardType = KeyboardType.Text,
-        imeAction = ImeAction.Done
-      ),
-      colors = TextFieldDefaults.textFieldColors(
-        backgroundColor = backgroundDefault,
-        focusedLabelColor = mainColor,
-        focusedIndicatorColor = mainColor,
-        cursorColor = typographyTextPrimary
-      )
-    )
+        Spacer(modifier = Modifier.height(16.dp))
+        TextField(
+          value = confirmPassword,
+          onValueChange = { confirmPassword = it },
+          modifier = Modifier
+            .fillMaxWidth(),
+          label = { Text(stringResource(id = R.string.confirm_password)) },
+          visualTransformation = PasswordVisualTransformation(),
+          keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Next
+          ),
+          colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = backgroundDefault,
+            focusedLabelColor = mainColor,
+            focusedIndicatorColor = mainColor,
+            cursorColor = typographyTextPrimary
+          )
+        )
 
-    Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+        TextField(
+          value = username,
+          onValueChange = {
+            username = it
+            onUsernameInputChanged(it)
+          },
+          modifier = Modifier
+            .fillMaxWidth(),
+          label = { Text(stringResource(id = R.string.username)) },
+          keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Done
+          ),
+          colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = backgroundDefault,
+            focusedLabelColor = mainColor,
+            focusedIndicatorColor = mainColor,
+            cursorColor = typographyTextPrimary
+          )
+        )
 
-    Button(
-      onClick = { onSignupButtonClicked() },
-      modifier = Modifier
-        .fillMaxWidth()
-        .height(50.dp),
-      colors = ButtonDefaults.textButtonColors(
-        backgroundColor = mainColor,
-        contentColor = Color.White
-      )
-    ) {
-      Text(text = "Create User")
-    }
+        Spacer(modifier = Modifier.height(40.dp))
 
-    Spacer(modifier = Modifier.height(30.dp))
+        Button(
+          onClick = { onSignupButtonClicked() },
+          modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp),
+          colors = ButtonDefaults.textButtonColors(
+            backgroundColor = mainColor,
+            contentColor = Color.White
+          )
+        ) {
+          Text(text = "Create User")
+        }
 
-    Text(
-      stringResource(id = R.string.have_account),
-      color = mainColor,
-      modifier = Modifier.clickable { context.startActivity(LoginActivity.createIntent(context)) })
-  }
+        Spacer(modifier = Modifier.height(30.dp))
+
+        Text(
+          stringResource(id = R.string.have_account),
+          color = mainColor,
+          modifier = Modifier.clickable { context.startActivity(LoginActivity.createIntent(context)) })
+      }
+    })
 }
 
 @Preview

@@ -1,35 +1,31 @@
 package com.diplomska.sportsaway.data.events_data.repository
 
 import com.diplomska.core.errorhandling.ErrorHandlingUseCase
-import com.diplomska.sportsaway.data.events_data.model.EventsResponse
 import com.diplomska.sportsaway.data.events_data.model.MatchResponse
 import com.diplomska.sportsaway.data.events_data.model.StadiumResponse
+import com.diplomska.sportsaway.data.events_data.model.TeamInfo
 import com.diplomska.sportsaway.data.events_data.model.TeamResponse
 import com.diplomska.sportsaway.data.events_data.model.TeamsResponse
 import com.diplomska.sportsaway.data.events_data.model.listOfCompetitionIds
 import com.diplomska.sportsaway.data.events_data.network.SportsApi
 import com.diplomska.sportsaway.data.events_data.network.StadiumApi
-import com.diplomska.sportsaway.data.events_data.model.TeamInfo
 import com.diplomska.sportsaway.data.events_data.provider.TeamInfoJsonProvider
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
-import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class SportsEventsRepositoryImpl(
   private val sportsApi: SportsApi,
   private val stadiumApi: StadiumApi,
-//  private val teamInfoJsonProvider: TeamInfoJsonProvider
+  private val teamInfoJsonProvider: TeamInfoJsonProvider
 ) : SportsEventsRepository, ErrorHandlingUseCase() {
 
   override suspend fun getMatches(competitionId: Int?): List<MatchResponse> {
+    val competition = if (competitionId == -1) null else competitionId
     val getDates = getTwoWeeksDates()
     return sportsApi.getMatches(
       dateTo = getDates.second,
       dateFrom = getDates.first,
-      competitions = competitionId?.toString() ?: listOfCompetitionIds.joinToString(",")
+      competitions = competition?.toString() ?: listOfCompetitionIds.joinToString(",")
     ).matches
   }
 
@@ -61,14 +57,13 @@ class SportsEventsRepositoryImpl(
   }
 
   override suspend fun fetchLatestTeamInfo(id: Int): TeamInfo? {
-   return null
+    return teamInfoJsonProvider.teamsData[id.toString()]
   }
 
   private fun getTwoWeeksDates(): Pair<String, String> {
     val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    val dateFrom = LocalDate.now().plusDays(1).format(dateFormatter)
-    val dateTo = LocalDate.now().plusDays(5).format(dateFormatter)
+    val dateFrom = LocalDate.now().plusDays(3).format(dateFormatter)
+    val dateTo = LocalDate.now().plusWeeks(1).plusDays(2).format(dateFormatter)
     return dateFrom to dateTo
   }
-
 }

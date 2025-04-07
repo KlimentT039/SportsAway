@@ -1,5 +1,6 @@
 package com.diplomska.sportsaway.common.style.compose.components
 
+import android.widget.ImageButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,6 +23,11 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -49,6 +55,7 @@ import com.diplomska.sportsaway.common.shared.model.Team
 import com.diplomska.sportsaway.common.shared.utils.GetImage
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundDefault
 import com.diplomska.sportsaway.common.style.compose.theme.sectionColor
+import com.diplomska.sportsaway.common.style.compose.theme.topBarTextColor
 import com.diplomska.sportsaway.common.style.compose.theme.typographyTextPrimary
 import com.diplomska.sportsaway.common.style.compose.theme.typographyTextSecondary
 
@@ -248,8 +255,10 @@ fun MatchSection(
   imageUrl: String?,
   name: String,
   isContentVisible: Boolean,
+  showInfo: Boolean = false,
+  onInfoClick: (() -> Unit)? = null,
   onVisibilityChange: (Boolean) -> Unit,
-  content: @Composable () -> Unit
+  content: @Composable () -> Unit,
 ) {
   Column {
     TopAppBar(
@@ -269,6 +278,15 @@ fun MatchSection(
             style = typography.mRegular,
             fontWeight = FontWeight.Bold
           )
+          if (showInfo && onInfoClick != null) {
+            IconButton(onClick = onInfoClick) {
+              Icon(
+                imageVector = androidx.compose.material.icons.Icons.Outlined.Info,
+                contentDescription = "Info",
+                tint = Color.Black
+              )
+            }
+          }
         }
         TextButton(onClick = { onVisibilityChange(!isContentVisible) }) {
           Text(
