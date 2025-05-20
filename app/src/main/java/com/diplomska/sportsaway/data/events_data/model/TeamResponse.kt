@@ -27,8 +27,8 @@ data class Area(
 
 @Parcelize
 data class Player(
-  @JsonProperty("name") val name: String,
-  @JsonProperty("position") val position: String,
-  @JsonProperty("dateOfBirth") val dateOfBirth: String,
-  @JsonProperty("nationality") val nationality: String
+  @JsonProperty("name") val name: String?,
+  @JsonProperty("position") val position: String?,
+  @JsonProperty("dateOfBirth") val dateOfBirth: String?,
+  @JsonProperty("nationality") val nationality: String?
 ) : Parcelable

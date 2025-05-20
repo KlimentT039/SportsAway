@@ -16,7 +16,7 @@ import com.diplomska.sportsaway.data.events_data.model.Player
 fun PlayerItem(player: Player) {
   Column(modifier = Modifier.fillMaxWidth()) {
     Text(
-      text = player.name,
+      text = player.name.orEmpty(),
       style = typography.mRegular,
       fontWeight = FontWeight.Bold
     )
