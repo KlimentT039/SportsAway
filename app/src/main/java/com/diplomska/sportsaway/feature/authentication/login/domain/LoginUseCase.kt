@@ -16,7 +16,7 @@ class LoginUseCase(private val firebaseRepository: FirebaseRepository) {
   }
 
   fun validatePassword(password: String): Boolean {
-    val passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\d\\s]).{6,30}$".toRegex()
+    val passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\d\\s]).{8,30}$".toRegex()
     return password.matches(passwordRegex)
   }
 

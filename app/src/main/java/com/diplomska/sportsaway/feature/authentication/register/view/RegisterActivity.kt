@@ -34,7 +34,7 @@ class RegisterActivity : AppCompatActivity() {
       viewModel.event.collect { event ->
         when (event) {
           is RegisterEvent.NavigateToDashboard -> {
-            startActivity(Intent(this@RegisterActivity, DashboardActivity::class.java))
+            finish()
           }
         }
       }

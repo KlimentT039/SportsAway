@@ -13,6 +13,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -115,7 +116,10 @@ fun BillingAddressDialog(
           value = viewModel.zipCode,
           onValueChange = { viewModel.zipCode = it },
           label = { Text(stringResource(R.string.zip_code)) },
-          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+          keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done
+          ),
           modifier = Modifier.fillMaxWidth(),
           colors = outlinedTextColor,
           isError = errors.containsKey("zipCode")

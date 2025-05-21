@@ -10,13 +10,17 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.style.compose.components.AppBar
@@ -26,6 +30,7 @@ import com.diplomska.sportsaway.common.style.compose.components.MatchSection
 import com.diplomska.sportsaway.common.style.compose.components.Scaffold
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
+import com.diplomska.sportsaway.feature.dashboard.home.components.tabs.model.DashboardTab
 import com.diplomska.sportsaway.feature.events.view.details.EventDetailsActivity
 import com.diplomska.sportsaway.feature.favourite.model.FavouriteTeam
 import com.diplomska.sportsaway.feature.favourite.view.accessdenied.AccessDeniedScreen
@@ -40,6 +45,18 @@ fun FavouriteScreen() {
   val viewState = viewModel.viewState.collectAsStateWithLifecycle().value
   val favouriteTeams = viewModel.favouriteTeams.collectAsStateWithLifecycle().value
   val context = LocalContext.current
+  val lifecycleOwner = LocalLifecycleOwner.current
+
+  LaunchedEffect(lifecycleOwner) {
+    val observer = LifecycleEventObserver { _, event ->
+      if (event == Lifecycle.Event.ON_RESUME) {
+        viewModel.initScreen()
+      }
+    }
+    val lifecycle = lifecycleOwner.lifecycle
+    lifecycle.addObserver(observer)
+  }
+
   Scaffold.WithTopBarOnly(
     topBar = {
       AppBar.CustomTopAppBar(

@@ -5,13 +5,21 @@ import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -46,6 +54,7 @@ import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundDefault
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
 import com.diplomska.sportsaway.common.style.compose.theme.typographyTextPrimary
+import com.diplomska.sportsaway.common.style.compose.typography
 import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
 import org.koin.androidx.compose.koinViewModel
 
@@ -56,16 +65,18 @@ fun CreateUserScreen() {
   when (uiState) {
     is RegisterViewState.Loading -> OverlayLoader()
     is RegisterViewState.Error -> ErrorScreen(
-      title = stringResource(R.string.something_went_wrong),
-      description = "User cannot be created at the moment",
+      title = stringResource(R.string.registration_failed),
+      description = stringResource(R.string.registration_failed_description),
       onClick = viewModel::onTryAgainClick
     )
 
     is RegisterViewState.UserData ->
       CreateUserContent(
+        userData = uiState,
         onEmailInputChanged = viewModel::onEmailInputChanged,
         onUsernameInputChanged = viewModel::onUsernameInputChanged,
         onPasswordInputChanged = viewModel::onPasswordInputChanged,
+        onConfirmPasswordInputChanged = viewModel::onConfirmPasswordInputChanged,
         onSignupButtonClicked = viewModel::onSignUpClick
       )
   }
@@ -73,8 +84,10 @@ fun CreateUserScreen() {
 
 @Composable
 private fun CreateUserContent(
+  userData: RegisterViewState.UserData,
   onEmailInputChanged: (String) -> Unit,
   onPasswordInputChanged: (String) -> Unit,
+  onConfirmPasswordInputChanged: (String) -> Unit,
   onUsernameInputChanged: (String) -> Unit,
   onSignupButtonClicked: () -> Unit
 ) {
@@ -100,12 +113,13 @@ private fun CreateUserContent(
       )
     },
     content = {
-
+      val scrollState = rememberScrollState()
       Column(
         modifier = Modifier
           .fillMaxSize()
           .background(backgroundDefault)
-          .padding(horizontal = 16.dp),
+          .padding(horizontal = 16.dp)
+          .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
         Image(
@@ -114,15 +128,17 @@ private fun CreateUserContent(
           contentDescription = "Logo",
           contentScale = ContentScale.Fit
         )
+
         Spacer(modifier = Modifier.height(30.dp))
+
+        // Email
         TextField(
-          value = email,
+          value = userData.email,
           onValueChange = {
             email = it
             onEmailInputChanged(it)
           },
-          modifier = Modifier
-            .fillMaxWidth(),
+          modifier = Modifier.fillMaxWidth(),
           label = { Text(stringResource(id = R.string.email)) },
           keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
@@ -135,16 +151,24 @@ private fun CreateUserContent(
             cursorColor = typographyTextPrimary
           )
         )
+        if (!userData.isEmailValid) {
+          Text(
+            text = stringResource(R.string.invalid_email),
+            style = typography.xsRegular.copy(color = Color.Red),
+            modifier = Modifier.fillMaxWidth()
+          )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        // Password
         TextField(
-          value = password,
+          value = userData.password,
           onValueChange = {
             password = it
             onPasswordInputChanged(it)
           },
-          modifier = Modifier
-            .fillMaxWidth(),
+          modifier = Modifier.fillMaxWidth(),
           label = { Text(stringResource(id = R.string.password)) },
           visualTransformation = PasswordVisualTransformation(),
           keyboardOptions = KeyboardOptions(
@@ -158,13 +182,24 @@ private fun CreateUserContent(
             cursorColor = typographyTextPrimary
           )
         )
+        if (!userData.isPasswordValid) {
+          Text(
+            text = stringResource(R.string.invalid_password),
+            style = typography.xsRegular.copy(color = Color.Red),
+            modifier = Modifier.fillMaxWidth()
+          )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        // Confirm Password
         TextField(
-          value = confirmPassword,
-          onValueChange = { confirmPassword = it },
-          modifier = Modifier
-            .fillMaxWidth(),
+          value = userData.confirmPassword,
+          onValueChange = {
+            confirmPassword = it
+            onConfirmPasswordInputChanged(it)
+          },
+          modifier = Modifier.fillMaxWidth(),
           label = { Text(stringResource(id = R.string.confirm_password)) },
           visualTransformation = PasswordVisualTransformation(),
           keyboardOptions = KeyboardOptions(
@@ -178,16 +213,24 @@ private fun CreateUserContent(
             cursorColor = typographyTextPrimary
           )
         )
+        if (!userData.isConfirmPasswordValid) {
+          Text(
+            text = stringResource(R.string.passwords_do_not_match),
+            style = typography.xsRegular.copy(color = Color.Red),
+            modifier = Modifier.fillMaxWidth()
+          )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        // Username
         TextField(
-          value = username,
+          value = userData.username,
           onValueChange = {
             username = it
             onUsernameInputChanged(it)
           },
-          modifier = Modifier
-            .fillMaxWidth(),
+          modifier = Modifier.fillMaxWidth(),
           label = { Text(stringResource(id = R.string.username)) },
           keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
@@ -200,20 +243,28 @@ private fun CreateUserContent(
             cursorColor = typographyTextPrimary
           )
         )
+        if (!userData.isUsernameValid) {
+          Text(
+            text = stringResource(R.string.invalid_username),
+            style = typography.xsRegular.copy(color = Color.Red),
+            modifier = Modifier.fillMaxWidth()
+          )
+        }
 
         Spacer(modifier = Modifier.height(40.dp))
 
         Button(
           onClick = { onSignupButtonClicked() },
+          enabled = userData.isButtonEnabled,
           modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
           colors = ButtonDefaults.textButtonColors(
-            backgroundColor = mainColor,
-            contentColor = Color.White
+            backgroundColor = if (userData.isButtonEnabled) mainColor else Color.Gray,
+            contentColor = Color.White,
           )
         ) {
-          Text(text = "Create User")
+          Text(text = stringResource(R.string.create_user))
         }
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -221,8 +272,12 @@ private fun CreateUserContent(
         Text(
           stringResource(id = R.string.have_account),
           color = mainColor,
-          modifier = Modifier.clickable { context.startActivity(LoginActivity.createIntent(context)) })
+          modifier = Modifier.clickable {
+            context.startActivity(LoginActivity.createIntent(context))
+          }
+        )
       }
+
     })
 }
 
@@ -230,9 +285,11 @@ private fun CreateUserContent(
 @Composable
 private fun PreviewCreateUserScreen() {
   CreateUserContent(
+    userData = RegisterViewState.UserData(),
     onEmailInputChanged = {},
     onPasswordInputChanged = {},
     onUsernameInputChanged = {},
-    onSignupButtonClicked = {}
+    onSignupButtonClicked = {},
+    onConfirmPasswordInputChanged = {}
   )
 }

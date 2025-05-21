@@ -26,7 +26,8 @@ sealed class RegisterViewState {
     val isUsernameValid: Boolean = true,
     val isPasswordValid: Boolean = true,
     val isEmailValid: Boolean = true,
-    val isConfirmPasswordValid: Boolean = true
+    val isConfirmPasswordValid: Boolean = true,
+    val isButtonEnabled: Boolean = false
   ) : RegisterViewState()
 
   data object Error : RegisterViewState()
@@ -44,20 +45,44 @@ class RegisterViewModel(private val registerUseCase: RegisterUseCase) : ViewMode
   private val _event = MutableSharedFlow<RegisterEvent>()
   val event = _event.asSharedFlow()
 
-  fun onEmailInputChanged(email: String) = updateViewStateWithData {
-    it.copy(email = email)
+  fun onEmailInputChanged(email: String) {
+    updateViewStateWithData {
+      it.copy(
+        email = email,
+        isEmailValid = registerUseCase.validateEmail(email)
+      )
+    }
+    updateButtonState()
   }
 
-  fun onPasswordInputChanged(password: String) = updateViewStateWithData {
-    it.copy(password = password)
+  fun onPasswordInputChanged(password: String) {
+    updateViewStateWithData {
+      it.copy(
+        password = password,
+        isPasswordValid = registerUseCase.validatePassword(password)
+      )
+    }
+    updateButtonState()
   }
 
-  fun onUsernameInputChanged(username: String) = updateViewStateWithData {
-    it.copy(username = username)
+  fun onUsernameInputChanged(username: String) {
+    updateViewStateWithData {
+      it.copy(username = username, isUsernameValid = username.isNotEmpty())
+    }
+    updateButtonState()
   }
 
-  fun onConfirmPasswordInputChanged(password: String) = updateViewStateWithData {
-    it.copy(confirmPassword = password)
+  fun onConfirmPasswordInputChanged(confirmPassword: String) {
+    updateViewStateWithData {
+      it.copy(
+        confirmPassword = confirmPassword,
+        isConfirmPasswordValid = registerUseCase.validateConfirmPassword(
+          confirmPassword,
+          it.password
+        )
+      )
+    }
+    updateButtonState()
   }
 
   fun onTryAgainClick() = viewModelScope.launch {
@@ -67,6 +92,7 @@ class RegisterViewModel(private val registerUseCase: RegisterUseCase) : ViewMode
   fun onSignUpClick() = viewModelScope.launch {
     val userInput = (_viewState.value as? UserData) ?: return@launch
     _viewState.update { RegisterViewState.Loading }
+
     registerUseCase(
       email = userInput.email,
       password = userInput.password,
@@ -74,11 +100,19 @@ class RegisterViewModel(private val registerUseCase: RegisterUseCase) : ViewMode
     ).fold(
       onFailure = {
         _viewState.update { RegisterViewState.Error }
+
       },
       onSuccess = {
         _event.emit(RegisterEvent.NavigateToDashboard)
       }
     )
+  }
+
+
+  private fun updateButtonState() {
+    updateViewStateWithData { state ->
+      state.copy(isButtonEnabled = state.isEmailValid && state.isPasswordValid && state.isConfirmPasswordValid && state.isUsernameValid)
+    }
   }
 
   private inline fun updateViewStateWithData(block: (UserData) -> UserData) {

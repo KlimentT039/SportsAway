@@ -1,5 +1,6 @@
 package com.diplomska.sportsaway.feature.authentication.login.view
 
+import ErrorScreen
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,14 +10,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
@@ -30,6 +34,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -48,7 +54,6 @@ import com.diplomska.sportsaway.common.style.compose.theme.backgroundDefault
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
 import com.diplomska.sportsaway.common.style.compose.theme.typographyTextPrimary
 import com.diplomska.sportsaway.common.style.compose.typography
-import com.diplomska.sportsaway.feature.authentication.register.view.RegisterActivity
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -56,12 +61,19 @@ fun LoginScreen() {
   val viewModel = koinViewModel<LoginViewModel>()
   val uiState = viewModel.viewState.collectAsState()
   when (uiState.value) {
-    is LoginViewState.Loading -> OverlayLoader()
+    is LoginViewState.LoginFailed -> ErrorScreen(
+      title = stringResource(R.string.login_failed),
+      description = stringResource(R.string.please_try_again),
+      onClick = viewModel::onTryAgainLogin
+    )
+
     is LoginViewState.UserData -> LoginContent(
       uiState = uiState.value as LoginViewState.UserData,
       onEmailInputChanged = viewModel::onEmailInputChanged,
       onPasswordInputChanged = viewModel::onPasswordInputChanged,
-      onLoginButtonClicked = viewModel::onLoginClick
+      onLoginButtonClicked = viewModel::onLoginClick,
+      onSignUpClicked = viewModel::navigateToRegisterActivity,
+      onDismissError = viewModel::onDismissError
     )
   }
 }
@@ -71,9 +83,10 @@ private fun LoginContent(
   uiState: LoginViewState.UserData,
   onEmailInputChanged: (String) -> Unit,
   onPasswordInputChanged: (String) -> Unit,
-  onLoginButtonClicked: () -> Unit
+  onLoginButtonClicked: () -> Unit,
+  onSignUpClicked: () -> Unit,
+  onDismissError: () -> Unit,
 ) {
-  val context = LocalContext.current
   var email by remember { mutableStateOf("") }
   var password by remember { mutableStateOf("") }
   val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
@@ -92,13 +105,30 @@ private fun LoginContent(
       )
     },
     content = {
+      if (uiState.isLoading) {
+        OverlayLoader()
+      }
+      val focusRequester = remember { FocusRequester() }
       Column(
         modifier = Modifier
           .fillMaxSize()
           .background(backgroundDefault)
+          .imePadding()
           .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
+        if (uiState.wrongCredentials) {
+          AlertDialog(
+            onDismissRequest = onDismissError,
+            title = { Text(stringResource(R.string.login_failed)) },
+            text = { Text(stringResource(R.string.wrong_credentials)) },
+            confirmButton = {
+              TextButton(onClick = onDismissError) {
+                Text("OK", color = mainColor)
+              }
+            }
+          )
+        }
         Image(
           modifier = Modifier.padding(top = 100.dp),
           painter = painterResource(id = R.drawable.ic_logo),
@@ -121,7 +151,7 @@ private fun LoginContent(
             imeAction = ImeAction.Next
           ),
           keyboardActions = KeyboardActions(
-            onNext = { }
+            onNext = { focusRequester.requestFocus() }
           ),
           colors = TextFieldDefaults.textFieldColors(
             backgroundColor = backgroundDefault,
@@ -149,7 +179,8 @@ private fun LoginContent(
           isError = !uiState.isPasswordValid,
           visualTransformation = PasswordVisualTransformation(),
           modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .focusRequester(focusRequester),
           label = { Text(stringResource(id = R.string.password)) },
           keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
@@ -178,25 +209,24 @@ private fun LoginContent(
           text = stringResource(id = R.string.no_account),
           color = mainColor,
           modifier = Modifier.clickable {
-            context.startActivity(RegisterActivity.createIntent(context))
+            onSignUpClicked()
           })
 
         Spacer(modifier = Modifier.weight(1f))
         Button(
           onClick = { onLoginButtonClicked() },
+          enabled = uiState.isButtonEnabled,
           modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
           colors = ButtonDefaults.textButtonColors(
-            backgroundColor = mainColor,
-            contentColor = Color.White
+            backgroundColor = if (uiState.isButtonEnabled) mainColor else Color.Gray,
+            contentColor = Color.White,
           )
         ) {
           Text(text = "Log in")
         }
-
         Spacer(modifier = Modifier.height(30.dp))
-
       }
     }
   )
@@ -210,6 +240,8 @@ fun PreviewLoginScreen() {
     onEmailInputChanged = { },
     onPasswordInputChanged = { },
     onLoginButtonClicked = { },
-    uiState = LoginViewState.UserData()
+    uiState = LoginViewState.UserData(),
+    onSignUpClicked = {},
+    onDismissError = {}
   )
 }

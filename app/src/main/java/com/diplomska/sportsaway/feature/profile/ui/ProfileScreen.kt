@@ -17,11 +17,14 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.shared.model.Match
@@ -40,8 +43,20 @@ import org.koin.androidx.compose.koinViewModel
 fun ProfileScreen(viewModel: ProfileViewModel = koinViewModel()) {
   val uiState by viewModel.viewState.collectAsStateWithLifecycle()
   val context = LocalContext.current
+  val lifecycleOwner = LocalLifecycleOwner.current
 
-  LaunchedEffect(key1 = Unit) {
+  LaunchedEffect(lifecycleOwner) {
+    val observer = LifecycleEventObserver { _, event ->
+      if (event == Lifecycle.Event.ON_RESUME) {
+        viewModel.requestState()
+      }
+    }
+    val lifecycle = lifecycleOwner.lifecycle
+    lifecycle.addObserver(observer)
+  }
+
+  // For collecting events
+  LaunchedEffect(Unit) {
     viewModel.event.collect { value ->
       if (value is ProfileEvents.NavigateToDashboard) {
         context.startActivity(Intent(context, DashboardActivity::class.java))
@@ -68,7 +83,9 @@ private fun ProfileContent(
     is ProfileViewState.UserHasNotLoggedIn -> AccessDeniedScreen(
       message = stringResource(id = R.string.access_denied_profile),
       buttonText = stringResource(id = R.string.log_in),
-      onButtonClicked = { context.startActivity(LoginActivity.createIntent(context)) }
+      onButtonClicked = {
+        context.startActivity(LoginActivity.createIntent(context))
+      }
     )
 
     is ProfileViewState.ShowError -> ErrorScreen(

@@ -22,11 +22,8 @@ class FavouriteViewModel(
   private val _favouriteTeams = MutableStateFlow<List<FavouriteTeam>>(emptyList())
   val favouriteTeams = _favouriteTeams.asStateFlow()
 
-  init {
-    initScreen()
-  }
-
   fun initScreen() = viewModelScope.launch {
+    _viewState.update { FavouriteViewState.Loading }
     if (!fetchUserData.isTheUserLoggedIn()) {
       _viewState.update { FavouriteViewState.HasNotLoggedIn }
     } else {
@@ -43,7 +40,8 @@ class FavouriteViewModel(
     val listOfIds = (viewState.value as FavouriteViewState.TeamsAndMatches).favouriteTeams
     teamsUseCase.getFavouriteEvents(listOfIds).fold(
       onFailure = { _viewState.update { FavouriteViewState.ShowError } },
-      onSuccess = { teams -> _favouriteTeams.update { teams }
+      onSuccess = { teams ->
+        _favouriteTeams.update { teams }
       }
     )
   }

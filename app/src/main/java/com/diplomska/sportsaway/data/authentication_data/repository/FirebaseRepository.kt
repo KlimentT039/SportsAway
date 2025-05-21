@@ -5,7 +5,10 @@ import com.diplomska.sportsaway.common.shared.errorhandling.BaseError
 import com.diplomska.sportsaway.common.shared.errorhandling.Either
 import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.data.authentication_data.model.User
+import com.diplomska.sportsaway.feature.authentication.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -16,13 +19,18 @@ class FirebaseRepository {
   private val auth: FirebaseAuth = FirebaseAuth.getInstance()
   private val db = FirebaseFirestore.getInstance()
 
+
   suspend fun loginUser(email: String, password: String): Either<BaseError, String> {
     return withContext(Dispatchers.IO) {
       try {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).await()
         Either.Success(email)
+      } catch (e: FirebaseAuthInvalidUserException) {
+        Either.Failure(BaseError.AuthenticationError(e.message ?: Constants.EXTRA_INVALID_USER))
+      } catch (e: FirebaseAuthInvalidCredentialsException) {
+        Either.Failure(BaseError.AuthenticationError(e.message ?: Constants.EXTRA_INVALID_PASS))
       } catch (e: Exception) {
-        Either.Failure(BaseError.AuthenticationError(e.message ?: "Login error"))
+        Either.Failure(BaseError.UnknownError)
       }
     }
   }

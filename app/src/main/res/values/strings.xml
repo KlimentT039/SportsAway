@@ -78,4 +78,12 @@
   <string name="news">News</string>
   <string name="squad">Squad</string>
   <string name="injuries">Injuries</string>
+  <string name="login_failed">Login failed</string>
+  <string name="wrong_credentials">Incorrect email or password.</string>
+  <string name="registration_failed">Registration Failed</string>
+  <string name="registration_failed_description">We couldn\'t complete your registration. Please check your details and try again.</string>
+  <string name="invalid_email">Invalid email format</string>
+  <string name="passwords_do_not_match">Passwords do not match</string>
+  <string name="invalid_username">Username cannot be empty</string>
+  <string name="create_user">Create User</string>
 </resources>

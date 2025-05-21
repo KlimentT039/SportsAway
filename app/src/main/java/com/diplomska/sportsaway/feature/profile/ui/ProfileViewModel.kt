@@ -25,10 +25,6 @@ class ProfileViewModel(private val getUserDataUseCase: GetUserDataUseCase) : Vie
   private val _event = MutableSharedFlow<ProfileEvents>()
   val event = _event.asSharedFlow()
 
-  init {
-    requestState()
-  }
-
   fun requestState() {
     viewModelScope.launch {
       getUserDataUseCase.getUserStatus().fold(

@@ -49,6 +49,7 @@
     <activity
       android:name=".feature.authentication.register.view.RegisterActivity"
       android:theme="@style/AppTheme.SportsAway"
+      android:windowSoftInputMode="adjustResize"
       android:exported="true">
     </activity>
 

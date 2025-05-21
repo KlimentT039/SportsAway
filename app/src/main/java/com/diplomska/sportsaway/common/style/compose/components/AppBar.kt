@@ -85,9 +85,9 @@ object AppBar {
       title = {
         Text(
           text = title,
-          modifier = Modifier.fillMaxWidth(),
           textAlign = TextAlign.Center,
-          onTextLayout = {}
+          color = contentColor,
+          style = MaterialTheme.typography.titleLarge
         )
       },
       navigationIcon = {

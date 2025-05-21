@@ -23,7 +23,7 @@ class BillingAddressViewModel : ViewModel() {
     if (city.isBlank()) validationErrors["city"] = "City is required."
     if (country.isBlank()) validationErrors["country"] = "Country is required."
     if (zipCode.isBlank() || !zipCode.matches(Regex("\\d{5}")))
-      validationErrors["zipCode"] = "Enter a valid 5-digit ZIP code."
+      validationErrors["zipCode"] = "Enter a valid 4-digit ZIP code."
 
     errors.value = validationErrors
     return validationErrors.isEmpty()
