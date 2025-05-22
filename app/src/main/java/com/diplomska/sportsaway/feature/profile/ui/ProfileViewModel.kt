@@ -27,6 +27,7 @@ class ProfileViewModel(private val getUserDataUseCase: GetUserDataUseCase) : Vie
 
   fun requestState() {
     viewModelScope.launch {
+      _viewState.update { Loading }
       getUserDataUseCase.getUserStatus().fold(
         onFailure = { _viewState.update { ProfileViewState.ShowError } },
         onSuccess = { successState -> _viewState.update { successState } }
