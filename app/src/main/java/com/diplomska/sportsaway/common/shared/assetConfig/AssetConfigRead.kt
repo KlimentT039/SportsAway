@@ -1,13 +1,12 @@
 package com.diplomska.sportsaway.common.shared.assetConfig
 
 import android.content.Context
-import kotlin.reflect.KClass
+import java.io.InputStream
 
-class AssetConfigRead(private val context: Context, private val jsonMapper: JsonMapper) {
+class AssetConfigRead(private val context: Context, val jsonMapper: JsonMapper) {
 
-  operator fun <T : Any> invoke(fileName: String, configType: KClass<T>): T {
-    val file = context.assets.open(fileName)
-    return jsonMapper.parse(file, configType.java)
-  }
+  fun openAsset(fileName: String): InputStream = context.assets.open(fileName)
 
+  inline operator fun <reified T : Any> invoke(fileName: String): T =
+    jsonMapper.parse(openAsset(fileName))
 }

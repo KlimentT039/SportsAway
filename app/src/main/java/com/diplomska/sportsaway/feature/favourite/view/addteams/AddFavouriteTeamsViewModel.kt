@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.get
 
 class AddFavouriteTeamsViewModel(private val teamsUseCase: TeamsUseCase) : ViewModel() {
 

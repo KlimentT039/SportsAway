@@ -1,11 +1,8 @@
 package com.diplomska.sportsaway.common.shared.model
 
-import android.os.Parcelable
 import com.diplomska.sportsaway.data.events_data.model.Player
 import com.diplomska.sportsaway.data.events_data.model.TeamResponse
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class Team(
   val id: Int = 0,
   val name: String = "",
@@ -17,7 +14,7 @@ data class Team(
   val isFavourite: Boolean = false,
   val squad: List<Player> = emptyList(),
   val flag: String? = null
-) : Parcelable
+)
 
 fun TeamResponse.toTeam() = Team(
   id = id,

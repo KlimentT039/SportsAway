@@ -1,14 +1,15 @@
 plugins {
-  id("com.android.application")
-  id("org.jetbrains.kotlin.android")
-  id("kotlin-parcelize")
-  id("com.google.gms.google-services")
-  kotlin("kapt")
+  alias(libs.plugins.android.application)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlin.parcelize)
+  alias(libs.plugins.kotlin.serialization)
+  alias(libs.plugins.kotlin.compose)
+  alias(libs.plugins.google.services)
 }
 
 android {
   namespace = "com.diplomska.sportsaway"
-  compileSdk = 34
+  compileSdk = 35
 
   defaultConfig {
     applicationId = "com.diplomska.sportsaway"
@@ -18,7 +19,6 @@ android {
     versionName = "1.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
   }
 
   buildTypes {
@@ -34,69 +34,73 @@ android {
   kotlinOptions {
     jvmTarget = "1.8"
   }
-  composeOptions {
-    kotlinCompilerExtensionVersion = "1.5.0"
-  }
   buildFeatures {
     compose = true
   }
 }
 
+kotlin {
+  jvmToolchain(17)
+}
+
 dependencies {
+  implementation(project(":shared"))
 
-  implementation("io.insert-koin:koin-core:3.4.3")
-  implementation("io.insert-koin:koin-android:3.4.3")
-  implementation("io.insert-koin:koin-test:3.4.3")
-  implementation("io.insert-koin:koin-test-junit4:3.4.3")
-  implementation("io.insert-koin:koin-androidx-compose:3.4.3")
-  implementation("androidx.navigation:navigation-compose:2.7.5")
-  implementation("com.squareup.okhttp3:okhttp:4.11.0")
-  implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+  // DI
+  implementation(libs.koin.core)
+  implementation(libs.koin.android)
+  implementation(libs.koin.androidx.compose)
+  testImplementation(libs.koin.test)
+  testImplementation(libs.koin.test.junit4)
 
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
-  implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
+  // Coroutines
+  implementation(libs.kotlinx.coroutines.core)
+  implementation(libs.kotlinx.coroutines.android)
+  implementation(libs.kotlinx.coroutines.play.services)
 
-  implementation("androidx.core:core-ktx:1.9.0")
-  implementation("androidx.appcompat:appcompat:1.6.1")
-  implementation("com.google.android.material:material:1.10.0")
+  // Serialization
+  implementation(libs.kotlinx.serialization.json)
 
-  implementation("com.squareup.retrofit2:retrofit:2.9.0")
-  implementation("com.squareup.retrofit2:converter-jackson:2.9.0")
-  implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
-  implementation("com.google.firebase:firebase-analytics")
-  implementation("com.google.firebase:firebase-firestore")
-  implementation("com.google.firebase:firebase-auth")
-  implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.0")
+  // Network
+  implementation(libs.okhttp)
+  implementation(libs.okhttp.logging.interceptor)
+  implementation(libs.retrofit)
+  implementation(libs.retrofit.kotlinx.serialization.converter)
 
-  testImplementation("junit:junit:4.13.2")
-  androidTestImplementation("androidx.test.ext:junit:1.1.5")
-  androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+  // AndroidX
+  implementation(libs.androidx.core.ktx)
+  implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.activity.compose)
+  implementation(libs.androidx.lifecycle.runtime.compose)
+  implementation(libs.androidx.navigation.compose)
+  implementation(libs.material)
 
-  implementation("androidx.core:core-ktx:1.12.0")
-  implementation("androidx.appcompat:appcompat:1.6.1")
-  implementation("com.google.android.material:material:1.10.0")
-  implementation("io.coil-kt:coil:2.6.0")
-  implementation("io.coil-kt:coil-svg:2.0.0")
-  implementation("io.coil-kt:coil-compose:2.7.0")
-
-  testImplementation("junit:junit:4.13.2")
-  androidTestImplementation("androidx.test.ext:junit:1.1.5")
-  androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-
-  val composeBom = platform("androidx.compose:compose-bom:2023.10.01")
+  // Compose
+  val composeBom = platform(libs.compose.bom)
   implementation(composeBom)
   androidTestImplementation(composeBom)
-  implementation("androidx.activity:activity-compose:1.9.3")
-  implementation("androidx.compose.material3:material3")
-  implementation("androidx.compose.material:material")
-  implementation("androidx.compose.foundation:foundation")
-  implementation("androidx.compose.ui:ui")
+  implementation(libs.compose.ui)
+  implementation(libs.compose.ui.tooling)
+  implementation(libs.compose.ui.tooling.preview)
+  implementation(libs.compose.foundation)
+  implementation(libs.compose.material)
+  implementation(libs.compose.material3)
+  androidTestImplementation(libs.compose.ui.test.junit4)
+  debugImplementation(libs.compose.ui.test.manifest)
 
-  implementation("androidx.compose.ui:ui-tooling-preview")
-  implementation("androidx.compose.ui:ui-tooling")
+  // Image loading
+  implementation(libs.coil)
+  implementation(libs.coil.compose)
+  implementation(libs.coil.svg)
 
-  androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-  debugImplementation("androidx.compose.ui:ui-test-manifest")
+  // Firebase
+  implementation(platform(libs.firebase.bom))
+  implementation(libs.firebase.auth)
+  implementation(libs.firebase.firestore)
+  implementation(libs.firebase.analytics)
 
+  // Test
+  testImplementation(libs.junit)
+  androidTestImplementation(libs.androidx.test.junit)
+  androidTestImplementation(libs.androidx.test.espresso)
 }
