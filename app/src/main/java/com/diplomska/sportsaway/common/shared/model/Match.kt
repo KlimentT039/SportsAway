@@ -1,25 +1,8 @@
 package com.diplomska.sportsaway.common.shared.model
 
-import android.os.Parcelable
 import com.diplomska.sportsaway.common.shared.utils.parseDate
 import com.diplomska.sportsaway.common.shared.utils.parseDateToTime
 import com.diplomska.sportsaway.data.events_data.model.MatchResponse
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
-data class Match(
-  val id: Int = 0,
-  val date: String = "",
-  val time: String = "",
-  val competition: Competition = Competition(),
-  val homeTeam: Team = Team(),
-  val awayTeam: Team = Team(),
-  val trending: Boolean = false,
-  val matchday: Int = 0,
-  val tickets: List<Ticket> = emptyList(),
-  val venue: String? = null,
-  val venueImage: String? = null
-) : Parcelable
 
 fun MatchResponse.toMatch() = Match(
   id = id,
@@ -37,9 +20,6 @@ fun MatchResponse.toMatch() = Match(
     initRandomVipTickets(id)
   )
 )
-
-fun Match.getMatchTitle() = "${homeTeam.name} vs ${awayTeam.name}"
-fun Match.getMatchDescription() = "$date, $time at $venue".takeIf { venue != null }
 
 private fun MatchResponse.isTheMatchTrending(): Boolean {
   val listOfTrendingTeams = listOf(
@@ -59,4 +39,3 @@ private fun MatchResponse.isTheMatchTrending(): Boolean {
       this.awayTeam.name.contains(team, ignoreCase = true)
   }
 }
-

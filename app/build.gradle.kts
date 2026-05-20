@@ -61,12 +61,6 @@ dependencies {
   // Serialization
   implementation(libs.kotlinx.serialization.json)
 
-  // Network
-  implementation(libs.okhttp)
-  implementation(libs.okhttp.logging.interceptor)
-  implementation(libs.retrofit)
-  implementation(libs.retrofit.kotlinx.serialization.converter)
-
   // AndroidX
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.appcompat)

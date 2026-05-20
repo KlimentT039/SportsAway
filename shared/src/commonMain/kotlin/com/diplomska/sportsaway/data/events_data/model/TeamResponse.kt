@@ -1,5 +1,7 @@
 package com.diplomska.sportsaway.data.events_data.model
 
+import com.diplomska.sportsaway.common.shared.parcelize.Parcelable
+import com.diplomska.sportsaway.common.shared.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -23,10 +25,11 @@ data class Area(
   @SerialName("flag") val flag: String
 )
 
+@Parcelize
 @Serializable
 data class Player(
   @SerialName("name") val name: String? = null,
   @SerialName("position") val position: String? = null,
   @SerialName("dateOfBirth") val dateOfBirth: String? = null,
   @SerialName("nationality") val nationality: String? = null
-)
+) : Parcelable

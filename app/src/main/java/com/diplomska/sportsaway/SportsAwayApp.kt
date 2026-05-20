@@ -1,8 +1,8 @@
 package com.diplomska.sportsaway
 
 import android.app.Application
-import com.diplomska.sportsaway.common.shared.di.sharedModule
-import com.diplomska.sportsaway.data.events_data.di.sportDataModule
+import com.diplomska.sportsaway.di.dataModule
+import com.diplomska.sportsaway.di.platformModule
 import com.diplomska.sportsaway.feature.authentication.di.authenticationModule
 import com.diplomska.sportsaway.feature.dashboard.di.dashboardModule
 import com.diplomska.sportsaway.feature.events.di.eventModule
@@ -22,8 +22,8 @@ class SportsAwayApp : Application() {
     startKoin {
       androidContext(this@SportsAwayApp)
       modules(
-        sharedModule,
-        sportDataModule,
+        dataModule,
+        platformModule(),
         dashboardModule,
         eventModule,
         profileModule,

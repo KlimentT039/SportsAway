@@ -1,24 +1,8 @@
 package com.diplomska.sportsaway.common.shared.model
 
-import android.os.Parcelable
-import androidx.annotation.StringRes
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.feature.events.view.model.TicketFilter
-import kotlinx.parcelize.Parcelize
-import java.math.BigDecimal
 import kotlin.random.Random
-
-@Parcelize
-data class Ticket(
-  @StringRes val title: Int = 0,
-  val remainingTickets: Int = 0,
-  val price: Int = 0,
-  val section: String = "101",
-  val row: Int? = null,
-  val ticketType: TicketFilter = TicketFilter.GENERAL,
-  val matchId: Int = -1
-) : Parcelable
-
 
 fun initRandomGeneralTickets(matchId: Int, isItShortSide: Boolean) = Ticket(
   title = if (isItShortSide) R.string.shortside_ticket else R.string.longside_ticket,
