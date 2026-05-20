@@ -55,6 +55,7 @@ import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
 import com.diplomska.sportsaway.common.style.compose.typography
 import com.diplomska.sportsaway.feature.events.view.model.TicketFilter
+import com.diplomska.sportsaway.feature.events.view.model.toStringRes
 
 @Composable
 fun EventDetailsScreen(
@@ -227,7 +228,7 @@ fun TicketOption(
     ) {
       Column {
         Text(
-          text = stringResource(ticket.title),
+          text = stringResource(ticket.title.toStringRes()),
           style = typography.mRegular.copy(fontSize = 16.sp),
           fontWeight = FontWeight.Bold
         )
