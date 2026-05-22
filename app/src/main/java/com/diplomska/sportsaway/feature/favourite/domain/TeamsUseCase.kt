@@ -9,7 +9,7 @@ import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.common.shared.model.Team
 import com.diplomska.sportsaway.common.shared.model.toMatch
 import com.diplomska.sportsaway.common.shared.model.toTeam
-import com.diplomska.sportsaway.data.authentication_data.repository.FirebaseRepository
+import com.diplomska.sportsaway.data.authentication_data.repository.AuthRepository
 import com.diplomska.sportsaway.data.events_data.repository.SportsEventsRepository
 import com.diplomska.sportsaway.feature.favourite.model.FavouriteTeam
 import kotlinx.coroutines.async
@@ -18,7 +18,7 @@ import kotlinx.coroutines.coroutineScope
 
 class TeamsUseCase(
   private val sportsRepository: SportsEventsRepository,
-  private val firebaseRepository: FirebaseRepository
+  private val firebaseRepository: AuthRepository
 ) : ErrorHandlingUseCase() {
 
   suspend operator fun invoke(): Either<BaseError, List<Team>> {

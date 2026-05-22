@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./gradlew :app:assembleDebug --no-daemon)",
+      "Bash(./gradlew :app:assembleDebug)",
+      "Bash(./gradlew :shared:assembleDebug :app:assembleDebug)",
+      "Bash(git add *)",
+      "Bash(git mv *)",
+      "Bash(./gradlew :shared:compileKotlinMetadata --no-daemon)",
+      "Bash(./gradlew :shared:compileDebugKotlinAndroid --no-daemon)",
+      "Bash(./gradlew :app:compileDebugKotlin --no-daemon)",
+      "Bash(git *)"
+    ]
+  }
+}

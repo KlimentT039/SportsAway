@@ -14,13 +14,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class FirebaseRepository {
+class FirebaseAuthRepository : AuthRepository {
 
   private val auth: FirebaseAuth = FirebaseAuth.getInstance()
   private val db = FirebaseFirestore.getInstance()
 
 
-  suspend fun loginUser(email: String, password: String): Either<BaseError, String> {
+  override suspend fun loginUser(email: String, password: String): Either<BaseError, String> {
     return withContext(Dispatchers.IO) {
       try {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).await()
@@ -35,7 +35,7 @@ class FirebaseRepository {
     }
   }
 
-  suspend fun createUser(
+  override suspend fun createUser(
     name: String,
     password: String,
     email: String
@@ -52,11 +52,11 @@ class FirebaseRepository {
     }
   }
 
-  fun isLogged(): Boolean {
+  override fun isLogged(): Boolean {
     return auth.currentUser != null
   }
 
-  fun logout(): Either<BaseError, Unit> {
+  override fun logout(): Either<BaseError, Unit> {
     return try {
       FirebaseAuth.getInstance().signOut()
       Either.Success(Unit)
@@ -65,7 +65,7 @@ class FirebaseRepository {
     }
   }
 
-  suspend fun getCurrentUser(): Either<BaseError, User> {
+  override suspend fun getCurrentUser(): Either<BaseError, User> {
     val currentUserEmail = FirebaseAuth.getInstance().currentUser?.email
       ?: return Either.Failure(BaseError.AuthenticationError("No user is logged in"))
 
@@ -84,7 +84,7 @@ class FirebaseRepository {
     }
   }
 
-  suspend fun updateFavouritesList(teams: List<Int>): Either<BaseError, User?> {
+  override suspend fun updateFavouritesList(teams: List<Int>): Either<BaseError, User?> {
     val currentUserResult = getCurrentUser()
     if (currentUserResult is Either.Failure) {
       return currentUserResult
@@ -102,7 +102,7 @@ class FirebaseRepository {
     }
   }
 
-  suspend fun addMatchToUserDatabase(match: Match): Either<BaseError, User?> {
+  override suspend fun addMatchToUserDatabase(match: Match): Either<BaseError, User?> {
     val currentUserResult = getCurrentUser()
     if (currentUserResult is Either.Failure) {
       return Either.Success(null)

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.common.shared.model.Ticket
-import com.diplomska.sportsaway.data.authentication_data.repository.FirebaseRepository
+import com.diplomska.sportsaway.data.authentication_data.repository.AuthRepository
 import com.diplomska.sportsaway.feature.events.view.model.BillingAddress
 import com.diplomska.sportsaway.feature.events.view.model.OrderBundle
 import com.diplomska.sportsaway.feature.events.view.model.SavedCard
@@ -35,7 +35,7 @@ sealed interface OrderTicketsState {
   ) : OrderTicketsState
 }
 
-class OrderTicketsViewModel(private val firebaseRepository: FirebaseRepository) : ViewModel() {
+class OrderTicketsViewModel(private val firebaseRepository: AuthRepository) : ViewModel() {
 
   private val _state = MutableStateFlow<OrderTicketsState>(OrderTicketsState.Loading)
   val state = _state.asStateFlow()

@@ -2,6 +2,7 @@ package com.diplomska.sportsaway
 
 import android.app.Application
 import com.diplomska.sportsaway.di.dataModule
+import com.diplomska.sportsaway.di.domainModule
 import com.diplomska.sportsaway.di.platformModule
 import com.diplomska.sportsaway.feature.authentication.di.authenticationModule
 import com.diplomska.sportsaway.feature.dashboard.di.dashboardModule
@@ -23,6 +24,7 @@ class SportsAwayApp : Application() {
       androidContext(this@SportsAwayApp)
       modules(
         dataModule,
+        domainModule,
         platformModule(),
         dashboardModule,
         eventModule,

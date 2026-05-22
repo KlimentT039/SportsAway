@@ -7,13 +7,13 @@ import com.diplomska.sportsaway.common.shared.errorhandling.map
 import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.common.shared.utils.DATE_FORMAT
 import com.diplomska.sportsaway.data.authentication_data.model.User
-import com.diplomska.sportsaway.data.authentication_data.repository.FirebaseRepository
+import com.diplomska.sportsaway.data.authentication_data.repository.AuthRepository
 import com.diplomska.sportsaway.feature.profile.model.ProfileViewState
 import com.diplomska.sportsaway.feature.profile.model.UserData
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class GetUserDataUseCase(private val firebaseRepository: FirebaseRepository) :
+class GetUserDataUseCase(private val firebaseRepository: AuthRepository) :
   ErrorHandlingUseCase() {
 
   suspend fun getUserStatus(): Either<BaseError, ProfileViewState> {

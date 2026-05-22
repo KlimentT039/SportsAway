@@ -2,11 +2,11 @@ package com.diplomska.sportsaway.feature.favourite.domain
 
 import com.diplomska.core.errorhandling.ErrorHandlingUseCase
 import com.diplomska.sportsaway.common.shared.errorhandling.fold
-import com.diplomska.sportsaway.data.authentication_data.repository.FirebaseRepository
+import com.diplomska.sportsaway.data.authentication_data.repository.AuthRepository
 import com.diplomska.sportsaway.feature.favourite.view.FavouriteViewState
 
 class FetchUserDataUseCase(
-  private val firebaseRepository: FirebaseRepository
+  private val firebaseRepository: AuthRepository
 ) : ErrorHandlingUseCase() {
 
   fun isTheUserLoggedIn() = firebaseRepository.isLogged()
