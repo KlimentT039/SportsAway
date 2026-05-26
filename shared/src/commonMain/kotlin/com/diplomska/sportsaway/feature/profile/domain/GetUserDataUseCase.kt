@@ -10,8 +10,12 @@ import com.diplomska.sportsaway.data.authentication_data.model.User
 import com.diplomska.sportsaway.data.authentication_data.repository.AuthRepository
 import com.diplomska.sportsaway.feature.profile.model.ProfileViewState
 import com.diplomska.sportsaway.feature.profile.model.UserData
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format.MonthNames
+import kotlinx.datetime.format.char
+import kotlinx.datetime.todayIn
 
 class GetUserDataUseCase(private val firebaseRepository: AuthRepository) :
   ErrorHandlingUseCase() {
@@ -30,7 +34,8 @@ class GetUserDataUseCase(private val firebaseRepository: AuthRepository) :
     firebaseRepository.logout()
 
   private fun User.mapToUserData(): UserData {
-    val separateMatches = separateMatchesWithStringDates(matches, LocalDate.now())
+    val currentDate = Clock.System.todayIn(TimeZone.currentSystemDefault())
+    val separateMatches = separateMatchesWithStringDates(matches, currentDate)
     return UserData(
       username = name,
       visitedMatches = separateMatches.first,
@@ -42,12 +47,17 @@ class GetUserDataUseCase(private val firebaseRepository: AuthRepository) :
     matches: List<Match>,
     currentDate: LocalDate
   ): Pair<List<Match>, List<Match>> {
-    val dateFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT)
+    val dateFormat = LocalDate.Format {
+      dayOfMonth()
+      char('.')
+      monthName(MonthNames.ENGLISH_ABBREVIATED)
+      char('.')
+      year()
+    }
 
     return matches.partition { match ->
-      val matchDate = LocalDate.parse(match.date, dateFormatter)
-      matchDate.isBefore(currentDate) || matchDate.isEqual(currentDate)
+      val matchDate = LocalDate.parse(match.date, dateFormat)
+      matchDate <= currentDate
     }
   }
-
 }

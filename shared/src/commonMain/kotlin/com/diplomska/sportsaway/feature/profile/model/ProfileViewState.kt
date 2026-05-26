@@ -1,6 +1,5 @@
 package com.diplomska.sportsaway.feature.profile.model
 
-
 sealed interface ProfileViewState {
 
   data object Loading : ProfileViewState
@@ -13,5 +12,3 @@ sealed interface ProfileViewState {
     val user: UserData
   ) : ProfileViewState
 }
-
-
