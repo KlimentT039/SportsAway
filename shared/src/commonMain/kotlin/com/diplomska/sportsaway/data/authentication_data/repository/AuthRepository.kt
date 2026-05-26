@@ -13,7 +13,7 @@ interface AuthRepository {
 
   fun isLogged(): Boolean
 
-  fun logout(): Either<BaseError, Unit>
+  suspend fun logout(): Either<BaseError, Unit>
 
   suspend fun getCurrentUser(): Either<BaseError, User>
 

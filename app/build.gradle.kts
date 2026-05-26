@@ -87,10 +87,8 @@ dependencies {
   implementation(libs.coil.compose)
   implementation(libs.coil.svg)
 
-  // Firebase
+  // Firebase (Android: analytics + Google Services init only; auth/firestore come from :shared via GitLive)
   implementation(platform(libs.firebase.bom))
-  implementation(libs.firebase.auth)
-  implementation(libs.firebase.firestore)
   implementation(libs.firebase.analytics)
 
   // Test

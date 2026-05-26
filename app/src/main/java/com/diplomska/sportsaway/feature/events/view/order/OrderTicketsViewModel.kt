@@ -9,7 +9,6 @@ import com.diplomska.sportsaway.data.authentication_data.repository.AuthReposito
 import com.diplomska.sportsaway.feature.events.view.model.BillingAddress
 import com.diplomska.sportsaway.feature.events.view.model.OrderBundle
 import com.diplomska.sportsaway.feature.events.view.model.SavedCard
-import com.google.firebase.firestore.firestoreSettings
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

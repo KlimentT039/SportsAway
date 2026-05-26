@@ -30,7 +30,7 @@ class GetUserDataUseCase(private val firebaseRepository: AuthRepository) :
     }
   }
 
-  fun logout(): Either<BaseError, Unit> =
+  suspend fun logout(): Either<BaseError, Unit> =
     firebaseRepository.logout()
 
   private fun User.mapToUserData(): UserData {

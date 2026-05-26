@@ -41,6 +41,9 @@ kotlin {
       implementation(libs.ktor.client.logging)
 
       api(libs.koin.core)
+
+      api(libs.gitlive.firebase.auth)
+      api(libs.gitlive.firebase.firestore)
     }
     commonTest.dependencies {
       implementation(kotlin("test"))

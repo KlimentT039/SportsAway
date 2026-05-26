@@ -5,8 +5,10 @@ import com.diplomska.sportsaway.common.shared.parcelize.Parcelize
 import com.diplomska.sportsaway.feature.events.view.model.TicketFilter
 import com.diplomska.sportsaway.feature.events.view.model.TicketTitle
 import kotlin.random.Random
+import kotlinx.serialization.Serializable
 
 @Parcelize
+@Serializable
 data class Ticket(
   val title: TicketTitle = TicketTitle.SHORT_SIDE,
   val remainingTickets: Int = 0,

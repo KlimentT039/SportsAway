@@ -3,8 +3,10 @@ package com.diplomska.sportsaway.common.shared.model
 import com.diplomska.sportsaway.common.shared.parcelize.Parcelable
 import com.diplomska.sportsaway.common.shared.parcelize.Parcelize
 import com.diplomska.sportsaway.data.events_data.model.CompetitionResponse
+import kotlinx.serialization.Serializable
 
 @Parcelize
+@Serializable
 data class Competition(
   val id: Int = 0,
   val name: String = "",

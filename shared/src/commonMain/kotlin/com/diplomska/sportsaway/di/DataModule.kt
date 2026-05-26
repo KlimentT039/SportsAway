@@ -4,6 +4,8 @@ import com.diplomska.sportsaway.common.shared.assetConfig.AssetConfigRead
 import com.diplomska.sportsaway.common.shared.assetConfig.JsonMapper
 import com.diplomska.sportsaway.common.shared.network.createHttpClient
 import com.diplomska.sportsaway.common.shared.network.httpClientEngine
+import com.diplomska.sportsaway.data.authentication_data.repository.AuthRepository
+import com.diplomska.sportsaway.data.authentication_data.repository.FirebaseAuthRepository
 import com.diplomska.sportsaway.data.events_data.network.SportsApi
 import com.diplomska.sportsaway.data.events_data.network.StadiumApi
 import com.diplomska.sportsaway.data.events_data.provider.TeamInfoJsonProvider
@@ -22,6 +24,7 @@ val dataModule = module {
   single { StadiumApi(get()) }
   single { TeamInfoJsonProvider(get()) }
   single<SportsEventsRepository> { SportsEventsRepositoryImpl(get(), get(), get()) }
+  single<AuthRepository> { FirebaseAuthRepository() }
 }
 
 expect fun platformModule(): Module
