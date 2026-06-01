@@ -21,7 +21,8 @@ fun AddCardDialog(
   onSave: (String, String, String, String) -> Unit
 ) {
   val viewModel = koinViewModel<AddCardViewModel>()
-  val errors = viewModel.errors.value
+  val state by viewModel.state.collectAsState()
+  val errors = state.errors
   val outlinedTextColor = TextFieldDefaults.outlinedTextFieldColors(
     focusedBorderColor = mainColor,
     focusedLabelColor = mainColor
@@ -37,8 +38,8 @@ fun AddCardDialog(
       ) {
         // Cardholder Name
         OutlinedTextField(
-          value = viewModel.cardHolderName,
-          onValueChange = { viewModel.cardHolderName = it },
+          value = state.cardHolderName,
+          onValueChange = viewModel::onCardHolderNameChange,
           label = { Text(stringResource(R.string.cardholder_name)) },
           modifier = Modifier.fillMaxWidth(),
           colors = outlinedTextColor,
@@ -54,8 +55,8 @@ fun AddCardDialog(
 
         // Card Number
         OutlinedTextField(
-          value = viewModel.cardNumber,
-          onValueChange = { viewModel.cardNumber = it },
+          value = state.cardNumber,
+          onValueChange = viewModel::onCardNumberChange,
           label = { Text(stringResource(R.string.card_number)) },
           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
           modifier = Modifier.fillMaxWidth(),
@@ -77,8 +78,8 @@ fun AddCardDialog(
         ) {
           Column(modifier = Modifier.weight(1f)) {
             OutlinedTextField(
-              value = viewModel.expirationDate,
-              onValueChange = { viewModel.expirationDate = it },
+              value = state.expirationDate,
+              onValueChange = viewModel::onExpirationDateChange,
               label = { Text(stringResource(R.string.expiration_date_mm_yy)) },
               keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
               modifier = Modifier.fillMaxWidth(),
@@ -97,8 +98,8 @@ fun AddCardDialog(
 
           Column(modifier = Modifier.weight(1f)) {
             OutlinedTextField(
-              value = viewModel.cvv,
-              onValueChange = { viewModel.cvv = it },
+              value = state.cvv,
+              onValueChange = viewModel::onCvvChange,
               label = { Text(stringResource(R.string.cvv)) },
               keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
               modifier = Modifier.fillMaxWidth(),
@@ -124,11 +125,12 @@ fun AddCardDialog(
         ),
         onClick = {
           if (viewModel.validateFields()) {
+            val current = viewModel.state.value
             onSave(
-              viewModel.cardHolderName,
-              viewModel.cardNumber,
-              viewModel.expirationDate,
-              viewModel.cvv
+              current.cardHolderName,
+              current.cardNumber,
+              current.expirationDate,
+              current.cvv
             )
             onDismiss()
           }

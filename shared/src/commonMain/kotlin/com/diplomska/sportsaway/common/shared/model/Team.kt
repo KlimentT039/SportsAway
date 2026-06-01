@@ -4,10 +4,8 @@ import com.diplomska.sportsaway.common.shared.parcelize.Parcelable
 import com.diplomska.sportsaway.common.shared.parcelize.Parcelize
 import com.diplomska.sportsaway.data.events_data.model.Player
 import com.diplomska.sportsaway.data.events_data.model.TeamResponse
-import kotlinx.serialization.Serializable
 
 @Parcelize
-@Serializable
 data class Team(
   val id: Int = 0,
   val name: String = "",

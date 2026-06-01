@@ -4,8 +4,8 @@ import com.diplomska.core.errorhandling.ErrorHandlingUseCase
 import com.diplomska.sportsaway.common.shared.errorhandling.BaseError
 import com.diplomska.sportsaway.common.shared.errorhandling.Either
 import com.diplomska.sportsaway.common.shared.errorhandling.map
-import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.common.shared.utils.DATE_FORMAT
+import com.diplomska.sportsaway.data.authentication_data.model.PersistedMatch
 import com.diplomska.sportsaway.data.authentication_data.model.User
 import com.diplomska.sportsaway.data.authentication_data.repository.AuthRepository
 import com.diplomska.sportsaway.feature.profile.model.ProfileViewState
@@ -44,9 +44,9 @@ class GetUserDataUseCase(private val firebaseRepository: AuthRepository) :
   }
 
   private fun separateMatchesWithStringDates(
-    matches: List<Match>,
+    matches: List<PersistedMatch>,
     currentDate: LocalDate
-  ): Pair<List<Match>, List<Match>> {
+  ): Pair<List<PersistedMatch>, List<PersistedMatch>> {
     val dateFormat = LocalDate.Format {
       dayOfMonth()
       char('.')

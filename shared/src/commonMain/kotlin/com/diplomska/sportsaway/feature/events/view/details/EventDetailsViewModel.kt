@@ -8,7 +8,6 @@ import com.diplomska.sportsaway.common.shared.model.Ticket
 import com.diplomska.sportsaway.feature.events.domain.EventDetailsUseCase
 import com.diplomska.sportsaway.feature.events.view.model.OrderBundle
 import com.diplomska.sportsaway.feature.events.view.model.TicketFilter
-import com.diplomska.sportsaway.feature.favourite.view.addteams.ViewState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow

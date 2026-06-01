@@ -5,10 +5,8 @@ import com.diplomska.sportsaway.common.shared.parcelize.Parcelize
 import com.diplomska.sportsaway.common.shared.utils.parseDate
 import com.diplomska.sportsaway.common.shared.utils.parseDateToTime
 import com.diplomska.sportsaway.data.events_data.model.MatchResponse
-import kotlinx.serialization.Serializable
 
 @Parcelize
-@Serializable
 data class Match(
   val id: Int = 0,
   val date: String = "",

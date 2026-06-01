@@ -28,9 +28,10 @@ fun BillingAddressDialog(
   onSave: (String, String, String, String, String, String) -> Unit
 ) {
   val viewModel = koinViewModel<BillingAddressViewModel>()
+  val state by viewModel.state.collectAsState()
+  val errors = state.errors
   val outlinedTextColor =
     TextFieldDefaults.colors(focusedIndicatorColor = mainColor, focusedTextColor = mainColor)
-  val errors = viewModel.errors.value
 
   AlertDialog(
     onDismissRequest = onDismiss,
@@ -41,8 +42,8 @@ fun BillingAddressDialog(
         verticalArrangement = Arrangement.spacedBy(8.dp)
       ) {
         OutlinedTextField(
-          value = viewModel.fullName,
-          onValueChange = { viewModel.fullName = it },
+          value = state.fullName,
+          onValueChange = viewModel::onFullNameChange,
           label = { Text(stringResource(R.string.full_name)) },
           modifier = Modifier.fillMaxWidth(),
           colors = outlinedTextColor,
@@ -57,8 +58,8 @@ fun BillingAddressDialog(
         }
 
         OutlinedTextField(
-          value = viewModel.addressLine1,
-          onValueChange = { viewModel.addressLine1 = it },
+          value = state.addressLine1,
+          onValueChange = viewModel::onAddressLine1Change,
           label = { Text(stringResource(R.string.address_line_1)) },
           modifier = Modifier.fillMaxWidth(),
           colors = outlinedTextColor,
@@ -73,16 +74,16 @@ fun BillingAddressDialog(
         }
 
         OutlinedTextField(
-          value = viewModel.addressLine2,
-          onValueChange = { viewModel.addressLine2 = it },
+          value = state.addressLine2,
+          onValueChange = viewModel::onAddressLine2Change,
           label = { Text(stringResource(R.string.address_line_2_optional)) },
           modifier = Modifier.fillMaxWidth(),
           colors = outlinedTextColor
         )
 
         OutlinedTextField(
-          value = viewModel.city,
-          onValueChange = { viewModel.city = it },
+          value = state.city,
+          onValueChange = viewModel::onCityChange,
           label = { Text(stringResource(R.string.city)) },
           modifier = Modifier.fillMaxWidth(),
           colors = outlinedTextColor,
@@ -97,8 +98,8 @@ fun BillingAddressDialog(
         }
 
         OutlinedTextField(
-          value = viewModel.country,
-          onValueChange = { viewModel.country = it },
+          value = state.country,
+          onValueChange = viewModel::onCountryChange,
           label = { Text(stringResource(R.string.country)) },
           modifier = Modifier.fillMaxWidth(),
           colors = outlinedTextColor,
@@ -113,8 +114,8 @@ fun BillingAddressDialog(
         }
 
         OutlinedTextField(
-          value = viewModel.zipCode,
-          onValueChange = { viewModel.zipCode = it },
+          value = state.zipCode,
+          onValueChange = viewModel::onZipCodeChange,
           label = { Text(stringResource(R.string.zip_code)) },
           keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
@@ -141,13 +142,14 @@ fun BillingAddressDialog(
         ),
         onClick = {
           if (viewModel.validateFields()) {
+            val current = viewModel.state.value
             onSave(
-              viewModel.fullName,
-              viewModel.addressLine1,
-              viewModel.addressLine2,
-              viewModel.city,
-              viewModel.zipCode,
-              viewModel.country
+              current.fullName,
+              current.addressLine1,
+              current.addressLine2,
+              current.city,
+              current.zipCode,
+              current.country
             )
             onDismiss()
           }
@@ -172,7 +174,6 @@ private fun BillingAddressDialogPreview() {
     BillingAddressDialog(
       onDismiss = {},
       onSave = { fullName, addressLine1, addressLine2, city, zipCode, country ->
-        // Print or debug the entered data (for preview purposes)
         println("Preview: $fullName, $addressLine1, $addressLine2, $city, $zipCode. $country")
       }
     )

@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.shared.model.Competition
 import com.diplomska.sportsaway.common.shared.model.Match
+import com.diplomska.sportsaway.data.authentication_data.model.PersistedMatch
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
 import com.diplomska.sportsaway.common.style.compose.typography
 import androidx.compose.ui.res.stringResource
@@ -305,7 +306,7 @@ fun MatchSection(
 }
 
 @Composable
-fun MatchTile(match: Match) {
+fun MatchTile(match: PersistedMatch) {
   Row(
     modifier = Modifier
       .fillMaxWidth()
@@ -340,7 +341,7 @@ fun MatchTile(match: Match) {
     // Match Details
     Column {
       Text(
-        text = "${match.homeTeam.name} vs ${match.awayTeam.name}",
+        text = "${match.homeTeamName} vs ${match.awayTeamName}",
         color = typographyTextPrimary,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp
@@ -392,9 +393,9 @@ fun MatchItemPreview() {
 @Composable
 fun PreviewGameTile() {
   MatchTile(
-    match = Match(
-      homeTeam = Team(name = "Team A"),
-      awayTeam = Team(name = "Team B"),
+    match = PersistedMatch(
+      homeTeamName = "Team A",
+      awayTeamName = "Team B",
       date = "10 Dec 2024",
       time = "6:30 PM",
       venue = "Stadium 1",

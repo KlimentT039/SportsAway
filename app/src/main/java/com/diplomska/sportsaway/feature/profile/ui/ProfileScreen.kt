@@ -27,9 +27,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.diplomska.sportsaway.R
-import com.diplomska.sportsaway.common.shared.model.Match
-import com.diplomska.sportsaway.common.shared.model.Team
 import com.diplomska.sportsaway.common.style.compose.components.MatchTile
+import com.diplomska.sportsaway.data.authentication_data.model.PersistedMatch
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
 import com.diplomska.sportsaway.feature.dashboard.view.DashboardActivity
@@ -321,7 +320,7 @@ private fun ListOfMatches(profileData: ProfileViewState.ProfileData, selectedTab
 }
 
 @Composable
-fun MatchesList(matches: List<Match>) {
+fun MatchesList(matches: List<PersistedMatch>) {
   Column(
     modifier = Modifier
       .verticalScroll(rememberScrollState())
@@ -363,17 +362,17 @@ private fun SampleMatchProfileScreen() {
   val mockUser = UserData(
     username = "JohnDoe",
     visitedMatches = listOf(
-      Match(
-        homeTeam = Team(name = "Team A"),
-        awayTeam = Team(name = "Team B"),
+      PersistedMatch(
+        homeTeamName = "Team A",
+        awayTeamName = "Team B",
         venue = "Stadium 1",
         date = "10 Dec 2024"
       )
     ),
     upcomingMatches = listOf(
-      Match(
-        homeTeam = Team(name = "Team C"),
-        awayTeam = Team(name = "Team D"),
+      PersistedMatch(
+        homeTeamName = "Team C",
+        awayTeamName = "Team D",
         venue = "Stadium 2",
         date = "10 Dec 2024"
       )

@@ -4,6 +4,7 @@ import com.diplomska.sportsaway.common.shared.errorhandling.BaseError
 import com.diplomska.sportsaway.common.shared.errorhandling.Either
 import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.data.authentication_data.model.User
+import com.diplomska.sportsaway.data.authentication_data.model.toPersistedMatch
 import com.diplomska.sportsaway.feature.authentication.utils.Constants
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -91,7 +92,7 @@ class FirebaseAuthRepository : AuthRepository {
       return Either.Success(null)
     }
     val currentUser = (currentUserResult as Either.Success).value
-    val updatedMatches = (currentUser.matches + match).sortedBy { it.date }
+    val updatedMatches = (currentUser.matches + match.toPersistedMatch()).sortedBy { it.date }
     val updatedUser = currentUser.copy(matches = updatedMatches)
 
     return try {

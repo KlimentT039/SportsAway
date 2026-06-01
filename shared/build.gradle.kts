@@ -12,7 +12,10 @@ kotlin {
     compilations.all {
       compileTaskProvider.configure {
         compilerOptions {
-          jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
+          jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+          freeCompilerArgs.add(
+            "-P=plugin:org.jetbrains.kotlin.parcelize:additionalAnnotation=com.diplomska.sportsaway.common.shared.parcelize.Parcelize"
+          )
         }
       }
     }
@@ -44,6 +47,8 @@ kotlin {
 
       api(libs.gitlive.firebase.auth)
       api(libs.gitlive.firebase.firestore)
+
+      api(libs.androidx.lifecycle.viewmodel)
     }
     commonTest.dependencies {
       implementation(kotlin("test"))
@@ -64,7 +69,7 @@ android {
     minSdk = libs.versions.android.shared.min.sdk.get().toInt()
   }
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
 }

@@ -2,7 +2,6 @@ package com.diplomska.sportsaway.feature.events.view.order
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.common.shared.model.Ticket
 import com.diplomska.sportsaway.data.authentication_data.repository.AuthRepository

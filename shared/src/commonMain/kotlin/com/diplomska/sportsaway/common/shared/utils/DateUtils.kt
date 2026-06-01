@@ -25,19 +25,21 @@ private val timeFormat = LocalTime.Format {
 }
 
 fun parseDate(initialString: String): String? = try {
-  Instant.parse(initialString)
-    .toLocalDateTime(TimeZone.currentSystemDefault())
-    .date
-    .format(dateFormat)
+  dateFormat.format(
+    Instant.parse(initialString)
+      .toLocalDateTime(TimeZone.currentSystemDefault())
+      .date
+  )
 } catch (e: Exception) {
   null
 }
 
 fun parseDateToTime(initialString: String): String? = try {
-  Instant.parse(initialString)
-    .toLocalDateTime(TimeZone.currentSystemDefault())
-    .time
-    .format(timeFormat)
+  timeFormat.format(
+    Instant.parse(initialString)
+      .toLocalDateTime(TimeZone.currentSystemDefault())
+      .time
+  )
 } catch (e: Exception) {
   null
 }

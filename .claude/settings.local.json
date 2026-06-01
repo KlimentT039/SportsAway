@@ -10,7 +10,8 @@
       "Bash(./gradlew :shared:compileDebugKotlinAndroid --no-daemon)",
       "Bash(./gradlew :app:compileDebugKotlin --no-daemon)",
       "Bash(git *)",
-      "Skill(update-config)"
+      "Skill(update-config)",
+      "Bash(set -e)"
     ]
   }
 }

@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-internal class HomeViewModel(
+class HomeViewModel(
   private val getTrendingMatchesUseCase: GetTrendingMatchesUseCase,
   private val getCompetitionsUseCase: GetCompetitionsUseCase
 ) : ViewModel() {

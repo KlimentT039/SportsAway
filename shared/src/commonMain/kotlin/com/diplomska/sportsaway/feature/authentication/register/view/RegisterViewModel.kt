@@ -2,7 +2,6 @@ package com.diplomska.sportsaway.feature.authentication.register.view
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.diplomska.sportsaway.common.shared.errorhandling.fold
 import com.diplomska.sportsaway.feature.authentication.register.domain.RegisterUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
