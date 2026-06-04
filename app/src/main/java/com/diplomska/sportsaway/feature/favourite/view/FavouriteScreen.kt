@@ -2,7 +2,6 @@ package com.diplomska.sportsaway.feature.favourite.view
 
 import ErrorScreen
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,12 +24,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.style.compose.components.AppBar
 import com.diplomska.sportsaway.common.style.compose.components.ListDivider
-import com.diplomska.sportsaway.common.style.compose.components.MatchItem
+import com.diplomska.sportsaway.common.style.compose.components.MatchCard
 import com.diplomska.sportsaway.common.style.compose.components.MatchSection
 import com.diplomska.sportsaway.common.style.compose.components.Scaffold
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
-import com.diplomska.sportsaway.feature.dashboard.home.components.tabs.model.DashboardTab
 import com.diplomska.sportsaway.feature.events.view.details.EventDetailsActivity
 import com.diplomska.sportsaway.feature.favourite.model.FavouriteTeam
 import com.diplomska.sportsaway.feature.favourite.view.accessdenied.AccessDeniedScreen
@@ -136,7 +134,7 @@ private fun ListOfFavouriteTeamsAndMatches(teams: List<FavouriteTeam>) {
           onVisibilityChange = { visibility -> visibilityMap[favouriteTeam] = visibility }
         ) {
           team.matches.forEachIndexed { matchIndex, match ->
-            MatchItem(
+            MatchCard.Compact(
               match = match,
               onClick = {
                 context.startActivity(EventDetailsActivity.createIntent(context, match.id))

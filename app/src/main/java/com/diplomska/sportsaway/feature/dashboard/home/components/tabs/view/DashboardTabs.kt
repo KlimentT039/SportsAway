@@ -1,14 +1,16 @@
 package com.diplomska.sportsaway.feature.dashboard.home.components.tabs.view
 
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,11 +29,11 @@ fun DashboardTabNavigator(
 ) {
   var currentRoute by remember { mutableStateOf<String?>(DashboardTab.Home.route) }
 
-  BottomNavigation(
-    backgroundColor = backgroundSurface
+  NavigationBar(
+    containerColor = backgroundSurface
   ) {
     getDashboardTabs().forEach { tab ->
-      BottomNavigationItem(
+      NavigationBarItem(
         selected = currentRoute == tab.route,
         onClick = {
           if (currentRoute != tab.route) {
@@ -42,11 +44,16 @@ fun DashboardTabNavigator(
         icon = {
           Icon(
             imageVector = tab.icon,
-            contentDescription = tab.title,
+            contentDescription = stringResource(tab.titleRes),
           )
         },
-        selectedContentColor = mainColor,
-        unselectedContentColor = Color.Gray
+        colors = NavigationBarItemDefaults.colors(
+          selectedIconColor = mainColor,
+          selectedTextColor = mainColor,
+          indicatorColor = backgroundSurface,
+          unselectedIconColor = Color.Gray,
+          unselectedTextColor = Color.Gray
+        )
       )
     }
   }

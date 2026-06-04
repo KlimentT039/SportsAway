@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.diplomska.sportsaway.common.style.compose.theme.SportsAwayTheme
 import com.diplomska.sportsaway.feature.dashboard.view.DashboardActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,7 +25,9 @@ class RegisterActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
-      CreateUserScreen()
+      SportsAwayTheme {
+        CreateUserScreen()
+      }
     }
     observeEvents()
   }

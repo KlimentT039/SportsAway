@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,7 +36,7 @@ fun NoTeamScreen() {
   ) {
     Text(
       text = stringResource(id = R.string.add_first_team_title),
-      style = MaterialTheme.typography.h4
+      style = MaterialTheme.typography.headlineMedium
     )
     Text(
       text = stringResource(id = R.string.add_first_team_description),
@@ -46,8 +46,8 @@ fun NoTeamScreen() {
     Button(
       onClick = { context.startActivity(Intent(context, AddFavouriteTeamsActivity::class.java)) },
       modifier = Modifier.padding(16.dp),
-      colors = ButtonDefaults.textButtonColors(
-        backgroundColor = mainColor,
+      colors = ButtonDefaults.buttonColors(
+        containerColor = mainColor,
         contentColor = Color.White
       )
     ) {

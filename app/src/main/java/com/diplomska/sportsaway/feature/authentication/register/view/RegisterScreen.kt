@@ -20,22 +20,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -82,6 +80,7 @@ fun CreateUserScreen() {
   }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CreateUserContent(
   userData: RegisterViewState.UserData,
@@ -92,12 +91,14 @@ private fun CreateUserContent(
   onSignupButtonClicked: () -> Unit
 ) {
   val context = LocalContext.current
-  var email by remember { mutableStateOf("") }
-  var password by remember { mutableStateOf("") }
-  var confirmPassword by remember { mutableStateOf("") }
-  var username by remember { mutableStateOf("") }
-
   val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+  val fieldColors = TextFieldDefaults.colors(
+    focusedContainerColor = backgroundDefault,
+    unfocusedContainerColor = backgroundDefault,
+    focusedLabelColor = mainColor,
+    focusedIndicatorColor = mainColor,
+    cursorColor = typographyTextPrimary
+  )
 
   Scaffold.WithTopBarOnly(
     topBar = {
@@ -105,11 +106,10 @@ private fun CreateUserContent(
         title = {},
         navigationIcon = {
           IconButton(onClick = { backDispatcher?.onBackPressed() }) {
-            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.generic_back))
           }
         },
-        backgroundColor = backgroundDefault,
-        elevation = 0.dp
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = backgroundDefault)
       )
     },
     content = {
@@ -125,7 +125,7 @@ private fun CreateUserContent(
         Image(
           modifier = Modifier.padding(top = 100.dp),
           painter = painterResource(id = R.drawable.ic_logo),
-          contentDescription = "Logo",
+          contentDescription = stringResource(R.string.generic_logo),
           contentScale = ContentScale.Fit
         )
 
@@ -134,22 +134,14 @@ private fun CreateUserContent(
         // Email
         TextField(
           value = userData.email,
-          onValueChange = {
-            email = it
-            onEmailInputChanged(it)
-          },
+          onValueChange = onEmailInputChanged,
           modifier = Modifier.fillMaxWidth(),
           label = { Text(stringResource(id = R.string.email)) },
           keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next
           ),
-          colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = backgroundDefault,
-            focusedLabelColor = mainColor,
-            focusedIndicatorColor = mainColor,
-            cursorColor = typographyTextPrimary
-          )
+          colors = fieldColors
         )
         if (!userData.isEmailValid) {
           Text(
@@ -164,10 +156,7 @@ private fun CreateUserContent(
         // Password
         TextField(
           value = userData.password,
-          onValueChange = {
-            password = it
-            onPasswordInputChanged(it)
-          },
+          onValueChange = onPasswordInputChanged,
           modifier = Modifier.fillMaxWidth(),
           label = { Text(stringResource(id = R.string.password)) },
           visualTransformation = PasswordVisualTransformation(),
@@ -175,12 +164,7 @@ private fun CreateUserContent(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Next
           ),
-          colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = backgroundDefault,
-            focusedLabelColor = mainColor,
-            focusedIndicatorColor = mainColor,
-            cursorColor = typographyTextPrimary
-          )
+          colors = fieldColors
         )
         if (!userData.isPasswordValid) {
           Text(
@@ -195,10 +179,7 @@ private fun CreateUserContent(
         // Confirm Password
         TextField(
           value = userData.confirmPassword,
-          onValueChange = {
-            confirmPassword = it
-            onConfirmPasswordInputChanged(it)
-          },
+          onValueChange = onConfirmPasswordInputChanged,
           modifier = Modifier.fillMaxWidth(),
           label = { Text(stringResource(id = R.string.confirm_password)) },
           visualTransformation = PasswordVisualTransformation(),
@@ -206,12 +187,7 @@ private fun CreateUserContent(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Next
           ),
-          colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = backgroundDefault,
-            focusedLabelColor = mainColor,
-            focusedIndicatorColor = mainColor,
-            cursorColor = typographyTextPrimary
-          )
+          colors = fieldColors
         )
         if (!userData.isConfirmPasswordValid) {
           Text(
@@ -226,22 +202,14 @@ private fun CreateUserContent(
         // Username
         TextField(
           value = userData.username,
-          onValueChange = {
-            username = it
-            onUsernameInputChanged(it)
-          },
+          onValueChange = onUsernameInputChanged,
           modifier = Modifier.fillMaxWidth(),
           label = { Text(stringResource(id = R.string.username)) },
           keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Done
           ),
-          colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = backgroundDefault,
-            focusedLabelColor = mainColor,
-            focusedIndicatorColor = mainColor,
-            cursorColor = typographyTextPrimary
-          )
+          colors = fieldColors
         )
         if (!userData.isUsernameValid) {
           Text(
@@ -259,9 +227,11 @@ private fun CreateUserContent(
           modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
-          colors = ButtonDefaults.textButtonColors(
-            backgroundColor = if (userData.isButtonEnabled) mainColor else Color.Gray,
+          colors = ButtonDefaults.buttonColors(
+            containerColor = mainColor,
             contentColor = Color.White,
+            disabledContainerColor = Color.Gray,
+            disabledContentColor = Color.White
           )
         ) {
           Text(text = stringResource(R.string.create_user))

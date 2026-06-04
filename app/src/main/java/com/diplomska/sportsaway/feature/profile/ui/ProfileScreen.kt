@@ -27,9 +27,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.diplomska.sportsaway.R
-import com.diplomska.sportsaway.common.style.compose.components.MatchTile
-import com.diplomska.sportsaway.data.authentication_data.model.PersistedMatch
+import com.diplomska.sportsaway.common.style.compose.components.MatchCard
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
+import com.diplomska.sportsaway.common.style.compose.theme.backgroundDefault
+import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
+import com.diplomska.sportsaway.common.style.compose.theme.mainColor
+import com.diplomska.sportsaway.common.style.compose.theme.topBarTextColor
+import com.diplomska.sportsaway.common.style.compose.theme.typographyTextSecondary
+import com.diplomska.sportsaway.data.authentication_data.model.PersistedMatch
 import com.diplomska.sportsaway.feature.authentication.login.view.LoginActivity
 import com.diplomska.sportsaway.feature.dashboard.view.DashboardActivity
 import com.diplomska.sportsaway.feature.favourite.view.accessdenied.AccessDeniedScreen
@@ -102,7 +107,7 @@ private fun UserProfile(profileData: ProfileViewState.ProfileData, onLogout: () 
   Column(
     modifier = Modifier
       .fillMaxSize()
-      .background(Color(0xFFF5F5F5))
+      .background(backgroundDefault)
       .padding(16.dp)
   ) {
     ProfileHeader(profileData.user, onLogout = onLogout)
@@ -118,16 +123,13 @@ private fun ProfileHeader(user: UserData, onLogout: () -> Unit) {
   Box(
     modifier = Modifier
       .fillMaxWidth()
+      .shadow(8.dp, shape = MaterialTheme.shapes.medium)
       .background(
         brush = Brush.verticalGradient(
-          colors = listOf(
-            Color(0xFF014421),
-            Color(0xFF016F4A)
-          )
+          colors = listOf(mainColor, Color(0xFF016F4A))
         ),
         shape = MaterialTheme.shapes.medium
       )
-      .shadow(8.dp, shape = MaterialTheme.shapes.medium)
       .padding(16.dp)
   ) {
     IconButton(
@@ -135,14 +137,14 @@ private fun ProfileHeader(user: UserData, onLogout: () -> Unit) {
       modifier = Modifier
         .align(Alignment.TopEnd)
         .clip(CircleShape)
-        .background(Color.White)
-        .border(2.dp, Color(0xFF014421), CircleShape)
+        .background(backgroundSurface)
+        .border(2.dp, mainColor, CircleShape)
         .size(40.dp)
     ) {
       Icon(
         imageVector = Icons.Default.Menu,
         contentDescription = stringResource(R.string.menu),
-        tint = Color(0xFF014421)
+        tint = mainColor
       )
       DropdownMenu(
         expanded = isMenuExpanded,
@@ -172,20 +174,20 @@ private fun ProfileHeader(user: UserData, onLogout: () -> Unit) {
       Box(
         modifier = Modifier
           .size(100.dp)
+          .shadow(6.dp, shape = CircleShape)
           .clip(CircleShape)
           .background(
             brush = Brush.linearGradient(
-              colors = listOf(Color.White, Color(0xFF014421))
+              colors = listOf(backgroundSurface, mainColor)
             )
           )
-          .border(4.dp, Color.White, CircleShape)
-          .shadow(6.dp, shape = CircleShape),
+          .border(4.dp, backgroundSurface, CircleShape),
         contentAlignment = Alignment.Center
       ) {
         Icon(
           imageVector = Icons.Default.Person,
           contentDescription = stringResource(R.string.profile_picture),
-          tint = Color(0xFF014421),
+          tint = mainColor,
           modifier = Modifier.size(60.dp)
         )
       }
@@ -196,7 +198,7 @@ private fun ProfileHeader(user: UserData, onLogout: () -> Unit) {
         text = user.username,
         style = MaterialTheme.typography.headlineMedium.copy(
           fontWeight = FontWeight.Bold,
-          color = Color.White
+          color = topBarTextColor
         ),
         textAlign = TextAlign.Center
       )
@@ -228,13 +230,13 @@ private fun StatItem(count: Int, label: String) {
       text = count.toString(),
       style = MaterialTheme.typography.headlineSmall.copy(
         fontWeight = FontWeight.Bold,
-        color = Color.White
+        color = topBarTextColor
       )
     )
     Text(
       text = label,
       style = MaterialTheme.typography.bodyMedium.copy(
-        color = Color.LightGray
+        color = topBarTextColor.copy(alpha = 0.8f)
       )
     )
   }
@@ -248,7 +250,7 @@ private fun MatchContent(profileData: ProfileViewState.ProfileData) {
   Column(
     modifier = Modifier
       .fillMaxWidth()
-      .background(Color.White, shape = MaterialTheme.shapes.medium)
+      .background(backgroundSurface, shape = MaterialTheme.shapes.medium)
       .padding(16.dp)
   ) {
     // Tabs
@@ -281,17 +283,17 @@ private fun MatchContent(profileData: ProfileViewState.ProfileData) {
 private fun TabItem(text: String, isSelected: Boolean, onClick: () -> Unit) {
   Box(
     modifier = Modifier
+      .clip(MaterialTheme.shapes.small)
       .clickable(onClick = onClick)
-      .padding(horizontal = 16.dp, vertical = 8.dp)
       .background(
-        color = if (isSelected) Color(0xFF014421) else Color.Transparent,
+        color = if (isSelected) mainColor else Color.Transparent,
         shape = MaterialTheme.shapes.small
       )
       .padding(horizontal = 16.dp, vertical = 8.dp)
   ) {
     Text(
       text = text,
-      color = if (isSelected) Color.White else Color.Gray,
+      color = if (isSelected) topBarTextColor else typographyTextSecondary,
       fontWeight = FontWeight.Bold,
       style = MaterialTheme.typography.bodyLarge
     )
@@ -327,7 +329,7 @@ fun MatchesList(matches: List<PersistedMatch>) {
       .fillMaxWidth()
   ) {
     matches.forEach { match ->
-      MatchTile(match)
+      MatchCard.WithVenue(match)
     }
   }
 }
@@ -340,15 +342,15 @@ private fun NoMatchContent(description: String) {
   ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
       Icon(
-        imageVector = Icons.Default.Person, // Replace with a "no data" icon
+        imageVector = Icons.Default.Person,
         contentDescription = null,
         modifier = Modifier.size(48.dp),
-        tint = Color.LightGray
+        tint = typographyTextSecondary
       )
       Spacer(modifier = Modifier.height(8.dp))
       Text(
         text = description,
-        color = Color.Gray,
+        color = typographyTextSecondary,
         style = MaterialTheme.typography.bodyMedium,
         textAlign = TextAlign.Center
       )

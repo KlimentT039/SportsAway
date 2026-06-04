@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.diplomska.sportsaway.common.style.compose.theme.SportsAwayTheme
 import com.diplomska.sportsaway.feature.authentication.register.view.RegisterActivity
 import com.diplomska.sportsaway.feature.dashboard.home.components.tabs.model.DashboardTab
 import kotlinx.coroutines.launch
@@ -24,7 +25,9 @@ class LoginActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
-      LoginScreen()
+      SportsAwayTheme {
+        LoginScreen()
+      }
     }
     observeEvent()
   }

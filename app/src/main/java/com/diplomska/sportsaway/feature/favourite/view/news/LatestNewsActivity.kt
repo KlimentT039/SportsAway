@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import com.diplomska.sportsaway.common.style.compose.theme.SportsAwayTheme
 
 class LatestNewsActivity : AppCompatActivity() {
 
@@ -22,7 +23,9 @@ class LatestNewsActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     val teamId = intent.getIntExtra(EXTRA_TEAM_ID, -1)
     setContent {
-      LatestNewsScreen(teamId = teamId, onBackClicked = onBackPressedDispatcher::onBackPressed)
+      SportsAwayTheme {
+        LatestNewsScreen(teamId = teamId, onBackClicked = onBackPressedDispatcher::onBackPressed)
+      }
     }
   }
 }

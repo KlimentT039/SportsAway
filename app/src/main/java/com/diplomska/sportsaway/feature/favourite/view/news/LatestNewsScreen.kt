@@ -9,11 +9,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
-import androidx.compose.material.TabRowDefaults
-import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
-import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -147,6 +148,7 @@ private fun TabbedContentSection(teamInfo: LatestTeamInfo) {
   }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TabRowSection(
   selectedTab: InfoTab,
@@ -157,15 +159,17 @@ private fun TabRowSection(
 
   TabRow(
     selectedTabIndex = selectedIndex,
-    backgroundColor = backgroundDefault,
+    containerColor = backgroundDefault,
     contentColor = typographyTextPrimary,
     indicator = { tabPositions ->
-      TabRowDefaults.Indicator(
-        modifier = Modifier
-          .tabIndicatorOffset(tabPositions[selectedIndex])
-          .height(2.dp),
-        color = backgroundSurface
-      )
+      if (selectedIndex < tabPositions.size) {
+        TabRowDefaults.SecondaryIndicator(
+          modifier = Modifier
+            .tabIndicatorOffset(tabPositions[selectedIndex])
+            .height(2.dp),
+          color = backgroundSurface
+        )
+      }
     },
     divider = {}
   ) {

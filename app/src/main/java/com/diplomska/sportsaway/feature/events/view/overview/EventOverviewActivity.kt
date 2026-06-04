@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import com.diplomska.sportsaway.common.style.compose.theme.SportsAwayTheme
 
 class EventOverviewActivity : AppCompatActivity() {
 
@@ -20,7 +21,9 @@ class EventOverviewActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     val competitionId = intent.getIntExtra(EXTRA_COMPETITION, -1)
     setContent {
-      EventsOverviewScreen(competitionId = competitionId, showBackButton = true)
+      SportsAwayTheme {
+        EventsOverviewScreen(competitionId = competitionId, showBackButton = true)
+      }
     }
   }
 }

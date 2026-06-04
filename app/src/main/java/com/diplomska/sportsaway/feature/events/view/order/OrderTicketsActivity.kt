@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import com.diplomska.sportsaway.common.shared.utils.getParcelableCompat
+import com.diplomska.sportsaway.common.style.compose.theme.SportsAwayTheme
 import com.diplomska.sportsaway.feature.events.view.model.OrderBundle
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,10 +28,12 @@ class OrderTicketsActivity : AppCompatActivity() {
     val orderBundle = intent.getParcelableCompat<OrderBundle>(EXTRA_BUNDLE) ?: return
     viewModel.initData(orderBundle)
     setContent {
-      OrderTicketsScreen(
-        viewModel = viewModel,
-        onBackClick = { onBackPressedDispatcher.onBackPressed() }
-      )
+      SportsAwayTheme {
+        OrderTicketsScreen(
+          viewModel = viewModel,
+          onBackClick = { onBackPressedDispatcher.onBackPressed() }
+        )
+      }
     }
   }
 }

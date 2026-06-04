@@ -35,7 +35,7 @@ fun BillingAddressDialog(
 
   AlertDialog(
     onDismissRequest = onDismiss,
-    title = { Text(text = "Billing Address") },
+    title = { Text(text = stringResource(R.string.billing_address)) },
     text = {
       Column(
         modifier = Modifier.fillMaxWidth(),

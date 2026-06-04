@@ -11,7 +11,8 @@
       "Bash(./gradlew :app:compileDebugKotlin --no-daemon)",
       "Bash(git *)",
       "Skill(update-config)",
-      "Bash(set -e)"
+      "Bash(set -e)",
+      "Bash(grep -v \"stringResource\\\\|Preview\\\\|\\\\${\")"
     ]
   }
 }

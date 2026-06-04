@@ -1,9 +1,21 @@
 package com.diplomska.sportsaway.feature.events.view.order.dialogs.carddialog
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -23,7 +35,7 @@ fun AddCardDialog(
   val viewModel = koinViewModel<AddCardViewModel>()
   val state by viewModel.state.collectAsState()
   val errors = state.errors
-  val outlinedTextColor = TextFieldDefaults.outlinedTextFieldColors(
+  val fieldColors = OutlinedTextFieldDefaults.colors(
     focusedBorderColor = mainColor,
     focusedLabelColor = mainColor
   )
@@ -36,42 +48,39 @@ fun AddCardDialog(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
       ) {
-        // Cardholder Name
         OutlinedTextField(
           value = state.cardHolderName,
           onValueChange = viewModel::onCardHolderNameChange,
           label = { Text(stringResource(R.string.cardholder_name)) },
           modifier = Modifier.fillMaxWidth(),
-          colors = outlinedTextColor,
+          colors = fieldColors,
           isError = errors.containsKey("cardHolderName")
         )
         if (errors.containsKey("cardHolderName")) {
           Text(
             text = errors["cardHolderName"]!!,
-            color = MaterialTheme.colors.error,
-            style = MaterialTheme.typography.body2
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodySmall
           )
         }
 
-        // Card Number
         OutlinedTextField(
           value = state.cardNumber,
           onValueChange = viewModel::onCardNumberChange,
           label = { Text(stringResource(R.string.card_number)) },
           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
           modifier = Modifier.fillMaxWidth(),
-          colors = outlinedTextColor,
+          colors = fieldColors,
           isError = errors.containsKey("cardNumber")
         )
         if (errors.containsKey("cardNumber")) {
           Text(
             text = errors["cardNumber"]!!,
-            color = MaterialTheme.colors.error,
-            style = MaterialTheme.typography.body2
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodySmall
           )
         }
 
-        // Expiration Date and CVV
         Row(
           horizontalArrangement = Arrangement.spacedBy(8.dp),
           modifier = Modifier.fillMaxWidth()
@@ -84,14 +93,14 @@ fun AddCardDialog(
               keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
               modifier = Modifier.fillMaxWidth(),
               visualTransformation = ExpirationDateVisualTransformation(),
-              colors = outlinedTextColor,
+              colors = fieldColors,
               isError = errors.containsKey("expirationDate")
             )
             if (errors.containsKey("expirationDate")) {
               Text(
                 text = errors["expirationDate"]!!,
-                color = MaterialTheme.colors.error,
-                style = MaterialTheme.typography.body2
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall
               )
             }
           }
@@ -103,14 +112,14 @@ fun AddCardDialog(
               label = { Text(stringResource(R.string.cvv)) },
               keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
               modifier = Modifier.fillMaxWidth(),
-              colors = outlinedTextColor,
+              colors = fieldColors,
               isError = errors.containsKey("cvv")
             )
             if (errors.containsKey("cvv")) {
               Text(
                 text = errors["cvv"]!!,
-                color = MaterialTheme.colors.error,
-                style = MaterialTheme.typography.body2
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall
               )
             }
           }
@@ -120,7 +129,7 @@ fun AddCardDialog(
     confirmButton = {
       Button(
         colors = ButtonDefaults.buttonColors(
-          backgroundColor = mainColor,
+          containerColor = mainColor,
           contentColor = topBarTextColor
         ),
         onClick = {
@@ -147,16 +156,11 @@ fun AddCardDialog(
   )
 }
 
-
 @Preview(showBackground = true)
 @Composable
-fun AddCardDialogPreview() {
-  MaterialTheme {
-    AddCardDialog(
-      onDismiss = {},
-      onSave = { cardHolderName, cardNumber, expirationDate, cvv ->
-        println("Preview: $cardHolderName, $cardNumber, $expirationDate")
-      }
-    )
-  }
+private fun AddCardDialogPreview() {
+  AddCardDialog(
+    onDismiss = {},
+    onSave = { _, _, _, _ -> }
+  )
 }

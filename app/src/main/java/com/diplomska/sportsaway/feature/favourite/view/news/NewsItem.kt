@@ -9,15 +9,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.style.compose.typography
 import com.diplomska.sportsaway.data.events_data.model.News
 
@@ -30,7 +32,7 @@ fun NewsItem(news: News) {
   ) {
     AsyncImage(
       model = news.link,
-      contentDescription = "News Image",
+      contentDescription = stringResource(R.string.generic_news_image),
       contentScale = ContentScale.Crop,
       modifier = Modifier
         .size(72.dp)

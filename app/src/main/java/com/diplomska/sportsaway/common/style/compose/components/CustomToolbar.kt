@@ -2,26 +2,26 @@ package com.diplomska.sportsaway.common.style.compose.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AppBarDefaults
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
 import com.diplomska.sportsaway.common.style.compose.typography
 
@@ -33,52 +33,45 @@ fun CustomToolbar(
   backButtonIcon: ImageVector
 ) {
   Surface(
-    color = Color.Transparent,
-    elevation = AppBarDefaults.TopAppBarElevation,
+    color = backgroundSurface,
+    shadowElevation = 4.dp,
     shape = RoundedCornerShape(32.dp),
     modifier = Modifier.padding(10.dp)
   ) {
-    TopAppBar(
-      elevation = 0.dp,
-      backgroundColor = backgroundSurface,
+    Row(
+      verticalAlignment = Alignment.CenterVertically,
+      modifier = Modifier
+        .fillMaxWidth()
+        .height(56.dp)
     ) {
-      Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxSize()
+      IconButton(
+        onClick = onBackPressed,
+        modifier = Modifier.padding(start = 4.dp)
       ) {
-        // Back button
-        IconButton(
-          onClick = { onBackPressed() },
-          modifier = Modifier.padding(start = 4.dp)
-        ) {
-          Icon(
-            backButtonIcon,
-            contentDescription = "Back",
-            tint = MaterialTheme.colors.onBackground
-          )
-        }
-        // Custom title
-        Column(modifier = Modifier.padding(vertical = 10.dp)) {
+        Icon(
+          backButtonIcon,
+          contentDescription = stringResource(R.string.generic_back),
+          tint = MaterialTheme.colorScheme.onBackground
+        )
+      }
+      Column(modifier = Modifier.padding(vertical = 10.dp)) {
+        Text(
+          text = title,
+          style = typography.mRegular,
+          color = MaterialTheme.colorScheme.onBackground,
+          maxLines = 1,
+          overflow = TextOverflow.Ellipsis,
+          modifier = Modifier.padding(start = 5.dp)
+        )
+        description?.let {
           Text(
-            text = title,
-            style = typography.mRegular,
-            color = MaterialTheme.colors.onBackground,
+            text = it,
+            style = typography.xsRegular,
+            color = MaterialTheme.colorScheme.onBackground,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-              .padding(start = 5.dp)
+            modifier = Modifier.padding(start = 5.dp)
           )
-          description?.let {
-            Text(
-              text = description,
-              style = typography.xsRegular,
-              color = MaterialTheme.colors.onBackground,
-              maxLines = 1,
-              overflow = TextOverflow.Ellipsis,
-              modifier = Modifier
-                .padding(start = 5.dp)
-            )
-          }
         }
       }
     }
@@ -87,11 +80,11 @@ fun CustomToolbar(
 
 @Preview
 @Composable
-fun Preview() {
+private fun CustomToolbarPreview() {
   CustomToolbar(
     title = "Barcelona - Real Madrid",
     description = "Camp nou - 12.10.2021",
-    onBackPressed = { /*TODO*/ },
-    backButtonIcon = Icons.Filled.ArrowBack
+    onBackPressed = {},
+    backButtonIcon = Icons.AutoMirrored.Filled.ArrowBack
   )
 }

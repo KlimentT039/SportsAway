@@ -16,22 +16,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -53,6 +52,7 @@ import com.diplomska.sportsaway.common.style.compose.components.CustomToolbar
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundDefault
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
 import com.diplomska.sportsaway.common.style.compose.theme.mainColor
+import com.diplomska.sportsaway.common.style.compose.theme.typographyTextPrimary
 import com.diplomska.sportsaway.common.style.compose.typography
 import com.diplomska.sportsaway.feature.events.view.model.TicketFilter
 import com.diplomska.sportsaway.feature.events.view.model.toStringRes
@@ -80,7 +80,7 @@ fun EventDetailsScreen(
           CustomToolbar(
             title = match.getMatchTitle(),
             description = match.getMatchDescription(),
-            backButtonIcon = Icons.Default.ArrowBack,
+            backButtonIcon = Icons.AutoMirrored.Filled.ArrowBack,
             onBackPressed = onBackClick
           )
         },
@@ -109,7 +109,7 @@ fun CustomEventDetailsContent(
   Column(
     modifier = modifier
       .fillMaxSize()
-      .background(color = colorResource(id = R.color.backgroundDefault))
+      .background(color = backgroundDefault)
   ) {
     LazyColumn(
       modifier = Modifier
@@ -132,10 +132,10 @@ fun CustomEventDetailsContent(
           .fillMaxWidth()
       ) {
         Text(
-          text = "Tickets",
-          style = MaterialTheme.typography.h5.copy(
+          text = stringResource(R.string.generic_tickets),
+          style = MaterialTheme.typography.headlineSmall.copy(
             fontSize = 22.sp,
-            color = colorResource(id = R.color.typographyTextPrimary)
+            color = typographyTextPrimary
           ),
         )
 
@@ -185,14 +185,14 @@ fun EventBanner(match: Match) {
     } else {
       Image(
         painter = painterResource(id = R.drawable.stadium_pic),
-        contentDescription = "Event Banner",
+        contentDescription = stringResource(R.string.generic_event_banner),
         modifier = Modifier.matchParentSize(),
         contentScale = ContentScale.Crop
       )
     }
     Text(
       text = match.venue.takeIf { match.venueImage != null } ?: "",
-      style = MaterialTheme.typography.h4.copy(
+      style = MaterialTheme.typography.headlineMedium.copy(
         color = Color.White,
         fontSize = 24.sp,
         fontWeight = FontWeight.Bold
@@ -215,9 +215,11 @@ fun TicketOption(
       .fillMaxWidth()
       .padding(horizontal = 16.dp, vertical = 8.dp)
       .clickable { onClick(ticket) },
-    elevation = 4.dp,
+    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     shape = RoundedCornerShape(8.dp),
-    backgroundColor = if (isSelected) Color(0xFFB2DFDB) else Color.White
+    colors = CardDefaults.cardColors(
+      containerColor = if (isSelected) Color(0xFFB2DFDB) else Color.White
+    )
   ) {
     Row(
       modifier = Modifier
@@ -233,17 +235,17 @@ fun TicketOption(
           fontWeight = FontWeight.Bold
         )
         Text(
-          text = "Remaining: ${ticket.remainingTickets}",
+          text = stringResource(R.string.tickets_remaining, ticket.remainingTickets),
           style = typography.xsRegular,
           color = Color.Gray
         )
       }
       Text(
-        text = "$${ticket.price} each",
+        text = stringResource(R.string.ticket_price_each, ticket.price),
         style = typography.mRegular.copy(
           color = Color(0xFF2E7D32),
           fontSize = 14.sp
-        ), // Green for emphasis
+        ),
         fontWeight = FontWeight.Bold
       )
     }
@@ -257,13 +259,12 @@ fun BuyButton(onClick: () -> Unit, selectedTicket: Ticket?) {
     onClick = onClick,
     shape = RoundedCornerShape(24.dp),
     enabled = selectedTicket != null,
-    colors = ButtonDefaults.buttonColors(backgroundColor = mainColor), // Your app's green color
-    modifier = Modifier
-      .fillMaxWidth(),
+    colors = ButtonDefaults.buttonColors(containerColor = mainColor),
+    modifier = Modifier.fillMaxWidth(),
   ) {
     Text(
-      text = "Buy Tickets",
-      style = MaterialTheme.typography.button,
+      text = stringResource(R.string.buy_tickets),
+      style = MaterialTheme.typography.labelLarge,
       color = Color.White,
       fontWeight = FontWeight.Bold
     )

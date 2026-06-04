@@ -16,8 +16,8 @@ fun GetImage(imageRes: String?, pictureSize: Int = 40) = run {
   } else {
     Image(
       painter = painterResource(id = R.drawable.ic_generic_club),
-      contentDescription = "Generic club picture",
-      modifier = Modifier.size(pictureSize.dp)  // Set a fixed size for the image
+      contentDescription = null,
+      modifier = Modifier.size(pictureSize.dp)
     )
   }
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.diplomska.sportsaway.common.shared.model.Match
 import com.diplomska.sportsaway.common.shared.utils.EXTRA_SELECTED_MATCH
 import com.diplomska.sportsaway.common.shared.utils.getParcelableCompat
+import com.diplomska.sportsaway.common.style.compose.theme.SportsAwayTheme
 import com.diplomska.sportsaway.feature.events.view.model.OrderBundle
 import com.diplomska.sportsaway.feature.events.view.order.OrderTicketsActivity
 import com.google.firestore.v1.StructuredQuery.Order
@@ -33,9 +34,11 @@ class EventDetailsActivity : AppCompatActivity() {
     val selectedMatchId = intent.getIntExtra(EXTRA_SELECTED_MATCH, 0)
     viewModel.initData(selectedMatchId)
     setContent {
-      EventDetailsScreen(
-        matchId = selectedMatchId,
-        onBackClick = { onBackPressedDispatcher.onBackPressed() })
+      SportsAwayTheme {
+        EventDetailsScreen(
+          matchId = selectedMatchId,
+          onBackClick = { onBackPressedDispatcher.onBackPressed() })
+      }
     }
     observeEvents()
   }

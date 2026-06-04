@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.diplomska.sportsaway.R
+import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
 
 @Composable
 fun SplashScreen() {
@@ -18,7 +18,7 @@ fun SplashScreen() {
     contentAlignment = Alignment.Center,
     modifier = Modifier
       .fillMaxSize()
-      .background(color = Color.White)
+      .background(backgroundSurface)
   ) {
     Image(
       painter = painterResource(id = R.drawable.ic_logo),

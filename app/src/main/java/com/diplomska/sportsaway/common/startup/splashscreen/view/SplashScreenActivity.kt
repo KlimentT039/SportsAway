@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.diplomska.sportsaway.common.style.compose.theme.SportsAwayTheme
 import com.diplomska.sportsaway.feature.dashboard.view.DashboardActivity
 
 @SuppressLint("CustomSplashScreen")
@@ -15,7 +16,9 @@ class SplashScreenActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
-      SplashScreen()
+      SportsAwayTheme {
+        SplashScreen()
+      }
     }
     setupDelayAndNavigate()
   }

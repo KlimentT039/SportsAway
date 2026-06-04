@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.style.compose.components.AppBar
 import com.diplomska.sportsaway.common.style.compose.components.ListDivider
-import com.diplomska.sportsaway.common.style.compose.components.MatchItem
+import com.diplomska.sportsaway.common.style.compose.components.MatchCard
 import com.diplomska.sportsaway.common.style.compose.components.MatchSection
 import com.diplomska.sportsaway.common.style.compose.layouts.OverlayLoader
 import com.diplomska.sportsaway.feature.events.view.details.EventDetailsActivity
@@ -95,7 +95,7 @@ fun ListOfGames(list: List<GroupedMatch>) {
             onVisibilityChange = { visibility -> visibilityMap[competition] = visibility }
           ) {
             league.matches.forEachIndexed { matchIndex, match ->
-              MatchItem(
+              MatchCard.Compact(
                 match = match,
                 onClick = {
                   context.startActivity(EventDetailsActivity.createIntent(context, match.id))

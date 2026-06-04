@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.diplomska.sportsaway.common.style.compose.theme.SportsAwayTheme
 import com.diplomska.sportsaway.feature.dashboard.home.components.tabs.model.DashboardTab
 import com.diplomska.sportsaway.feature.dashboard.view.DashboardActivity
 import kotlinx.coroutines.launch
@@ -17,7 +18,9 @@ class AddFavouriteTeamsActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
-      AddFavouriteTeamsScreen(onBackClick = { finish() })
+      SportsAwayTheme {
+        AddFavouriteTeamsScreen(onBackClick = { finish() })
+      }
     }
     observeEvents()
   }

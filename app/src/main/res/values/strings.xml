@@ -86,4 +86,25 @@
   <string name="passwords_do_not_match">Passwords do not match</string>
   <string name="invalid_username">Username cannot be empty</string>
   <string name="create_user">Create User</string>
+  <string name="generic_ok">OK</string>
+  <string name="generic_info">Info</string>
+  <string name="generic_logo">Logo</string>
+  <string name="generic_news_image">News image</string>
+  <string name="generic_event_banner">Event banner</string>
+  <string name="search_events_hint">Search events</string>
+  <string name="buy_tickets">Buy Tickets</string>
+  <string name="tab_home">Home</string>
+  <string name="tab_search">Search</string>
+  <string name="tab_favourite">Favourite</string>
+  <string name="tab_profile">Profile</string>
+  <string name="tickets_remaining">Remaining: %1$d</string>
+  <string name="ticket_price_each">$%1$d each</string>
+  <string name="ticket_section">Section %1$s</string>
+  <string name="ticket_row">Row %1$s</string>
+  <string name="player_position">Position: %1$s</string>
+  <string name="player_date_of_birth">Date of Birth: %1$s</string>
+  <string name="player_nationality">Nationality: %1$s</string>
+  <string name="injury_label">Injury: %1$s</string>
+  <string name="injury_expected_return">Expected Return: %1$s</string>
+  <string name="injury_status">Status: %1$s</string>
 </resources>

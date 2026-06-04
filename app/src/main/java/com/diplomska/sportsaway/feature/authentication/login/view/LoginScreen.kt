@@ -14,31 +14,29 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -60,7 +58,7 @@ import org.koin.androidx.compose.koinViewModel
 fun LoginScreen() {
   val viewModel = koinViewModel<LoginViewModel>()
   val uiState = viewModel.viewState.collectAsState()
-  when (uiState.value) {
+  when (val state = uiState.value) {
     is LoginViewState.LoginFailed -> ErrorScreen(
       title = stringResource(R.string.login_failed),
       description = stringResource(R.string.please_try_again),
@@ -68,7 +66,7 @@ fun LoginScreen() {
     )
 
     is LoginViewState.UserData -> LoginContent(
-      uiState = uiState.value as LoginViewState.UserData,
+      uiState = state,
       onEmailInputChanged = viewModel::onEmailInputChanged,
       onPasswordInputChanged = viewModel::onPasswordInputChanged,
       onLoginButtonClicked = viewModel::onLoginClick,
@@ -78,6 +76,7 @@ fun LoginScreen() {
   }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun LoginContent(
   uiState: LoginViewState.UserData,
@@ -87,9 +86,14 @@ private fun LoginContent(
   onSignUpClicked: () -> Unit,
   onDismissError: () -> Unit,
 ) {
-  var email by remember { mutableStateOf("") }
-  var password by remember { mutableStateOf("") }
   val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+  val fieldColors = TextFieldDefaults.colors(
+    focusedContainerColor = backgroundDefault,
+    unfocusedContainerColor = backgroundDefault,
+    focusedLabelColor = mainColor,
+    focusedIndicatorColor = mainColor,
+    cursorColor = typographyTextPrimary
+  )
 
   Scaffold.WithTopBarOnly(
     topBar = {
@@ -97,11 +101,10 @@ private fun LoginContent(
         title = {},
         navigationIcon = {
           IconButton(onClick = { backDispatcher?.onBackPressed() }) {
-            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.generic_back))
           }
         },
-        backgroundColor = backgroundDefault,
-        elevation = 0.dp
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = backgroundDefault)
       )
     },
     content = {
@@ -124,7 +127,7 @@ private fun LoginContent(
             text = { Text(stringResource(R.string.wrong_credentials)) },
             confirmButton = {
               TextButton(onClick = onDismissError) {
-                Text("OK", color = mainColor)
+                Text(stringResource(R.string.generic_ok), color = mainColor)
               }
             }
           )
@@ -132,19 +135,15 @@ private fun LoginContent(
         Image(
           modifier = Modifier.padding(top = 100.dp),
           painter = painterResource(id = R.drawable.ic_logo),
-          contentDescription = "Logo",
+          contentDescription = stringResource(R.string.generic_logo),
           contentScale = ContentScale.Fit
         )
         Spacer(modifier = Modifier.height(30.dp))
         TextField(
-          value = email,
-          onValueChange = {
-            email = it
-            onEmailInputChanged(it)
-          },
+          value = uiState.email,
+          onValueChange = onEmailInputChanged,
           isError = !uiState.isEmailValid,
-          modifier = Modifier
-            .fillMaxWidth(),
+          modifier = Modifier.fillMaxWidth(),
           label = { Text(stringResource(id = R.string.email)) },
           keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
@@ -153,12 +152,7 @@ private fun LoginContent(
           keyboardActions = KeyboardActions(
             onNext = { focusRequester.requestFocus() }
           ),
-          colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = backgroundDefault,
-            focusedLabelColor = mainColor,
-            focusedIndicatorColor = mainColor,
-            cursorColor = typographyTextPrimary
-          )
+          colors = fieldColors
         )
 
         if (!uiState.isEmailValid) {
@@ -171,11 +165,8 @@ private fun LoginContent(
 
         Spacer(modifier = Modifier.height(16.dp))
         TextField(
-          value = password,
-          onValueChange = {
-            password = it
-            onPasswordInputChanged(it)
-          },
+          value = uiState.password,
+          onValueChange = onPasswordInputChanged,
           isError = !uiState.isPasswordValid,
           visualTransformation = PasswordVisualTransformation(),
           modifier = Modifier
@@ -186,13 +177,7 @@ private fun LoginContent(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Done
           ),
-
-          colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = backgroundDefault,
-            focusedLabelColor = mainColor,
-            focusedIndicatorColor = mainColor,
-            cursorColor = typographyTextPrimary,
-          )
+          colors = fieldColors
         )
 
         if (!uiState.isPasswordValid) {
@@ -208,34 +193,34 @@ private fun LoginContent(
         Text(
           text = stringResource(id = R.string.no_account),
           color = mainColor,
-          modifier = Modifier.clickable {
-            onSignUpClicked()
-          })
+          modifier = Modifier.clickable { onSignUpClicked() }
+        )
 
         Spacer(modifier = Modifier.weight(1f))
         Button(
-          onClick = { onLoginButtonClicked() },
+          onClick = onLoginButtonClicked,
           enabled = uiState.isButtonEnabled,
           modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
-          colors = ButtonDefaults.textButtonColors(
-            backgroundColor = if (uiState.isButtonEnabled) mainColor else Color.Gray,
+          colors = ButtonDefaults.buttonColors(
+            containerColor = mainColor,
             contentColor = Color.White,
+            disabledContainerColor = Color.Gray,
+            disabledContentColor = Color.White
           )
         ) {
-          Text(text = "Log in")
+          Text(text = stringResource(R.string.log_in))
         }
         Spacer(modifier = Modifier.height(30.dp))
       }
     }
   )
-
 }
 
 @Preview
 @Composable
-fun PreviewLoginScreen() {
+private fun PreviewLoginScreen() {
   LoginContent(
     onEmailInputChanged = { },
     onPasswordInputChanged = { },

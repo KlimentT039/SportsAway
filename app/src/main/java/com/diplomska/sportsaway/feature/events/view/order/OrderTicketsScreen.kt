@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -214,8 +214,8 @@ private fun BannerContent(modifier: Modifier, match: Match, onBackClick: () -> U
           modifier = Modifier.padding(end = 8.dp)
         ) {
           Icon(
-            Icons.Default.ArrowBack,
-            contentDescription = "Back",
+            Icons.AutoMirrored.Filled.ArrowBack,
+            contentDescription = stringResource(R.string.generic_back),
             tint = Color.White
           )
         }
@@ -261,12 +261,12 @@ private fun SeatingInfo(modifier: Modifier, ticket: Ticket) {
   ) {
     Column {
       Text(
-        text = "Section ${ticket.section}",
+        text = stringResource(R.string.ticket_section, ticket.section),
         style = typography.mRegular.copy(fontWeight = FontWeight.Bold)
       )
-      ticket.row?.let {
+      ticket.row?.let { row ->
         Text(
-          text = "Row ${ticket.row}",
+          text = stringResource(R.string.ticket_row, row),
           style = typography.sRegularPrimary.copy(color = Color.Gray)
         )
       }

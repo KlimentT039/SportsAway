@@ -5,12 +5,10 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -48,18 +46,16 @@ object AppBar {
   ) {
     CenterAlignedTopAppBar(
       title = {
-        if (icon != null) {
-          Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+          if (icon != null) {
             Icon(
               painter = painterResource(icon),
               contentDescription = null,
-              modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
+              modifier = Modifier.size(32.dp),
+              tint = contentColor
             )
             Spacer(modifier = Modifier.width(8.dp))
           }
-        } else {
           Text(text = title.orEmpty())
         }
       },
@@ -94,8 +90,8 @@ object AppBar {
         if (showBackButton) {
           IconButton(onClick = onBackClick) {
             Icon(
-              imageVector = androidx.compose.material.icons.Icons.Default.ArrowBack,
-              contentDescription = "Back",
+              imageVector = androidx.compose.material.icons.Icons.AutoMirrored.Filled.ArrowBack,
+              contentDescription = stringResource(R.string.generic_back),
               tint = topBarTextColor
             )
           }
@@ -127,7 +123,7 @@ object AppBar {
           verticalAlignment = Alignment.CenterVertically
         ) {
           Spacer(modifier = Modifier.width(8.dp))
-          Text(text = "Search events")
+          Text(text = stringResource(R.string.search_events_hint))
         }
       },
       leadingIcon = {
@@ -137,9 +133,9 @@ object AppBar {
           if (showBackButton) {
             IconButton(onClick = onBackClick) {
               Icon(
-                imageVector = androidx.compose.material.icons.Icons.Default.ArrowBack,
+                imageVector = androidx.compose.material.icons.Icons.AutoMirrored.Filled.ArrowBack,
                 tint = MaterialTheme.colorScheme.onSurface,
-                contentDescription = "Back"
+                contentDescription = stringResource(R.string.generic_back)
               )
             }
           }

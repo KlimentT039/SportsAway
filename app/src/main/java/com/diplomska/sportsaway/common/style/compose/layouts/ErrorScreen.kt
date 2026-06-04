@@ -14,14 +14,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.diplomska.sportsaway.R
 import com.diplomska.sportsaway.common.style.compose.theme.backgroundSurface
-import com.diplomska.sportsaway.common.style.compose.theme.buttonColor
+import com.diplomska.sportsaway.common.style.compose.theme.mainColor
+import com.diplomska.sportsaway.common.style.compose.theme.topBarTextColor
 import com.diplomska.sportsaway.common.style.compose.typography
 
 @Composable
@@ -59,14 +59,16 @@ fun ErrorScreen(
       }
     }
 
-    Button(modifier = Modifier
-      .fillMaxWidth()
-      .padding(20.dp),
-      colors = ButtonDefaults.textButtonColors(
-        containerColor = buttonColor,
-        contentColor = Color.White
+    Button(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(20.dp),
+      colors = ButtonDefaults.buttonColors(
+        containerColor = mainColor,
+        contentColor = topBarTextColor
       ),
-      onClick = { onClick() }) {
+      onClick = onClick,
+    ) {
       Text(text = buttonText)
     }
   }

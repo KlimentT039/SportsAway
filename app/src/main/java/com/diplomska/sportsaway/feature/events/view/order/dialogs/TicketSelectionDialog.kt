@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -52,9 +52,9 @@ fun TicketSelectionDialog(
     dismissButton = {
       TextButton(
         onClick = onDismiss,
-        colors = ButtonDefaults.buttonColors(
+        colors = ButtonDefaults.textButtonColors(
           contentColor = topBarTextColor,
-          backgroundColor = buttonColor
+          containerColor = buttonColor
         ),
       ) {
         Text(stringResource(R.string.cancel))
