@@ -1,10 +1,12 @@
 package com.diplomska.sportsaway.common.shared.assetConfig
 
+import kotlinx.cinterop.ExperimentalForeignApi
 import platform.Foundation.NSBundle
 import platform.Foundation.NSString
 import platform.Foundation.NSUTF8StringEncoding
 import platform.Foundation.stringWithContentsOfFile
 
+@OptIn(ExperimentalForeignApi::class)
 class IosAssetReader : AssetReader {
 
   override fun read(fileName: String): String {

@@ -45,9 +45,6 @@ kotlin {
 
       api(libs.koin.core)
 
-      api(libs.gitlive.firebase.auth)
-      api(libs.gitlive.firebase.firestore)
-
       api(libs.androidx.lifecycle.viewmodel)
     }
     commonTest.dependencies {
@@ -55,6 +52,8 @@ kotlin {
     }
     androidMain.dependencies {
       implementation(libs.ktor.client.okhttp)
+      api(libs.gitlive.firebase.auth)
+      api(libs.gitlive.firebase.firestore)
     }
     iosMain.dependencies {
       implementation(libs.ktor.client.darwin)
