@@ -120,6 +120,16 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		8FDF05EE2FD0ACB20042737C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXShellScriptBuildPhase section */
 		A1000000000000000000004A /* Build KMP framework */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -141,16 +151,6 @@
 			shellScript = "cd \"$SRCROOT/../..\"\n./gradlew :shared:embedAndSignAppleFrameworkForXcode -PXCODE_CONFIGURATION=\"${CONFIGURATION}\" -PXCODE_PLATFORM_NAME=\"${PLATFORM_NAME}\" -PXCODE_ARCHS=\"${ARCHS}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
-
-/* Begin PBXResourcesBuildPhase section */
-		8FDF05EE2FD0ACB20042737C /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8FDF05EC2FD0ACB20042737C /* Sources */ = {

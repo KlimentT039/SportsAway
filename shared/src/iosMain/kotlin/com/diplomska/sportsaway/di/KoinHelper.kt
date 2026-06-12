@@ -13,6 +13,7 @@ import com.diplomska.sportsaway.feature.favourite.view.FavouriteViewModel
 import com.diplomska.sportsaway.feature.favourite.view.addteams.AddFavouriteTeamsViewModel
 import com.diplomska.sportsaway.feature.favourite.view.news.LatestNewsViewModel
 import com.diplomska.sportsaway.feature.profile.ui.ProfileViewModel
+import com.diplomska.sportsaway.feature.startup.StartupViewModel
 import org.koin.core.Koin
 import org.koin.core.parameter.parametersOf
 import org.koin.mp.KoinPlatform
@@ -21,6 +22,8 @@ object KoinHelper {
   private val koin: Koin get() = KoinPlatform.getKoin()
 
   fun authRepository(): AuthRepository = koin.get<AuthRepository>()
+
+  fun startupViewModel(): StartupViewModel = koin.get<StartupViewModel>()
 
   fun loginViewModel(): LoginViewModel = koin.get<LoginViewModel>()
   fun registerViewModel(): RegisterViewModel = koin.get<RegisterViewModel>()

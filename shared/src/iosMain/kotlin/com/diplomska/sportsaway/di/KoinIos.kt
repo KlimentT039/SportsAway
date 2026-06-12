@@ -5,6 +5,7 @@ import com.diplomska.sportsaway.feature.dashboard.di.dashboardModule
 import com.diplomska.sportsaway.feature.events.di.eventModule
 import com.diplomska.sportsaway.feature.favourite.di.favouriteModule
 import com.diplomska.sportsaway.feature.profile.di.profileModule
+import com.diplomska.sportsaway.feature.startup.di.startupModule
 import com.diplomska.sportsaway.shared.currentPlatform
 import org.koin.core.context.startKoin
 
@@ -18,7 +19,8 @@ fun doInitKoin() {
       eventModule,
       profileModule,
       favouriteModule,
-      authenticationModule
+      authenticationModule,
+      startupModule
     )
   }
 }
