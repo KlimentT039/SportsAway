@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import Shared
 
 @MainActor
@@ -35,7 +36,7 @@ final class OrderTicketsViewModelObservable: ObservableObject {
         self.orderSucceeded = data.showOrderIsSuccessful
       }
     }
-    viewModel.initData(orderBundle: bundle)
+    viewModel.doInitData(orderBundle: bundle)
   }
 
   func adjustTickets(_ count: Int32) {

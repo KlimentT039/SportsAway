@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import Shared
 
 @MainActor
@@ -46,7 +47,7 @@ final class EventDetailsViewModelObservable: ObservableObject {
       }
     }
 
-    viewModel.initData(matchId: matchId)
+    viewModel.doInitData(matchId: matchId)
   }
 
   func onTicketTap(_ ticket: Ticket) {

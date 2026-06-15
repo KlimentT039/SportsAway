@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import Shared
 
 struct LoginView: View {
@@ -21,7 +22,7 @@ struct LoginView: View {
           AuthField(
             title: "Email",
             text: vm.email,
-            isError: !vm.isEmailValid,
+            isError: !vm.isEmailValid && !vm.email.isEmpty,
             errorText: "Enter a valid email",
             isSecure: false,
             onChange: vm.onEmailChange
@@ -29,8 +30,8 @@ struct LoginView: View {
           AuthField(
             title: "Password",
             text: vm.password,
-            isError: !vm.isPasswordValid,
-            errorText: "Password must be at least 6 characters",
+            isError: !vm.isPasswordValid && !vm.password.isEmpty,
+            errorText: "Password is required",
             isSecure: true,
             onChange: vm.onPasswordChange
           )

@@ -15,9 +15,6 @@ class LoginUseCase(private val authRepository: AuthRepository) {
     return email.matches(emailRegex)
   }
 
-  fun validatePassword(password: String): Boolean {
-    val passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\d\\s]).{8,30}$".toRegex()
-    return password.matches(passwordRegex)
-  }
+  fun validatePassword(password: String): Boolean = password.isNotEmpty()
 
 }

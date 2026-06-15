@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import Shared
 
 @MainActor
@@ -23,10 +24,10 @@ final class LoginViewModelObservable: ObservableObject {
     stateObserver = FlowObserver(viewModel.viewState)
     stateObserver?.watch { [weak self] value in
       guard let self else { return }
-      if value is LoginViewStateLoginFailed {
+      if value is LoginViewState.LoginFailed {
         self.loginFailed = true
         self.isLoading = false
-      } else if let data = value as? LoginViewStateUserData {
+      } else if let data = value as? LoginViewState.UserData {
         self.email = data.email
         self.password = data.password
         self.isEmailValid = data.isEmailValid
@@ -41,9 +42,9 @@ final class LoginViewModelObservable: ObservableObject {
     eventObserver = FlowObserver(viewModel.event)
     eventObserver?.watch { [weak self] value in
       guard let self else { return }
-      if value is LoginEventsSuccessfulLogin {
+      if value is LoginEvents.SuccessfulLogin {
         self.loginSucceeded = true
-      } else if value is LoginEventsNavigateToRegisterActivity {
+      } else if value is LoginEvents.NavigateToRegisterActivity {
         self.navigateToRegister = true
       }
     }

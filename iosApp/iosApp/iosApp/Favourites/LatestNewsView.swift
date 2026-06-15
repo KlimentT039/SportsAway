@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import Shared
 
 @MainActor
@@ -31,7 +32,7 @@ final class LatestNewsViewModelObservable: ObservableObject {
         self.injuries = (content.teamInfo.teamInfo.injuryReports as? [InjuryReport]) ?? []
       }
     }
-    viewModel.initData(id: teamId)
+    viewModel.doInitData(id: teamId)
   }
 }
 

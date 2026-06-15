@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import Shared
 
 struct EventDetailsView: View {
@@ -155,7 +156,7 @@ private struct MatchHeaderCard: View {
 
   private func teamColumn(team: Team) -> some View {
     VStack(spacing: 6) {
-      crestImage(url: team.crest, size: 56)
+      crestImage(url: team.crest, name: team.shortName, size: 56)
       Text(team.shortName)
         .font(.subheadline.weight(.medium))
         .lineLimit(1)

@@ -13,7 +13,8 @@ class GetTrendingMatchesUseCase(
 
   suspend operator fun invoke(limit: Int): Either<BaseError, List<Match>> = lift {
     val matches = repository.getMatches().map { it.toMatch() }
-    matches.filter { it.trending }.take(limit)
+    val trending = matches.filter { it.trending }.take(limit)
+    if (trending.isNotEmpty()) trending else matches.take(limit)
   }
 
 }

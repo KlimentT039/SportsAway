@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import Shared
 
 struct EventsOverviewView: View {
@@ -74,7 +75,7 @@ struct EventsOverviewView: View {
     VStack(alignment: .leading, spacing: 8) {
       if group.showSection {
         HStack(spacing: 8) {
-          crestImage(url: group.competition.emblem, size: 24)
+          crestImage(url: group.competition.emblem, name: group.competition.name, size: 24)
           Text(group.competition.name)
             .font(.headline.weight(.semibold))
           Spacer()

@@ -24,12 +24,10 @@ class SportsEventsRepositoryImpl(
 
   override suspend fun getMatches(competitionId: Int?): List<MatchResponse> {
     val competition = if (competitionId == -1) null else competitionId
-    val getDates = getTwoWeeksDates()
-    return sportsApi.getMatches(
-      dateTo = getDates.second,
-      dateFrom = getDates.first,
-      competitions = competition?.toString() ?: listOfCompetitionIds.joinToString(",")
-    ).matches
+    val competitions = competition?.toString() ?: listOfCompetitionIds.joinToString(",")
+    return probeForUpcomingMatches { from, to ->
+      sportsApi.getMatches(dateFrom = from, dateTo = to, competitions = competitions).matches
+    }
   }
 
   override suspend fun getCompetitions() = sportsApi.getCompetitions().competitions
@@ -38,14 +36,10 @@ class SportsEventsRepositoryImpl(
     return sportsApi.getTeams(limit = 100)
   }
 
-  override suspend fun getMatchesByTeam(id: Int): List<MatchResponse> {
-    val getDates = getTwoWeeksDates()
-    return sportsApi.getMatchesByTeam(
-      teamId = id,
-      dateFrom = getDates.first,
-      dateTo = getDates.second
-    ).matches
-  }
+  override suspend fun getMatchesByTeam(id: Int): List<MatchResponse> =
+    probeForUpcomingMatches { from, to ->
+      sportsApi.getMatchesByTeam(teamId = id, dateFrom = from, dateTo = to).matches
+    }
 
   override suspend fun getMatchById(id: Int): MatchResponse {
     return sportsApi.getMatchDetails(id)
@@ -63,10 +57,25 @@ class SportsEventsRepositoryImpl(
     return teamInfoJsonProvider.teamsData[id.toString()]
   }
 
-  private fun getTwoWeeksDates(): Pair<String, String> {
+  /**
+   * football-data.org caps match windows at 10 days. During the off-season the next 10 days are
+   * empty, so probe forward in 10-day chunks until we find data — handles summer break, etc.
+   */
+  private suspend fun probeForUpcomingMatches(
+    fetch: suspend (from: String, to: String) -> List<MatchResponse>
+  ): List<MatchResponse> {
     val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
-    val dateFrom = today.plus(1, DateTimeUnit.DAY)
-    val dateTo = today.plus(9, DateTimeUnit.DAY)
-    return dateFrom.toString() to dateTo.toString()
+    repeat(PROBE_WINDOWS) { i ->
+      val from = today.plus((1 + i * PROBE_WINDOW_DAYS).toLong(), DateTimeUnit.DAY)
+      val to = from.plus((PROBE_WINDOW_DAYS - 1).toLong(), DateTimeUnit.DAY)
+      val matches = fetch(from.toString(), to.toString())
+      if (matches.isNotEmpty()) return matches
+    }
+    return emptyList()
+  }
+
+  companion object {
+    private const val PROBE_WINDOW_DAYS = 10
+    private const val PROBE_WINDOWS = 20
   }
 }

@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import Shared
 
 struct RegisterView: View {
@@ -32,7 +33,7 @@ struct RegisterView: View {
         AuthField(
           title: "Email",
           text: vm.email,
-          isError: !vm.isEmailValid,
+          isError: !vm.isEmailValid && !vm.email.isEmpty,
           errorText: "Enter a valid email",
           isSecure: false,
           onChange: vm.onEmailChange
@@ -41,8 +42,8 @@ struct RegisterView: View {
         AuthField(
           title: "Password",
           text: vm.password,
-          isError: !vm.isPasswordValid,
-          errorText: "Password must be at least 6 characters",
+          isError: !vm.isPasswordValid && !vm.password.isEmpty,
+          errorText: "Password must be 6–30 characters",
           isSecure: true,
           onChange: vm.onPasswordChange
         )
@@ -50,7 +51,7 @@ struct RegisterView: View {
         AuthField(
           title: "Confirm password",
           text: vm.confirmPassword,
-          isError: !vm.isConfirmPasswordValid,
+          isError: !vm.isConfirmPasswordValid && !vm.confirmPassword.isEmpty,
           errorText: "Passwords don't match",
           isSecure: true,
           onChange: vm.onConfirmPasswordChange

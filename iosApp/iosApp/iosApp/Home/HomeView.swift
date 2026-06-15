@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import Shared
 
 struct HomeView: View {
@@ -40,20 +41,17 @@ struct HomeView: View {
   private var trendingSection: some View {
     VStack(alignment: .leading, spacing: 8) {
       sectionHeader(title: "Trending events")
-      ScrollView(.horizontal, showsIndicators: false) {
-        HStack(spacing: 8) {
-          ForEach(vm.trendingMatches, id: \.id) { match in
-            Button {
-              path.append(.eventDetails(matchId: match.id, title: "\(match.homeTeam.shortName) vs \(match.awayTeam.shortName)"))
-            } label: {
-              MatchFeaturedCard(match: match)
-                .containerRelativeFrame(.horizontal, count: 10, span: 9, spacing: 8)
-            }
-            .buttonStyle(.plain)
+      VStack(spacing: 12) {
+        ForEach(Array(vm.trendingMatches.prefix(3)), id: \.id) { match in
+          Button {
+            path.append(.eventDetails(matchId: match.id, title: "\(match.homeTeam.shortName) vs \(match.awayTeam.shortName)"))
+          } label: {
+            MatchFeaturedCard(match: match)
           }
+          .buttonStyle(.plain)
         }
-        .padding(.horizontal, 8)
       }
+      .padding(.horizontal, 16)
     }
   }
 
@@ -123,7 +121,7 @@ struct MatchFeaturedCard: View {
 
   private func teamColumn(name: String, crest: String?) -> some View {
     VStack(spacing: 4) {
-      crestImage(url: crest, size: 40)
+      crestImage(url: crest, name: name, size: 40)
       Text(name)
         .font(.subheadline.weight(.medium))
         .lineLimit(1)
@@ -138,7 +136,7 @@ struct CompetitionTile: View {
 
   var body: some View {
     VStack {
-      crestImage(url: competition.emblem, size: 56)
+      crestImage(url: competition.emblem, name: competition.name, size: 56)
       Text(competition.name)
         .font(.caption)
         .lineLimit(1)

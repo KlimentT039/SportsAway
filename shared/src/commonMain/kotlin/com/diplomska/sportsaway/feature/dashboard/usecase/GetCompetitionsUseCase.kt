@@ -11,9 +11,13 @@ class GetCompetitionsUseCase(private val sportsRepo: SportsEventsRepository) :
   ErrorHandlingUseCase() {
 
   suspend operator fun invoke(): Either<BaseError, List<Competition>> = lift {
-    sportsRepo.getCompetitions().map {
-      it.toCompetition()
-    }
+    sportsRepo.getCompetitions()
+      .map { it.toCompetition() }
+      .sortedByDescending { it.id == WORLD_CUP_COMPETITION_ID }
+  }
+
+  companion object {
+    private const val WORLD_CUP_COMPETITION_ID = 2000
   }
 
 }

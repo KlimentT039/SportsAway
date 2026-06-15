@@ -2,8 +2,9 @@ package com.diplomska.sportsaway.feature.dashboard.home.view
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -76,14 +77,14 @@ fun ListOfGames(list: List<Match>) {
       context.startActivity(EventOverviewActivity.createIntent(context, null))
     }
   ) {
-    LazyRow(
-      contentPadding = PaddingValues(horizontal = 4.dp),
-      horizontalArrangement = Arrangement.spacedBy(4.dp)
+    Column(
+      modifier = Modifier.padding(horizontal = 8.dp),
+      verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-      items(list) { match ->
+      list.take(3).forEach { match ->
         MatchCard.Featured(
           match = match,
-          modifier = Modifier.fillParentMaxWidth(0.9f),
+          modifier = Modifier.fillMaxWidth(),
           onClick = {
             context.startActivity(EventDetailsActivity.createIntent(context, match.id))
           }

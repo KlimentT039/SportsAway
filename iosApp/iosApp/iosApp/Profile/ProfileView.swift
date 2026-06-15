@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import Shared
 
 struct ProfileView: View {

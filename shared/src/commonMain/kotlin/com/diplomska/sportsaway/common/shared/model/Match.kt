@@ -5,6 +5,7 @@ import com.diplomska.sportsaway.common.shared.parcelize.Parcelize
 import com.diplomska.sportsaway.common.shared.utils.parseDate
 import com.diplomska.sportsaway.common.shared.utils.parseDateToTime
 import com.diplomska.sportsaway.data.events_data.model.MatchResponse
+import kotlin.random.Random
 
 @Parcelize
 data class Match(
@@ -41,17 +42,24 @@ fun MatchResponse.toMatch() = Match(
   )
 )
 
+private const val WORLD_CUP_COMPETITION_ID = 2000
+
 private fun MatchResponse.isTheMatchTrending(): Boolean {
+  // World Cup matches are randomly flagged trending (~50%) so the home feed has data
+  // during the international window even when none of the marquee teams are playing.
+  // Random per (matchId) so the flag is stable across re-fetches within a session.
+  if (competition.id == WORLD_CUP_COMPETITION_ID) {
+    return Random(id).nextBoolean()
+  }
+
   val listOfTrendingTeams = listOf(
-    "Manchester",
-    "Chelsea",
-    "Arsenal",
-    "Liverpool",
-    "Barcelona",
-    "Real Madrid",
-    "Milan",
-    "Juventus",
-    "Madrid"
+    // clubs
+    "Manchester", "Chelsea", "Arsenal", "Liverpool",
+    "Barcelona", "Real Madrid", "Madrid",
+    "Milan", "Juventus", "Bayern", "Paris",
+    // national teams
+    "Brazil", "Argentina", "France", "Germany", "Spain",
+    "England", "Portugal", "Netherlands", "Italy", "Belgium"
   )
 
   return listOfTrendingTeams.any { team ->

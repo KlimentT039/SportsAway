@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import Shared
 
 @MainActor
@@ -25,13 +26,13 @@ final class RegisterViewModelObservable: ObservableObject {
     stateObserver = FlowObserver(viewModel.viewState)
     stateObserver?.watch { [weak self] value in
       guard let self else { return }
-      if value is RegisterViewStateLoading {
+      if value is RegisterViewState.Loading {
         self.isLoading = true
         self.isError = false
-      } else if value is RegisterViewStateError {
+      } else if value is RegisterViewState.Error {
         self.isLoading = false
         self.isError = true
-      } else if let data = value as? RegisterViewStateUserData {
+      } else if let data = value as? RegisterViewState.UserData {
         self.isLoading = false
         self.isError = false
         self.email = data.email
@@ -49,7 +50,7 @@ final class RegisterViewModelObservable: ObservableObject {
     eventObserver = FlowObserver(viewModel.event)
     eventObserver?.watch { [weak self] value in
       guard let self else { return }
-      if value is RegisterEventNavigateToDashboard {
+      if value is RegisterEvent.NavigateToDashboard {
         self.registerSucceeded = true
       }
     }

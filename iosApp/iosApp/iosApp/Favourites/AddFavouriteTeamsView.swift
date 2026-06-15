@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import Shared
 
 @MainActor
@@ -20,14 +21,14 @@ final class AddFavouriteTeamsViewModelObservable: ObservableObject {
     stateObserver = FlowObserver(viewModel.viewState)
     stateObserver?.watch { [weak self] value in
       guard let self else { return }
-      if value is ViewStateLoading {
+      if value is ViewState_Loading {
         self.isLoading = true
         self.isError = false
-      } else if let data = value as? ViewStateTeamsData {
+      } else if let data = value as? ViewState_TeamsData {
         self.isLoading = false
         self.teams = (data.teams as? [Team]) ?? []
         self.selectedTeams = ((data.selectedTeams as? [KotlinInt]) ?? []).map { $0.int32Value }
-      } else if value is ViewStateError {
+      } else if value is ViewState_Error {
         self.isLoading = false
         self.isError = true
       }
@@ -119,7 +120,7 @@ struct AddFavouriteTeamsView: View {
               vm.onFavTap(team)
             } label: {
               HStack(spacing: 12) {
-                crestImage(url: team.crest, size: 32)
+                crestImage(url: team.crest, name: team.shortName, size: 32)
                 VStack(alignment: .leading, spacing: 2) {
                   Text(team.name)
                     .font(.subheadline.weight(.semibold))

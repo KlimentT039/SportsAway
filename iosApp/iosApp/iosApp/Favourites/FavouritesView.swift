@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import Shared
 
 struct FavouritesView: View {
@@ -116,7 +117,7 @@ private struct FavouriteTeamSection: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 8) {
       HStack(spacing: 8) {
-        crestImage(url: team.favouriteTeam.crest, size: 28)
+        crestImage(url: team.favouriteTeam.crest, name: team.favouriteTeam.shortName, size: 28)
         Text(team.favouriteTeam.shortName)
           .font(.headline)
         Spacer()
