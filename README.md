@@ -67,16 +67,14 @@ The shared module exposes ViewModels that hold `StateFlow` / `SharedFlow`. Andro
 
 ## Screenshots
 
-Add captures into `docs/screenshots/android/` and `docs/screenshots/ios/`. The README references them by name below; renaming them will break the layout.
-
 ### Android
 
-| Home | Events | Event details | Profile |
-|------|--------|---------------|---------|
+| Home | Events | Event details
+|------|--------|--------------
 | ![Home](docs/screenshots/android/home.png) | ![Events](docs/screenshots/android/events.png) | ![Details](docs/screenshots/android/event-details.png)
 
 ### iOS
 
-| Home | Events | Event details                                      | Profile |
-|------|--------|----------------------------------------------------|---------|
+| Home | Events | Event details 
+|------|--------|---------------
 | ![Home](docs/screenshots/ios/home.png) | ![Events](docs/screenshots/ios/events.png) | ![Details](docs/screenshots/ios/event-details.png)
