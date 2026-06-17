@@ -73,18 +73,10 @@ Add captures into `docs/screenshots/android/` and `docs/screenshots/ios/`. The R
 
 | Home | Events | Event details | Profile |
 |------|--------|---------------|---------|
-| ![Home](docs/screenshots/android/home.png) | ![Events](docs/screenshots/android/events.png) | ![Details](docs/screenshots/android/event-details.png) | ![Profile](docs/screenshots/android/profile.png) |
-
-| Favourites | Add favourites | Sign in | Sign up |
-|------------|----------------|---------|---------|
-| ![Favourites](docs/screenshots/android/favourites.png) | ![Add favourites](docs/screenshots/android/add-favourites.png) | ![Sign in](docs/screenshots/android/sign-in.png) | ![Sign up](docs/screenshots/android/sign-up.png) |
+| ![Home](docs/screenshots/android/home.png) | ![Events](docs/screenshots/android/events.png) | ![Details](docs/screenshots/android/event-details.png)
 
 ### iOS
 
 | Home | Events | Event details                                      | Profile |
 |------|--------|----------------------------------------------------|---------|
-| ![Home](docs/screenshots/ios/home.png) | ![Events](docs/screenshots/ios/events.png) | ![Details](docs/screenshots/ios/event-details.png) | ![Profile](docs/screenshots/ios/profile.png) |
-
-| Favourites | Add favourites | Sign in | Sign up |
-|------------|----------------|---------|---------|
-| ![Favourites](docs/screenshots/ios/favourites.png) | ![Add favourites](docs/screenshots/ios/add-favourites.png) | ![Sign in](docs/screenshots/ios/sign-in.png) | ![Sign up](docs/screenshots/ios/sign-up.png) |
+| ![Home](docs/screenshots/ios/home.png) | ![Events](docs/screenshots/ios/events.png) | ![Details](docs/screenshots/ios/event-details.png)
